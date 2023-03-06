@@ -5,16 +5,26 @@ import jwt_decode from 'jwt-decode';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import LoginPage from "./loginPage";
+import Spinner from 'react-bootstrap/Spinner';
 
 
 
 const Home = () => {
-    const [tokens, setToken] = useState("")
+    //const [tokens, setToken] = useState("")
     // const [gameid, setId] = useState('thesis')
     // const [url, setUrl] = useState('http://localhost:8080/gamification')
-    const [name, setName] = useState('')
+    //const [name, setName] = useState('')
+    //const [isLoading, setIsLoading] = useState(true);
 
-
+    /*useEffect(() => {
+      const token = sessionStorage.getItem('access-token');
+      if (!token) { 
+      } else {
+        setToken(token)
+      }
+      setIsLoading(false)
+  }, []);
     useEffect(() => {
         const newInterval = () => {
           const token = sessionStorage.getItem('access-token');
@@ -36,7 +46,7 @@ const Home = () => {
           }
           }
     }, []);
-    /*
+    
     useEffect(() => {
         const validate = async() => {
             const cleanUp = false
@@ -61,7 +71,8 @@ const Home = () => {
     },[items])
     */
 
-    return(
+    // conditionally rendering
+    return( 
         <Container fluid>
             <Row>
               <Col sm={2} className="bg-light">
@@ -69,12 +80,12 @@ const Home = () => {
               </Col>
               <Col sm={10}>
                 <Row><br /></Row>
-                <Row><h3 className="text-center">Welcome to the project management system of the RWTH Informatik 5</h3></Row>
+                <Row><h3 className="text-center">Welcome to the thesis management system of the RWTH Informatik 5</h3></Row>
                 <Row><br /></Row>
                 <Row><Pcontainer /></Row>
               </Col>
             </Row>            
-        </Container>
+        </Container> 
     )
 }
 export default Home

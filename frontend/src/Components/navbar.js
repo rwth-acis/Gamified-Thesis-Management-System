@@ -4,10 +4,21 @@ import Login from "../Pages/login"
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 const Navibar = (token) => {
 
+  const [role,setRole] = useState('Supervisors')
+  const [tokens,setToken] = useState("")
+
+  
+  useEffect(() => {
+    const token = sessionStorage.getItem('access-token');
+    if (!token) { 
+    } else {
+      setToken(token)
+    }
+}, []);
   /*
   const hideLogin = () => {
     if(token) {
@@ -22,20 +33,21 @@ const Navibar = (token) => {
   }
   */
 
-  const [role,setRole] = useState('Supervisors')  
+    
 
   return (
     <Navbar bg="light" variant="light">
       <Container>
         <Navbar.Brand href="/">Navbar</Navbar.Brand>
+        {tokens ?
         <Nav className="me-auto">
           <Nav.Link href="/">Home</Nav.Link>
           <Nav.Link href="/weekly">ToDos</Nav.Link>
           <Nav.Link href="/project">Plans</Nav.Link>
           {role === 'Supervisors' && (
-            <Nav.Link href="/history">History</Nav.Link>
-          )}
-        </Nav>
+            <Nav.Link href="/history">History</Nav.Link>)}
+        </Nav> : null}
+        <Login />
       </Container>
     </Navbar>
   )

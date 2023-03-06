@@ -51,12 +51,12 @@ const History = () => {
         <Container>
             <Row>
                 <Form>
-                    <Form.Group className='mb-3' controlId='ofPlan'>
+                    <Form.Group className='mb-3' controlId='ofPlan'>                   
                         <Form.Label>Choose One Student</Form.Label>
                         <Form.Select value={uid} onChange={(e) => setUid(e.target.value)}>
                         <option value="">-- Please select --</option>
                             {stuOption}
-                        </Form.Select>
+                        </Form.Select>                   
                     </Form.Group>
                     {/* 
                     <Button variant="primary" type="submit">
