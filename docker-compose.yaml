@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  server:
+    build: ./backend
+    container_name: server_container
+    ports:
+      - '5000:5000'
+  cilent:
+    build: ./frontend
+    container_name: client_container
+    ports:
+      - '3000:3000'
+    stdin_open: true
+    tty: true
