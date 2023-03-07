@@ -10,12 +10,14 @@ const {
     changestatusFinished,
     deletePlan,
     pushTodo,
-    pushUser
+    pushUser,
+    getProgress
 } = require('../controllers/planController')
 
 router.post("/",createPlan)
 router.get("/",getAllPlan)
 router.delete("/:id",deletePlan)
+router.get("/progress/:id",getProgress)
 router.patch("/doing/:id",changestatusDoing)
 router.patch("/finish/:id",changestatusFinished)
 router.post("/pushtodo/",pushTodo)

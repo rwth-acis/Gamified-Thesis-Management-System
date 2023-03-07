@@ -1,4 +1,5 @@
 const Plan = require('../models/planModel')
+const Todo = require('../models/todoModel')
 const mongoose = require('mongoose')
 
 const getAllPlan = async (req,res) => {
@@ -101,7 +102,37 @@ const getProgress = async(req,res) => {
         return res.status(404).json({error: "no such plan"}) 
     }
     try {
-        
+        const plan = await Plan.findById(id).populate("todos")
+         
+        // const todoNum = todoArr.length
+        let numTodo = 0
+        let numDoing = 0
+        let numFinished = 0
+
+        plan.todos.forEach(todo => {
+            //const todo = Todo.findOne({_id:todoId});
+            if(todo) {
+                switch (todo.status) {
+                    case 'To Do':
+                        numTodo++
+                        break;   
+                    case 'Doing':
+                        numDoing++
+                        break;
+                    case 'Finished':
+                        numFinished++
+                        break;
+                    default:
+                        break;
+                }
+            }
+        })
+        if (numDoing + numFinished + numTodo !== 0) {
+            const progress = (numTodo * 0 + numDoing * 1 + numFinished * 5) / ((numDoing + numTodo + numFinished) * 5)
+            res.status(200).json({"progress": progress})
+        } else {
+            res.status(200).json({"progress": 0})
+        }
     } catch (error) {
         res.status(400).json({error:error.message})
     }
@@ -114,5 +145,6 @@ module.exports = {
     changestatusFinished,
     deletePlan,
     pushTodo,
-    pushUser
+    pushUser,
+    getProgress
 }
