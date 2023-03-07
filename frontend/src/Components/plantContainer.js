@@ -6,11 +6,12 @@ import { useState, useEffect, useMemo } from 'react'
 import Render from './Plants/renderOne'
 
 const Pcontainer = () => {
-    const[seeds, setSeed] = useState(null)
-    const[plants, setPlant] = useState(null)
-    const[status, setStatus] = useState(null)
-    const[title, setTitle] = useState(null)
-    const[count, setCount] = useState(0)
+    const [seeds, setSeed] = useState(null)
+    const [plants, setPlant] = useState(null)
+    const [status, setStatus] = useState(null)
+    const [title, setTitle] = useState(null)
+    const [count, setCount] = useState(0)
+    const [progress, setProgress] = useState([])
     //const memo = useMemo(() => fetchData(),seeds)
 
     useEffect(() => {
@@ -20,8 +21,19 @@ const Pcontainer = () => {
                 method: 'GET'
             })
             if(!cleanup) {
-            const json = await response.json()
-            //console.log(json)
+                const json = await response.json()
+                const progres = []
+                for (const plan of json) {
+                    const p = await fetch(`http://localhost:5000/api/plan/progress/${plan._id}`, {
+                        method: 'GET'
+                    });
+                if(p.ok) {
+                    const pjson = await p.json()
+                    console.log(pjson)
+                    progres.push(await pjson.progress);
+                    }
+                }
+                setProgress(progres)
 
             let S = []
             let P = []
@@ -51,7 +63,7 @@ const Pcontainer = () => {
     const renderPlant = ()=> {
         let PT = []
         for(let i = 0; i < count; i++) {
-            PT.push(<Render className='col' plant={plants[i]} seed={seeds[i]} status = {status[i]} title = {title[i]} progress = {25} key={i} />) //, overflowY: 'scroll' 
+            PT.push(<Render className='col' plant={plants[i]} seed={seeds[i]} status = {status[i]} title = {title[i]} progress = {progress[i]*100} key={i} />) //, overflowY: 'scroll' 
         }
         return PT
     }
