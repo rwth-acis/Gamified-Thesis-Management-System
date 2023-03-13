@@ -42,7 +42,7 @@ const Chart = () => {
           data1.push({
             start: new Date(json[i].startDate),
             end: new Date(json[i].endDate),
-            name: json[i].content,
+            name: json[i].title,
             id: json[i]._id,
             type:'task',
             progress: progress[i]*100,

@@ -47,7 +47,7 @@ const Navibar = (token) => {
           {role === 'Supervisors' && (
             <Nav.Link href="/history">History</Nav.Link>)}
         </Nav> : null}
-        <Login />
+        {/*<Login />*/}
       </Container>
     </Navbar>
   )

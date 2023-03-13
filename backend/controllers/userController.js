@@ -9,6 +9,27 @@ const getAllUser = async (req,res) => {
         res.status(400).json({error: error.message})
     }
 }
+const getUserById = async (req,res) => {
+    const {id} = req.params
+    if (!mongoose.Types.ObjectId.isValid(id)) { 
+        return res.status(404).json({error: "no such user"}) 
+    }
+    try {
+        const user = await User.findOne({_id:id})
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
+const getUserByMail = async (req,res) => {
+    const {mail} = req.params
+    try {
+        const user = await User.findOne({email:mail})
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
 const getAllHistOfUser = async (req,res) => {
     const {id} = req.params
 
@@ -186,6 +207,8 @@ const addTodo = async (req,res) => {
 
 module.exports = {
     getAllUser,
+    getUserById,
+    getUserByMail,
     getAllHistOfUser,
     getAllPlanOfUser,
     getAllTodoOfUser,

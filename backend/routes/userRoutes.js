@@ -13,10 +13,14 @@ const {
     updateWorkType,
     pushHistory,
     pushPlan,
-    pushTodo
+    pushTodo,
+    getUserById,
+    getUserByMail
 } = require('../controllers/userController')
 
 router.get("/",getAllUser)
+router.get("/:id",getUserById)
+router.get("/mail/:mail",getUserByMail)
 router.get("/history/",getAllHistOfUser)
 router.get("/plan/",getAllPlanOfUser)
 router.get("/todo/",getAllTodoOfUser)
