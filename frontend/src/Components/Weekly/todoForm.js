@@ -3,6 +3,7 @@ import ErrorMessage from './error';
 import 'bootstrap/dist/css/bootstrap.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import jwt_decode from 'jwt-decode';
 
 
 const TodoForm = () => {
@@ -67,11 +68,13 @@ const TodoForm = () => {
             })
             const json2 = await response2.json()
             console.log(json2)
-            const uid = localStorage.getItem('userId')
-            if(uid) {
-                const response3 = await fetch('http://localhost:5000/api/user/todo', {
+            const token = sessionStorage.getItem('access-token')
+            const tmp = jwt_decode(token)
+            const sub = tmp['sub']
+            if(sub) {
+                const response3 = await fetch('http://localhost:5000/api/user/todo/token', {
                 method: 'POST',
-                body: JSON.stringify({"uid": uid, "tid": tid}),
+                body: JSON.stringify({"token": sub, "tid": tid}),
                 headers: {
                     'Content-Type': 'application/json'
                 }

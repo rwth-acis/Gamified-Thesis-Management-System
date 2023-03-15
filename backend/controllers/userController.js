@@ -141,6 +141,18 @@ const pushPlan = async (req,res) => {
         res.status(400).json({error:error.message})
     }
 }
+const pushPlanWitToken = async (req,res) => {
+    const {token, pid} = req.body
+    
+    try {
+        const user = await User.findOneAndUpdate({token: token}, {
+            $addToSet: {hasPlan: pid}
+        })
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(400).json({error:error.message})
+    }
+}
 const pushTodo = async (req,res) => {
     const {uid, tid} = req.body
     
@@ -156,6 +168,18 @@ const pushTodo = async (req,res) => {
         res.status(400).json({error:error.message})
     }
 }
+const pushTodoWithToken = async (req,res) => {
+    const {token, tid} = req.body
+
+    try {
+        const user = await User.findOneAndUpdate({token: token}, {
+            $addToSet: {hasToDo: tid}
+        })
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(400).json({error:error.message})
+    }
+}
 const pushHistory = async (req,res) => {
     const {uid, hid} = req.body
     
@@ -164,6 +188,18 @@ const pushHistory = async (req,res) => {
     }
     try {
         const user = await User.findOneAndUpdate({_id: uid}, {
+            $addToSet: {hasHistory: hid}
+        })
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(400).json({error:error.message})
+    }
+}
+const pushHistoryWithToken = async (req,res) => {
+    const {token, hid} = req.body
+
+    try {
+        const user = await User.findOneAndUpdate({token: token}, {
             $addToSet: {hasHistory: hid}
         })
         res.status(200).json(user)
@@ -217,6 +253,9 @@ module.exports = {
     updateToken,
     updateWorkType,
     pushHistory,
+    pushHistoryWithToken,
     pushPlan,
-    pushTodo
+    pushPlanWitToken,
+    pushTodo,
+    pushTodoWithToken
 }

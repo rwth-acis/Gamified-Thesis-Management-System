@@ -15,7 +15,10 @@ const {
     pushPlan,
     pushTodo,
     getUserById,
-    getUserByMail
+    getUserByMail,
+    pushHistoryWithToken,
+    pushPlanWitToken,
+    pushTodoWithToken
 } = require('../controllers/userController')
 
 router.get("/",getAllUser)
@@ -29,7 +32,10 @@ router.patch("/role/",updateRole)
 router.patch("/token/",updateToken)
 router.patch("/worktype/",updateWorkType)
 router.post("/history/",pushHistory)
+router.post("/history/token/",pushHistoryWithToken)
 router.post("/plan/",pushPlan)
+router.post("/plan/token/",pushPlanWitToken)
 router.post("/todo/",pushTodo)
+router.post("/todo/token/",pushTodoWithToken)
 
 module.exports = router

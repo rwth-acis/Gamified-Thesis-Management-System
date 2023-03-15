@@ -45,9 +45,10 @@ const Home = () => {
             setFname(tmp['given_name'])
             const fName = tmp['given_name']
             const email = tmp['email']
-            const currUser = await findOrCreate(fName,lName,email)
+            const sub = tmp['sub'] 
+            const currUser = await findOrCreate(fName,lName,email,sub)
             if(currUser) {
-              localStorage.setItem('userId',currUser._id)
+              localStorage.setItem('userId',true)
             }
             console.log("user id:",currUser._id)
             console.log("working")
@@ -63,13 +64,13 @@ const Home = () => {
           }
     }, []);
 
-    const findOrCreate = async(fName,lName,mail) => {
+    const findOrCreate = async(fName,lName,mail,sub) => {
       const response = await fetch('http://localhost:5000/api/user/mail/'+mail)
       const json = await response.json()
       if(response.ok && json !== null) {
         return json
       } else if(response.ok && json === null) {
-        const user = {'firstName': fName,'lastName': lName,'email':mail,'workType': 'Bachelor Thesis'}
+        const user = {'firstName': fName,'lastName': lName,'email':mail,'token': sub, 'workType': 'Bachelor Thesis'}
         console.log('Creating new user')
         const response2 = await fetch('http://localhost:5000/api/user/', {
           method: 'POST',

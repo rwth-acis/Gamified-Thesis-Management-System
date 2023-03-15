@@ -1,7 +1,8 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import 'bootstrap/dist/css/bootstrap.css';
-import {useState} from 'react'
+import {useState} from 'react';
+import jwt_decode from 'jwt-decode';
 
 const PlanForm = () => {
     const [title, setTitle] = useState('')
@@ -22,12 +23,16 @@ const PlanForm = () => {
         })
         const json = await response.json()
         const pid = json._id
-        const uid = localStorage.getItem('userId')
+        const token = sessionStorage.getItem('access-token')
+        // why does a if{} makees the two lines unsichtbar for response2 
+        const tmp = jwt_decode(token)
+        const sub = tmp['sub']
+        
         console.log("res: ",json)
         // insert Plan
-        const response2 = await fetch('http://localhost:5000/api/user/plan',{
+        const response2 = await fetch('http://localhost:5000/api/user/plan/token/',{
             method: 'POST',
-            body: JSON.stringify({"uid": uid,"pid":pid}),
+            body: JSON.stringify({"token": sub,"pid":pid}),
             headers: {
                 'Content-Type': 'application/json'
             }
