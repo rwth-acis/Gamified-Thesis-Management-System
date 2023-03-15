@@ -42,6 +42,7 @@ const TodoForm = () => {
         </option>
     ))
 
+    // not sure whether it makes code cleaner or complexer to firstly define all functions and then execute in order in handleSubmit?
     const handleSubmit = async (e) => {
         e.preventDefault()
         console.log("title:",title,"content:",content,"plan:",ofPlan,"due:",dueDate)
@@ -66,6 +67,18 @@ const TodoForm = () => {
             })
             const json2 = await response2.json()
             console.log(json2)
+            const uid = localStorage.getItem('userId')
+            if(uid) {
+                const response3 = await fetch('http://localhost:5000/api/user/todo', {
+                method: 'POST',
+                body: JSON.stringify({"uid": uid, "tid": tid}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const json3 = await response3.json()
+            console.log(json3)
+            }
         }
 
         if(response.ok) {

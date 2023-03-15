@@ -39,10 +39,13 @@ const Home = () => {
             setToken(token)
             const tmp = jwt_decode(token)
             setName(tmp['name'])
+            //const name = tmp(['name'])
             setLname(tmp['family_name'])
+            const lName = tmp['family_name']
             setFname(tmp['given_name'])
+            const fName = tmp['given_name']
             const email = tmp['email']
-            const currUser = await findOrCreate(email)
+            const currUser = await findOrCreate(fName,lName,email)
             if(currUser) {
               localStorage.setItem('userId',currUser._id)
             }
@@ -60,13 +63,14 @@ const Home = () => {
           }
     }, []);
 
-    const findOrCreate = async(mail) => {
+    const findOrCreate = async(fName,lName,mail) => {
       const response = await fetch('http://localhost:5000/api/user/mail/'+mail)
       const json = await response.json()
       if(response.ok && json !== null) {
         return json
       } else if(response.ok && json === null) {
-        const user = {'firstName': fname,'lastName': lname,'email':mail,'workType': 'Bachelor Thesis'}
+        const user = {'firstName': fName,'lastName': lName,'email':mail,'workType': 'Bachelor Thesis'}
+        console.log('Creating new user')
         const response2 = await fetch('http://localhost:5000/api/user/', {
           method: 'POST',
           body: JSON.stringify(user),

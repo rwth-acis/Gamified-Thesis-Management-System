@@ -21,7 +21,19 @@ const PlanForm = () => {
             }
         })
         const json = await response.json()
+        const pid = json._id
+        const uid = localStorage.getItem('userId')
         console.log("res: ",json)
+        // insert Plan
+        const response2 = await fetch('http://localhost:5000/api/user/plan',{
+            method: 'POST',
+            body: JSON.stringify({"uid": uid,"pid":pid}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const json2 = await response2.json()
+        console.log(json2)
 
         if(response.ok) {
             // setError(null)
@@ -29,7 +41,7 @@ const PlanForm = () => {
             setStart('')
             setEnd('')
             setContent('')
-            console.log("New todo added: ",json)
+            console.log("New Plan added: ",json)
         }
     }
 
