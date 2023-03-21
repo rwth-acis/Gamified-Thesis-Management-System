@@ -13,6 +13,7 @@ app.use(express.json())
 const todoRoutes = require('./routes/todoRoutes')
 const planRoutes = require('./routes/planRoutes')
 const userRoutes = require('./routes/userRoutes')
+const histRoutes = require('./routes/histRoutes')
 
 app.get('/', (req,res)=>{
     res.json({
@@ -23,6 +24,7 @@ app.get('/', (req,res)=>{
 app.use('/api/todo',todoRoutes)
 app.use('/api/plan',planRoutes)
 app.use('/api/user',userRoutes)
+app.use('/api/hist',histRoutes)
 
 mongoose.connect(process.env.MONGO_URI)
     .then(()=>{

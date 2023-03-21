@@ -9,7 +9,7 @@ const historySchema = new Schema ({
     },
     time: {
         type: Date,
-        required: Date.now
+        default: Date.now
     },
     ofUser: [{
         type: mongoose.Schema.Types.ObjectId, ref: 'User'
