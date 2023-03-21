@@ -43,7 +43,6 @@ const History = () => {
             const json2 = await response2.json()
             console.log("json2: ",json2)
             setHist(json2)
-
         }
         fetchHist()
       },[uid])

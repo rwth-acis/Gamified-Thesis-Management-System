@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const User = require('../models/userModel')
 const History = require('../models/historyModel')
+const Plan = require('../models/planModel')
+const Todo = require('../models/todoModel')
 
 const getAllUser = async (req,res) => {
     try {
@@ -52,8 +54,9 @@ const getAllPlanOfUser = async (req,res) => {
         return res.status(404).json({error: "no such user"}) 
     }
     try {
-        const user = await User.find({_id:id})
-        res.status(200).json(user.hasPlan)
+        const user = await User.findOne({_id:id}).select('hasPlan')
+        const plans = await Plan.find({_id: { $in: user.hasPlan }})
+        res.status(200).json(plans)
     } catch (error) {
         res.status(400).json({error: error.message})
     }
@@ -65,8 +68,9 @@ const getAllTodoOfUser = async (req,res) => {
         return res.status(404).json({error: "no such user"}) 
     }
     try {
-        const user = await User.find({_id:id})
-        res.status(200).json(user.hasToDo)
+        const user = await User.findOne({_id:id}).select('hasToDo')
+        const todos = await Todo.find({_id: { $in: user.hasToDo }})
+        res.status(200).json(todos)
     } catch (error) {
         res.status(400).json({error: error.message})
     }
