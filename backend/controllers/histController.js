@@ -9,6 +9,15 @@ const getAllHist = async(req,res) => {
         res.status(400).json({error: error.message})
     }
 }
+const getAHist = async(req,res) => {
+    const {id} = req.params
+    try {
+        const hist = await History.findOne({_id:id}).sort({time: 1})
+        res.status(200).json(hist)
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
 
 const createHist = async(req,res) => {
     const {types, time, ofUser, content} = req.body
@@ -22,5 +31,6 @@ const createHist = async(req,res) => {
 
 module.exports = {
     getAllHist,
-    createHist
+    createHist,
+    getAHist
 }

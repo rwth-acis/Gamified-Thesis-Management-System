@@ -36,6 +36,19 @@ const History = () => {
         fetchStu()
       },[])
 
+      
+      useEffect (() => {
+        const fetchHist = async() => {
+            const response2 = await fetch('http://localhost:5000/api/user/history/'+uid)
+            const json2 = await response2.json()
+            console.log("json2: ",json2)
+            setHist(json2)
+
+        }
+        fetchHist()
+      },[uid])
+      
+
       const stuOption = Students.map((stu, index) => (
         <option key={index} value={stu.id}>
             {stu.firstname + " " + stu.lastname}

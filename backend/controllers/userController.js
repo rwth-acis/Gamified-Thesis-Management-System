@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const User = require('../models/userModel')
+const History = require('../models/historyModel')
 
 const getAllUser = async (req,res) => {
     try {
@@ -37,8 +38,9 @@ const getAllHistOfUser = async (req,res) => {
         return res.status(404).json({error: "no such user"}) 
     }
     try {
-        const user = await User.find({_id:id})
-        res.status(200).json(user.hasHistory)
+        const user = await User.findOne({_id:id}).select('hasHistory')
+        const histories = await History.find({_id: { $in: user.hasHistory }})
+        res.status(200).json(histories)
     } catch (error) {
         res.status(400).json({error: error.message})
     }
