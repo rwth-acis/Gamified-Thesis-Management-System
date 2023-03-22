@@ -44,10 +44,24 @@ const History = () => {
         const fetchHist = async() => {
             const response2 = await fetch('http://localhost:5000/api/user/history/'+uid)
             const json2 = await response2.json()
-            console.log("json2: ",json2)
+            console.log("history: ",json2)
             setHist(json2)
         }
+        const fetchPlan = async() => {
+          const response3 = await fetch('http://localhost:5000/api/user/plan/'+uid)
+          const json3 = await response3.json()
+          console.log("plan: ",json3)
+          setPlan(json3)
+        }
+        const fetchTodo = async() => {
+          const response4 = await fetch('http://localhost:5000/api/user/todo/'+uid)
+          const json4 = await response4.json()
+          console.log("todo: ",json4)
+          setTodo(json4)
+        }
         fetchHist()
+        fetchPlan()
+        fetchTodo()
       },[uid])
       
 
@@ -88,8 +102,8 @@ const History = () => {
                 </Form>
             </Row>
             <Row>
-              <Col>
-                <Table>
+              <Col>{/*History Table */}
+                <Table size="sm">
                   <caption>Activities History</caption>
                   <thead>
                     <tr>
@@ -101,12 +115,41 @@ const History = () => {
                   <tbody>
                     {hist.length > 0 ? (hist.map((his, index) => (
                       <tr key={index}>
-                        <td >{his.time}</td>
+                        <td >{(new Date(his.time)).toLocaleDateString("en-GB")}</td>
                         <td >{his.content}</td>
                         <td >{his.types}</td>
                       </tr>
                       ))) 
                     : (<tr>
+                      <td>Loading</td>
+                      <td>Loading</td>
+                      <td>Loading</td>
+                      </tr>)}
+                  </tbody>
+                </Table>
+              </Col>
+              <Col>{/*Plan Table */}
+                <Table size="sm">
+                  <caption>Plans Overview</caption>
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Content</th>
+                      <th>Status</th>
+                      <th>DueDate</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {plan.length > 0 ? (plan.map((plan, index) => (
+                      <tr key={index}>
+                        <td >{plan.title}</td>
+                        <td >{plan.content}</td>
+                        <td >{plan.status}</td>
+                        <td >{(new Date(plan.endDate)).toLocaleDateString("en-GB")}</td>
+                      </tr>
+                      ))) 
+                    : (<tr>
+                      <td>Loading</td>
                       <td>Loading</td>
                       <td>Loading</td>
                       <td>Loading</td>
