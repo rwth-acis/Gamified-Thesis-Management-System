@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-//import Col from 'react-bootstrap/Col';
+import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
+import Table from 'react-bootstrap/Table'
 
 const History = () => {
 
     const [uid, setUid] = useState('63fe3001b7741649e4e2ac68')
     const [Students, setStudents] = useState([])
     const [hist, setHist] = useState([])
+    const [plan, setPlan] = useState([])
+    const [todo, setTodo] = useState([])
 
     useEffect(() => {
         const cleanUp = false
@@ -54,7 +57,15 @@ const History = () => {
         </option>
     ))
 
-    /*
+      /*const histTable = hist.map((his, index) => (
+        <tr key={index}>
+          <td >{his.time}</td>
+          <td >{his.content}</td>
+          <td >{his.types}</td>
+        </tr>
+      ))
+
+    
     const handleSubmit = (e) => {
 
     }*/
@@ -75,6 +86,34 @@ const History = () => {
                         Submit
                     </Button>*/}
                 </Form>
+            </Row>
+            <Row>
+              <Col>
+                <Table>
+                  <caption>Activities History</caption>
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>Content</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {hist.length > 0 ? (hist.map((his, index) => (
+                      <tr key={index}>
+                        <td >{his.time}</td>
+                        <td >{his.content}</td>
+                        <td >{his.types}</td>
+                      </tr>
+                      ))) 
+                    : (<tr>
+                      <td>Loading</td>
+                      <td>Loading</td>
+                      <td>Loading</td>
+                      </tr>)}
+                  </tbody>
+                </Table>
+              </Col>
             </Row>    
         </ Container>
     )
