@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import Button from "react-bootstrap/Button";
+//import Button from "react-bootstrap/Button";
 import Table from 'react-bootstrap/Table'
 
 const History = () => {
@@ -51,6 +51,18 @@ const History = () => {
           const response3 = await fetch('http://localhost:5000/api/user/plan/'+uid)
           const json3 = await response3.json()
           console.log("plan: ",json3)
+          if(response3.ok && json3) {
+            for (const plan of json3) {
+              const progress = await fetch(`http://localhost:5000/api/plan/progress/${plan._id}`, {
+                method: 'GET'
+              });
+              if(progress.ok) {
+                const pjson = await progress.json()
+                console.log(pjson)
+                plan.progress = pjson
+              }
+            }
+          }
           setPlan(json3)
         }
         const fetchTodo = async() => {
@@ -108,7 +120,7 @@ const History = () => {
                   <thead>
                     <tr>
                       <th>Time</th>
-                      <th>Content</th>
+                      <th>Object</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -135,7 +147,7 @@ const History = () => {
                     <tr>
                       <th>Title</th>
                       <th>Content</th>
-                      <th>Status</th>
+                      <th>Progress</th>
                       <th>DueDate</th>
                     </tr>
                   </thead>
@@ -144,7 +156,7 @@ const History = () => {
                       <tr key={index}>
                         <td >{plan.title}</td>
                         <td >{plan.content}</td>
-                        <td >{plan.status}</td>
+                        <td >{plan.progress.progress}</td>
                         <td >{(new Date(plan.endDate)).toLocaleDateString("en-GB")}</td>
                       </tr>
                       ))) 

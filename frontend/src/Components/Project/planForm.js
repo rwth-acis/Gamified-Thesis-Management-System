@@ -40,7 +40,30 @@ const PlanForm = () => {
         const json2 = await response2.json()
         console.log(json2)
 
-        if(response.ok) {
+        //create History
+        const response3 = await fetch('http://localhost:5000/api/hist/',{
+            method: 'POST',
+            body: JSON.stringify({"types": "Create","ofUser":json2._id,"content":"Plan:"+title}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const json3 = await response3.json()
+        const hid = json3._id
+        console.log(json3)
+
+        //pushHistToUser
+        const response4 = await fetch('http://localhost:5000/api/user/history/token/',{
+            method: 'POST',
+            body: JSON.stringify({"token": sub,"hid":hid}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const json4 = await response4.json()
+        console.log(json4)
+
+        if(response.ok && response2.ok && response3.ok && response4.ok) {
             // setError(null)
             setTitle('')
             setStart('')
