@@ -147,6 +147,7 @@ const History = () => {
                     <tr>
                       <th>Title</th>
                       <th>Content</th>
+                      <th>StartDate</th>
                       <th>Progress</th>
                       <th>DueDate</th>
                     </tr>
@@ -156,6 +157,7 @@ const History = () => {
                       <tr key={index}>
                         <td >{plan.title}</td>
                         <td >{plan.content}</td>
+                        <td >{(new Date(plan.startDate)).toLocaleDateString("en-GB")}</td>
                         <td >{plan.progress.progress*100}%</td>
                         <td >{(new Date(plan.endDate)).toLocaleDateString("en-GB")}</td>
                       </tr>
