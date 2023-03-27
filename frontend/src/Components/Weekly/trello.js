@@ -68,7 +68,7 @@ const Trello = () => {
             id: json[i]._id,
             title: json[i].title,
             description: json[i].content,
-            label: pjson.title// --------------------
+            label: "Plan:"+pjson.title// --------------------
           })
           i++
         }
@@ -99,7 +99,7 @@ const Trello = () => {
             id: json[i]._id,
             title: json[i].title,
             description: json[i].content,
-            label: pjson.title || "of None"
+            label: "Plan:"+pjson.title 
           })
           i++
         }
@@ -130,7 +130,7 @@ const Trello = () => {
             id: json[i]._id,
             title: json[i].title,
             description: json[i].content,
-            label: pjson.title || " of None"
+            label: "Plan:"+pjson.title  
           })
           i++
         }
