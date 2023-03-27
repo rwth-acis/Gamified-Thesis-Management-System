@@ -10,6 +10,15 @@ const getAllPlan = async (req,res) => {
         res.status(400).json({error: error.message})
     }
 }
+const getAPlan = async (req,res) => {
+    const {id} = req.params
+    try {
+        const plan = await Plan.findOne({_id:id})
+        res.status(200).json(plan)
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
 const createPlan = async (req,res) => {
     const {title, content, status, startDate, endDate} = req.body 
 
@@ -140,6 +149,7 @@ const getProgress = async(req,res) => {
 
 module.exports = {
     getAllPlan,
+    getAPlan,
     createPlan,
     changestatusDoing,
     changestatusFinished,

@@ -71,8 +71,8 @@ const TodoForm = () => {
             const token = sessionStorage.getItem('access-token')
             const tmp = jwt_decode(token)
             const sub = tmp['sub']
-            if(sub) {
-                const response3 = await fetch('http://localhost:5000/api/user/todo/token', {
+            
+            const response3 = await fetch('http://localhost:5000/api/user/todo/token', {
                 method: 'POST',
                 body: JSON.stringify({"token": sub, "tid": tid}),
                 headers: {
@@ -81,7 +81,31 @@ const TodoForm = () => {
             })
             const json3 = await response3.json()
             console.log(json3)
-            }
+            
+
+            
+            //create History
+            const response4 = await fetch('http://localhost:5000/api/hist/',{
+                method: 'POST',
+                body: JSON.stringify({"types": "Create","ofUser":json3._id,"content":"ToDo:"+title}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const json4 = await response4.json()
+            const hid = json4._id
+            console.log("json4:",json4)
+
+            //pushHistToUser
+            const response5 = await fetch('http://localhost:5000/api/user/history/token/',{
+                method: 'POST',
+                body: JSON.stringify({"token": sub,"hid":hid}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const json5 = response5.json()
+            console.log(json5)
         }
 
         if(response.ok) {

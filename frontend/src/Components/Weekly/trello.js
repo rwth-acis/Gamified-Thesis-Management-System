@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Board from 'react-trello'
 
 const Trello = () => {
+  // The Package delievers possible error messages when drag card to an empty lane(Not 100% happening)! 
   const [taskt, setT] = useState(null)
   const [taskd, setD] = useState(null)
   const [taskf, setF] = useState(null)
@@ -20,6 +21,8 @@ const Trello = () => {
                 'Content-Type': 'application/json'
             }
         })
+        const json = await response.json()
+        console.log(json)
         break;
       case "lane2":
         const response2 = await fetch('http://localhost:5000/api/todo/doing/' + cardId, {
@@ -29,6 +32,8 @@ const Trello = () => {
                 'Content-Type': 'application/json'
             }
         })
+        const json2 = await response2.json()
+        console.log(json2)
         break;
       case "lane3":
         const response3 = await fetch('http://localhost:5000/api/todo/finish/'+ cardId, {
@@ -38,6 +43,8 @@ const Trello = () => {
                 'Content-Type': 'application/json'
             }
         })
+        const json3 = await response3.json()
+        console.log(json3)
         break;
       default:
         console.log("Error!")
@@ -50,15 +57,18 @@ const Trello = () => {
       const response = await fetch('http://localhost:5000/api/todo/unfinished')
       const json = await response.json()
       console.log("json: ",json.length)
-      if(response.ok && !cleanUp && json !== null) {
+      if(response.ok && !cleanUp && json !== null) { // Is it necessary to change the while loop into a for each loop?
         const data1 = []
         let i = 0
 
         while(i < json.length) {
+          const res = await fetch('http://localhost:5000/api/plan/'+json[i].ofPlan)
+          const pjson = await res.json()
           data1.push({
             id: json[i]._id,
             title: json[i].title,
-            description: json[i].content
+            description: json[i].content,
+            label: pjson.title// --------------------
           })
           i++
         }
@@ -78,15 +88,18 @@ const Trello = () => {
       const response = await fetch('http://localhost:5000/api/todo/doing')
       const json = await response.json()
       console.log("json: ",json.length)
-      if(response.ok && !cleanUp && json !== null) {
+      if(response.ok && !cleanUp && json.length !== 0) {
         const data2 = []
         let i = 0
 
         while(i < json.length) {
+          const res = await fetch('http://localhost:5000/api/plan/'+json[i].ofPlan)
+          const pjson = await res.json()
           data2.push({
             id: json[i]._id,
             title: json[i].title,
-            description: json[i].content
+            description: json[i].content,
+            label: pjson.title || "of None"
           })
           i++
         }
@@ -111,10 +124,13 @@ const Trello = () => {
         let i = 0
 
         while(i < json.length) {
+          const res = await fetch('http://localhost:5000/api/plan/'+json[i].ofPlan)
+          const pjson = await res.json()
           data3.push({
             id: json[i]._id,
             title: json[i].title,
-            description: json[i].content
+            description: json[i].content,
+            label: pjson.title || " of None"
           })
           i++
         }
