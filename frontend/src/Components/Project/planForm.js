@@ -12,7 +12,11 @@ const PlanForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const plan = {"title":title, "content":content, "startDate":startDate, "endDate":endDate}
+        const token = sessionStorage.getItem('access-token')
+        // why does a if{} makees the two lines unsichtbar for response2 
+        const tmp = jwt_decode(token)
+        const sub = tmp['sub']
+        const plan = {"title":title, "content":content, "startDate":startDate, "endDate":endDate} //how to implement ofUser here?
         console.log(plan)
         const response = await fetch('http://localhost:5000/api/plan/', {
             method: 'POST',
@@ -23,11 +27,7 @@ const PlanForm = () => {
         })
         const json = await response.json()
         const pid = json._id
-        const token = sessionStorage.getItem('access-token')
-        // why does a if{} makees the two lines unsichtbar for response2 
-        const tmp = jwt_decode(token)
-        const sub = tmp['sub']
-        
+       
         console.log("res: ",json)
         // insert Plan
         const response2 = await fetch('http://localhost:5000/api/user/plan/token/',{
