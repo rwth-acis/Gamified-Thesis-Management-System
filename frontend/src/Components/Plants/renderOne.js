@@ -12,32 +12,32 @@ const Render = ({plant, seed, status, title, progress}) => {
     const renderRandomPlant = () => {
         switch(true) {
             case (p === "Zamia" && t === "To Do"):
-                return <Zamia seedd={s} status={0} />
+                return <Zamia seedd={s} status={r} />
             case (p === "Zamia" && t === "Doing"):
-                return <Zamia seedd={s} status={0.5} />
+                return <Zamia seedd={s} status={r} />
             case (p === "Zamia" && t === "Finished"):
-                return <Zamia seedd={s} status={1} />
+                return <Zamia seedd={s} status={progress} />
 
             case (p === "Bushy" && t === "To Do"):
-                    return <Bushy seedd={s} status={0} />
+                    return <Bushy seedd={s} status={progress} />
             case (p === "Bushy" && t === "Doing"):
-                    return <Bushy seedd={s} status={0.5} />
+                    return <Bushy seedd={s} status={progress} />
             case (p === "Bushy" && t === "Finished"):
-                    return <Bushy seedd={s} status={1} />
+                    return <Bushy seedd={s} status={progress} />
 
             case (p === "Dragon" && t === "To Do"):
-                    return <Dragon seedd={s} status={0} />
+                    return <Dragon seedd={s} status={r} />
             case (p === "Dragon" && t === "Doing"):
-                    return <Dragon seedd={s} status={0.5} />
+                    return <Dragon seedd={s} status={r} />
             case (p === "Dragon" && t === "Finished"):
-                    return <Dragon seedd={s} status={1} />
+                    return <Dragon seedd={s} status={r} />
 
             case (p === "Pilea" && t === "To Do"):
-                    return <Pilea seedd={s} status={0} />
+                    return <Pilea seedd={s} status={progress} />
             case (p === "Pilea" && t === "Doing"):
-                    return <Pilea seedd={s} status={0.5} />
+                    return <Pilea seedd={s} status={progress} />
             case (p === "Pilea" && t === "Finished"):
-                    return <Pilea seedd={s} status={1} />
+                    return <Pilea seedd={s} status={progress} />
             default: 
                 return null   
         }
@@ -45,7 +45,7 @@ const Render = ({plant, seed, status, title, progress}) => {
 
     return(
         <div className='card border-success' style={{width: '250px', margin: '10px 10px 10px 10px'}}>
-            <div className='card-img-top text-center' style={{display: 'block'}}>{renderRandomPlant()}</div>
+            <div className='card-img-top text-center' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{renderRandomPlant()}</div>
             <hr />    
             <div className='card-body'>
                 <h6 className='card-title'>{i}</h6>

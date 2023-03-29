@@ -10,7 +10,7 @@ const Dragon = ({seedd, status}) => {
         const genus = new DragonTreeGenus(seedd)
         const cfg = {
             color: true,    // Boolean
-            age: 0.5,         // Float [0,1]
+            age: 0.1,         // Float [0,1]
             potSize: .3,    // Float [0,1]
             potPathAttr: {  // Object
                 fill: '#123456',
@@ -19,7 +19,9 @@ const Dragon = ({seedd, status}) => {
         };
         const plant = new SvgPlant( genus,cfg )
         const dragon = plant.svgElement;
-        plant.animate( 0, status, 3000 );
+        //plant.animate( 0, status )
+        console.log('status:',status)
+        plant.animate( 0, status/100, 3000 );
 
         svg.current.append(dragon)
     },[])
