@@ -100,8 +100,9 @@ const History = () => {
         <Container>
             <Row>
                 <Form>
-                    <Form.Group className='mb-3' controlId='ofPlan'>                   
-                        <Form.Label>Choose One Student</Form.Label>
+                    <Form.Group className='mb-3' controlId='ofPlan'>  
+                    <br />                 
+                        <Form.Label><h4>Welcome Admin! Choose One Student:</h4></Form.Label>
                         <Form.Select value={uid} onChange={(e) => setUid(e.target.value)}>
                         <option value="">-- Please select --</option>
                             {stuOption}
@@ -113,6 +114,8 @@ const History = () => {
                     </Button>*/}
                 </Form>
             </Row>
+            <hr />
+            <br />
             <Row>
               <Col>{/*History Table */}
                 <Table striped bordered hover size="sm">
@@ -133,9 +136,9 @@ const History = () => {
                       </tr>
                       ))) 
                     : (<tr>
-                      <td>Loading</td>
-                      <td>Loading</td>
-                      <td>Loading</td>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
                       </tr>)}
                   </tbody>
                 </Table>
@@ -163,10 +166,10 @@ const History = () => {
                       </tr>
                       ))) 
                     : (<tr>
-                      <td>Loading</td>
-                      <td>Loading</td>
-                      <td>Loading</td>
-                      <td>Loading</td>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
                       </tr>)}
                   </tbody>
                 </Table>

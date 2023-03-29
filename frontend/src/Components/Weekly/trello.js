@@ -16,6 +16,7 @@ const Trello = () => {
     const token = sessionStorage.getItem('access-token')
     const tmp = jwt_decode(token)
     const sub = tmp['sub']
+    if(sourceLaneId !== targetLaneId) {
     switch (targetLaneId) {
       case "lane1":
         const response = await fetch('http://localhost:5000/api/todo/todo/' + cardId, {
@@ -121,11 +122,13 @@ const Trello = () => {
 
       default:
         console.log("Error!")
+      }
     }
   }
 
   useEffect(() => {
     const cleanUp = false
+    
     const fetchT = async () => {
       const response = await fetch('http://localhost:5000/api/todo/unfinished')
       const json = await response.json()
@@ -137,11 +140,36 @@ const Trello = () => {
         while(i < json.length) {
           const res = await fetch('http://localhost:5000/api/plan/'+json[i].ofPlan)
           const pjson = await res.json()
+          const today = new Date()
           data1.push({
             id: json[i]._id,
             title: json[i].title,
             description: json[i].content,
-            label: "Plan:"+pjson.title// --------------------
+            label: "Plan:"+pjson.title,// --------------------
+            /*
+            tags: [{bgcolor: '#61BD4F',
+                    color: 'white',
+                    title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")}]
+                    */
+                    tags : new Date(json[i].dueDate) > today ? 
+                    [{ // if due date is later than today
+                        bgcolor: '#61BD4F',
+                        color: 'white',
+                        title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
+                    }] : 
+                    (new Date(json[i].dueDate).getDate() === today.getDate() && 
+                     new Date(json[i].dueDate).getMonth() === today.getMonth() && 
+                     new Date(json[i].dueDate).getFullYear() === today.getFullYear()) ? 
+                        [{ // if due date is today
+                            //bgcolor: 'yellow',
+                            //color: 'white',
+                            title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
+                        }] : 
+                        [{ // otherwise (due date is earlier than today)
+                            bgcolor: '#EB5A46',
+                            color: 'white',
+                            title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
+                        }]
           })
           i++
         }
@@ -168,11 +196,31 @@ const Trello = () => {
         while(i < json.length) {
           const res = await fetch('http://localhost:5000/api/plan/'+json[i].ofPlan)
           const pjson = await res.json()
+          const today = new Date()
           data2.push({
             id: json[i]._id,
             title: json[i].title,
             description: json[i].content,
-            label: "Plan:"+pjson.title 
+            label: "Plan:"+pjson.title,
+            tags : new Date(json[i].dueDate) > today ? 
+                    [{ // if due date is later than today
+                        bgcolor: '#61BD4F',
+                        color: 'white',
+                        title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
+                    }] : 
+                    (new Date(json[i].dueDate).getDate() === today.getDate() && 
+                     new Date(json[i].dueDate).getMonth() === today.getMonth() && 
+                     new Date(json[i].dueDate).getFullYear() === today.getFullYear()) ? 
+                        [{ // if due date is today
+                            //bgcolor: 'yellow',
+                            //color: 'white',
+                            title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
+                        }] : 
+                        [{ // otherwise (due date is earlier than today)
+                            bgcolor: '#EB5A46',
+                            color: 'white',
+                            title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
+                        }] 
           })
           i++
         }
@@ -199,11 +247,31 @@ const Trello = () => {
         while(i < json.length) {
           const res = await fetch('http://localhost:5000/api/plan/'+json[i].ofPlan)
           const pjson = await res.json()
+          const today = new Date()
           data3.push({
             id: json[i]._id,
             title: json[i].title,
             description: json[i].content,
-            label: "Plan:"+pjson.title  
+            label: "Plan:"+pjson.title,
+            tags : new Date(json[i].dueDate) > today ? 
+                    [{ // if due date is later than today
+                        bgcolor: '#61BD4F',
+                        color: 'white',
+                        title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
+                    }] : 
+                    (new Date(json[i].dueDate).getDate() === today.getDate() && 
+                     new Date(json[i].dueDate).getMonth() === today.getMonth() && 
+                     new Date(json[i].dueDate).getFullYear() === today.getFullYear()) ? 
+                        [{ // if due date is today
+                            //bgcolor: 'yellow',
+                            //color: 'white',
+                            title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
+                        }] : 
+                        [{ // otherwise (due date is earlier than today)
+                            bgcolor: '#EB5A46',
+                            color: 'white',
+                            title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
+                        }]  
           })
           i++
         }
