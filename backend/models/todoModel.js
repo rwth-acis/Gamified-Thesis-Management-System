@@ -25,6 +25,9 @@ const todoSchema = new Schema({
     },
     ofPlan: [{
         type: mongoose.Schema.Types.ObjectId, ref: 'Plan'
+    }],
+    ofUser: [{
+        type: mongoose.Schema.Types.ObjectId, ref: 'User'
     }]
 },{timestamps: false})
 

@@ -1,14 +1,35 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import 'bootstrap/dist/css/bootstrap.css';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import jwt_decode from 'jwt-decode';
 
 const PlanForm = () => {
     const [title, setTitle] = useState('')
+    const [ofUser, setUser] = useState('')
     const [content, setContent] = useState('')
     const [startDate, setStart] = useState('')
     const [endDate, setEnd] = useState('')
+
+
+    useEffect(() => {
+        const cleanUp = false
+        const token = sessionStorage.getItem('access-token')
+        const tmp = jwt_decode(token)
+        const sub = tmp['sub']
+        const mail = tmp['email']
+        const fetchPlan = async () => {
+        const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+        const userJson = await userRes.json()
+        const uid = userJson._id
+        console.log("user:",uid)
+        setUser(uid)
+        return () => {
+        cleanUp = true
+        }
+        }
+        fetchPlan()
+      },[])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -16,7 +37,18 @@ const PlanForm = () => {
         // why does a if{} makees the two lines unsichtbar for response2 
         const tmp = jwt_decode(token)
         const sub = tmp['sub']
-        const plan = {"title":title, "content":content, "startDate":startDate, "endDate":endDate} //how to implement ofUser here?
+        const mail = tmp['email']
+
+        if(!tmp || !mail) {
+            console.error("No Valid User Info!")
+        }
+/*
+        const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+        const userJson = await userRes.json()
+        console.log("user:",userJson)
+        const uid = await userJson._id
+*/
+        const plan = {"title":title, "content":content, "startDate":startDate, "endDate":endDate, "ofUser":ofUser} //how to implement ofUser here?
         console.log(plan)
         const response = await fetch('http://localhost:5000/api/plan/', {
             method: 'POST',
@@ -26,7 +58,7 @@ const PlanForm = () => {
             }
         })
         const json = await response.json()
-        const pid = json._id
+        const pid = await json._id
        
         console.log("res: ",json)
         // insert Plan
@@ -49,7 +81,7 @@ const PlanForm = () => {
             }
         })
         const json3 = await response3.json()
-        const hid = json3._id
+        const hid = await json3._id
         console.log(json3)
 
         //pushHistToUser

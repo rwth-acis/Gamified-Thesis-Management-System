@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Board from 'react-trello'
+import jwt_decode from 'jwt-decode';
 
 const Trello = () => {
   // The Package delievers possible error messages when drag card to an empty lane(Not 100% happening)! 
@@ -12,6 +13,9 @@ const Trello = () => {
     //console.log(`cardId: ${cardId}`)
     //console.log(`sourceLaneId: ${sourceLaneId}`)
     //console.log(`targetLaneId: ${targetLaneId}`)
+    const token = sessionStorage.getItem('access-token')
+    const tmp = jwt_decode(token)
+    const sub = tmp['sub']
     switch (targetLaneId) {
       case "lane1":
         const response = await fetch('http://localhost:5000/api/todo/todo/' + cardId, {
@@ -22,8 +26,31 @@ const Trello = () => {
             }
         })
         const json = await response.json()
+        const title = json.title
         console.log(json)
+        //create History
+        const res = await fetch('http://localhost:5000/api/hist/',{
+            method: 'POST',
+            body: JSON.stringify({"types": "Update","ofUser":json.ofUser,"content":"ToDo:"+title+" ->'to do'"}),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        })
+        const tjson = await res.json()
+        const hid = tjson._id
+        console.log("json4:",tjson)
+        //give history to User
+        const res2 = await fetch('http://localhost:5000/api/user/history/token/',{
+            method: 'POST',
+            body: JSON.stringify({"token": sub,"hid":hid}),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        })
+        const tjson2 = res2.json()
+        console.log(tjson2)
         break;
+
       case "lane2":
         const response2 = await fetch('http://localhost:5000/api/todo/doing/' + cardId, {
             method: 'PATCH',
@@ -33,8 +60,31 @@ const Trello = () => {
             }
         })
         const json2 = await response2.json()
+        const title2 = json2.title
         console.log(json2)
+        //create History
+        const res3 = await fetch('http://localhost:5000/api/hist/',{
+            method: 'POST',
+            body: JSON.stringify({"types": "Update","ofUser":json2.ofUser,"content":"ToDo:"+title2+" ->'doing'"}),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        })
+        const tjson3 = await res3.json()
+        const hid2 = tjson3._id
+        console.log("json4:",tjson3)
+        //give history to User
+        const res4 = await fetch('http://localhost:5000/api/user/history/token/',{
+            method: 'POST',
+            body: JSON.stringify({"token": sub,"hid":hid2}),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        })
+        const tjson4 = res4.json()
+        console.log(tjson4)
         break;
+
       case "lane3":
         const response3 = await fetch('http://localhost:5000/api/todo/finish/'+ cardId, {
             method: 'PATCH',
@@ -44,8 +94,31 @@ const Trello = () => {
             }
         })
         const json3 = await response3.json()
+        const title3 = json3.title
         console.log(json3)
+        //create History
+        const res5 = await fetch('http://localhost:5000/api/hist/',{
+            method: 'POST',
+            body: JSON.stringify({"types": "Update","ofUser":json3.ofUser,"content":"ToDo:"+title3+" ->'done'"}),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        })
+        const tjson5 = await res5.json()
+        const hid3 = tjson5._id
+        console.log("json4:",tjson5)
+        //give history to User
+        const res6 = await fetch('http://localhost:5000/api/user/history/token/',{
+            method: 'POST',
+            body: JSON.stringify({"token": sub,"hid":hid3}),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+        })
+        const tjson6 = res6.json()
+        console.log(tjson6)
         break;
+
       default:
         console.log("Error!")
     }

@@ -19,7 +19,7 @@ const Pilea = ({seedd, status}) => {
         };
         const plant = new SvgPlant( genus,cfg )
         const pilea = plant.svgElement;
-        plant.animate( 0, status, 3000 );
+        plant.animate( 0, status/100, 3000 );
 
         svg.current.append(pilea)
     },[])

@@ -115,7 +115,7 @@ const History = () => {
             </Row>
             <Row>
               <Col>{/*History Table */}
-                <Table size="sm">
+                <Table striped bordered hover size="sm">
                   <caption>Activities History</caption>
                   <thead>
                     <tr>
@@ -141,7 +141,7 @@ const History = () => {
                 </Table>
               </Col>
               <Col>{/*Plan Table */}
-                <Table size="sm">
+                <Table striped bordered hover size="sm">
                   <caption>Plans Overview</caption>
                   <thead>
                     <tr>

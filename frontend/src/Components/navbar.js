@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useState,useEffect } from 'react';
+import Logo from './Pics/acis.jpg'
 
 const Navibar = (token) => {
 
@@ -38,7 +39,7 @@ const Navibar = (token) => {
   return (
     <Navbar bg="light" variant="light">
       <Container>
-        <Navbar.Brand href="/">Navbar</Navbar.Brand>
+        <Navbar.Brand href="/"><img src={Logo} alt='Logo' style={{width: "80px"}} /></Navbar.Brand>
         {tokens ?
         <Nav className="me-auto">
           <Nav.Link href="/">Home</Nav.Link>

@@ -20,10 +20,10 @@ const getAPlan = async (req,res) => {
     }
 }
 const createPlan = async (req,res) => {
-    const {title, content, status, startDate, endDate} = req.body // how to add ofUser here?
+    const {title, content, status, startDate, endDate, ofUser} = req.body // how to add ofUser here?
 
     try { // how to handle of user?
-        const plan = await Plan.create({title, content, status, startDate, endDate})
+        const plan = await Plan.create({title, content, status, startDate, endDate, ofUser})
         res.status(200).json(plan)
     } catch (error) { 
         res.status(400).json({error: error.message})

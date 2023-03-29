@@ -46,8 +46,17 @@ const TodoForm = () => {
     // not sure whether it makes code cleaner or complexer to firstly define all functions and then execute in order in handleSubmit?
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log("title:",title,"content:",content,"plan:",ofPlan,"due:",dueDate)
-        const todo = {"title":title, "content":content, "dueDate":dueDate, "ofPlan":ofPlan}
+
+        const token = sessionStorage.getItem('access-token')
+        const tmp = jwt_decode(token)
+        const sub = tmp['sub']
+        const mail = tmp['email']
+        const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+        const userJson = await userRes.json()
+        const uid = userJson._id
+
+        //console.log("title:",title,"content:",content,"plan:",ofPlan,"due:",dueDate)
+        const todo = {"title":title, "content":content, "dueDate":dueDate, "ofPlan":ofPlan, "ofUser":uid}
         const response = await fetch('http://localhost:5000/api/todo/', {
             method: 'POST',
             body: JSON.stringify(todo),
@@ -68,9 +77,7 @@ const TodoForm = () => {
             })
             const json2 = await response2.json()
             console.log(json2)
-            const token = sessionStorage.getItem('access-token')
-            const tmp = jwt_decode(token)
-            const sub = tmp['sub']
+            
             
             const response3 = await fetch('http://localhost:5000/api/user/todo/token', {
                 method: 'POST',
