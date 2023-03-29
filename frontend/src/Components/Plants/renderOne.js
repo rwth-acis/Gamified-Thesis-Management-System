@@ -2,6 +2,7 @@ import Zamia from './zamia'
 import Bushy from './bushy'
 import Dragon from './dragonTree'
 import Pilea from './pilea'
+import ProgressBar from 'react-bootstrap/ProgressBar';
 
 const Render = ({plant, seed, status, title, progress}) => {
     let p = plant
@@ -49,9 +50,11 @@ const Render = ({plant, seed, status, title, progress}) => {
             <hr />    
             <div className='card-body'>
                 <h6 className='card-title'>{i}</h6>
-                <div className="progress" style={{height: '5px'}}>
-                    <div className="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style={{width: r}} aria-valuenow={r} aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
+                <ProgressBar style={{height: '3px'}} striped variant="success" now={r} />
+                {/*<div className="progress" style={{height: '5px'}}>
+                    <div className="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style={{width: r}} aria-valuenow={r} aria-valuemin="0" aria-valuemax="100">{r}</div>
+                    
+                </div>*/}
             </div>
         </div>
     )
