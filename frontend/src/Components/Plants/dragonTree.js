@@ -21,7 +21,7 @@ const Dragon = ({seedd, status}) => {
         const dragon = plant.svgElement;
         //plant.animate( 0, status )
         console.log('status:',status)
-        plant.animate( 0, status/100, 3000 );
+        plant.animate( 0, status/100, 1000 );
 
         svg.current.append(dragon)
     },[])

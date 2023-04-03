@@ -8,6 +8,8 @@ import Login from "./Pages/login";
 import History from "./Pages/history";
 import LoginPage from "./Pages/loginPage";
 import Spinner from "react-bootstrap/Spinner";
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 // import LoginPage from "./Pages/loginPage";
 
 function App() {

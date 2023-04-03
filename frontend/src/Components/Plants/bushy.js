@@ -19,7 +19,7 @@ const Bushy = ({seedd, status, progress}) => {
         };
         const plant = new SvgPlant( genus,cfg )
         const bushy = plant.svgElement;
-        plant.animate( 0, status/100, 3000 );
+        plant.animate( 0, status/100, 1000 );
 
         svg.current.append(bushy)
     },[])

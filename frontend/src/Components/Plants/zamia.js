@@ -19,7 +19,7 @@ const Zamia = ({seedd, status}) => {
         };
         const plant = new SvgPlant( genus,cfg )
         const zamia = plant.svgElement;
-        plant.animate( 0, status/100, 3000 );
+        plant.animate( 0, status/100, 1000 );
 
         svg.current.append(zamia)
     },[])

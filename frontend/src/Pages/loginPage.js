@@ -12,9 +12,10 @@ const LoginPage = () => {
             <Row>
                 <h3 className="text-center" >Welcome to the thesis management system of the RWTH Informatik 5, please sign in to continue</h3>
             </Row>
-            <Row><br /></Row>
+            <br />
+            <Row>
                 <Login />
-            </Col>    
+            </Row> </Col>   
         </Container>
     )
 }
