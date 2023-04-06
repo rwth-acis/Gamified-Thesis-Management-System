@@ -21,13 +21,13 @@
   },
   "devDependencies": {
     "@storybook/addon-actions": "^6.5.16",
-    "@storybook/addon-essentials": "^6.5.16",
+    "@storybook/addon-essentials": "^7.0.2",
     "@storybook/addon-interactions": "^6.5.16",
     "@storybook/addon-links": "^6.5.16",
     "@storybook/builder-webpack5": "^6.5.16",
     "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/node-logger": "^6.5.16",
-    "@storybook/react": "^6.5.16",
+    "@storybook/react": "^7.0.2",
     "@storybook/testing-library": "^0.0.13",
     "react-scripts": "5.0.1"
   },
