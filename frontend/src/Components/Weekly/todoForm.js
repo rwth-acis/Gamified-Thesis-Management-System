@@ -136,7 +136,7 @@ const TodoForm = () => {
             </Form.Group>
             <Form.Group className='mb-3' controlId='content'>
                 <Form.Label>Content</Form.Label>
-                <Form.Control type="text" placeholder="ToDo Content" required
+                <Form.Control as={"textarea"} placeholder="ToDo Content" required
                 value={content} onChange={(e) => setContent(e.target.value)} />
                 
             </Form.Group>
