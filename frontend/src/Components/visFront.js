@@ -1,10 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import { useState,useEffect } from "react";
 import Container from 'react-bootstrap/Container';
+import jwt_decode from 'jwt-decode';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-const Overview = ({name}) => {
+const Overview = () => {
+    const [name, setName] = useState('')
     const [point,setPoint] = useState(null)
     const [levelName,setLevelName] = useState(' ')
     const [level,setLevel] = useState(null)
@@ -12,14 +14,22 @@ const Overview = ({name}) => {
     const [nextLN,setNextLN] = useState(' ')
     const [nextLP,setNextLP] = useState(null)
 
-    /*
+    
     useEffect(() => {
         const fetchStatus = async ()=> {
+            const token = sessionStorage.getItem('access-token')
+            const tmp = jwt_decode(token)
+            const username = tmp['preferred_username']
+            const password = tmp['sub']
+            const name = tmp['name']
+            const authData = username+':'+password
+            setName(name)
+            //setAuth(authData)
             const response = await fetch('http://localhost:8080/gamification/visualization/status/thesis/silyu', {
                 mode: 'cors',
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Basic ' + btoa(token),
+                    'Authorization': 'Basic ' + btoa(authData),
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 }
@@ -44,7 +54,7 @@ const Overview = ({name}) => {
         fetchStatus()
     }, [])
 
-    const handleClick = async ()=> {
+    /*const handleClick = async ()=> {
         const response = await fetch('http://localhost:8080/gamification/visualization/actions/thesis/first/silyu', {
                 mode: 'cors',
                 method: 'POST',
@@ -66,8 +76,8 @@ const Overview = ({name}) => {
                 <Row><br/></Row>
                 <Row><h3 >Hi {name}!</h3></Row>
                 <Row><br/></Row><hr />
-                <Row><h6>Current Points:</h6> <p>666{point}</p></Row><hr />
-                <Row><h6>Current Level:</h6> <p>Newbie{level}-{levelName}</p></Row><hr />
+                <Row><h6>Current Points:</h6> <p>{point}</p></Row><hr />
+                <Row><h6>Current Level:</h6> <p>{level}-{levelName}</p></Row><hr />
                 <Row><h6>Next Level:</h6> <p>Starter{nextLN} at 999{nextLP} points!{point}</p></Row><hr />
                 <Row>
                 <h6>Current Achievement:</h6>

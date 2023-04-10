@@ -29,12 +29,34 @@ const Home = () => {
       setIsLoading(false)
   }, []);
   */
+  const findOrCreate = async(fName,lName,mail,sub) => {
+    const response = await fetch('http://localhost:5000/api/user/mail/'+mail)
+    const json = await response.json()
+    if(response.ok && json !== null) {
+      return json
+    } else if(response.ok && json === null) {
+      const user = {'firstName': fName,'lastName': lName,'email':mail,'token': sub, 'workType': 'Bachelor Thesis'}
+      console.log('Creating new user')
+      const response2 = await fetch('http://localhost:5000/api/user/', {
+        method: 'POST',
+        body: JSON.stringify(user),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+      })
+      const json2 = response2.json()
+      if(response.ok && json2 !== null) {
+        return json2
+      }
+      console.log(json2)
+      }
+  }
+     
     useEffect(() => {
         const newInterval = async() => {
           const token = sessionStorage.getItem('access-token')
-          const userId = localStorage.getItem('userId') 
           if (!token) {
-            
+            console.error("Please Sign In to Use the App!")
           } else {
             setToken(token)
             const tmp = jwt_decode(token)
@@ -63,29 +85,7 @@ const Home = () => {
           }
           }
     }, []);
-
-    const findOrCreate = async(fName,lName,mail,sub) => {
-      const response = await fetch('http://localhost:5000/api/user/mail/'+mail)
-      const json = await response.json()
-      if(response.ok && json !== null) {
-        return json
-      } else if(response.ok && json === null) {
-        const user = {'firstName': fName,'lastName': lName,'email':mail,'token': sub, 'workType': 'Bachelor Thesis'}
-        console.log('Creating new user')
-        const response2 = await fetch('http://localhost:5000/api/user/', {
-          method: 'POST',
-          body: JSON.stringify(user),
-          headers: {
-              'Content-Type': 'application/json'
-          }
-        })
-        const json2 = response2.json()
-        if(response.ok && json2 !== null) {
-          return json2
-        }
-        console.log(json2)
-        }
-    }
+    
     /*
     useEffect(() => {
         const validate = async() => {
@@ -116,7 +116,7 @@ const Home = () => {
         <Container fluid>
             <Row>
               <Col sm={2} className="bg-light">
-                <Overview name={name}></Overview>
+                <Overview></Overview>
               </Col>
               <Col sm={10}>
                 <Row><br /></Row>
