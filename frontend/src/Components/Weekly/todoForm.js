@@ -146,7 +146,7 @@ const TodoForm = () => {
                 value={dueDate} onChange={(e) => setDue(e.target.value)}/>
             </Form.Group>
             <Form.Group className='mb-3' controlId='ofPlan'>
-                <Form.Label>Belongs To</Form.Label>
+                <Form.Label>Part of Plan</Form.Label>
                 <Form.Select value={ofPlan} onChange={(e) => setPlan(e.target.value)}>
                 <option value="">-- Please select --</option>
                     {planOption}

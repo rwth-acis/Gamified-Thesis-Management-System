@@ -1,13 +1,28 @@
 import { useEffect, useState } from 'react'
 import Board from 'react-trello'
 import jwt_decode from 'jwt-decode';
+import { Modal, Button } from 'react-bootstrap'
 
 const Trello = () => {
   // The Package delievers possible error messages when drag card to an empty lane(Not 100% happening)! 
+  const [ModalOpen, setModalOpen] = useState(false)
+  const [cardId, setCardId] = useState('')
   const [taskt, setT] = useState(null)
   const [taskd, setD] = useState(null)
   const [taskf, setF] = useState(null)
 
+  const handleCardClick = async (cardId, laneId) => {
+    setCardId(cardId)
+    setModalOpen(true)
+
+    const response = await fetch('http://localhost:5000/api/todo/'+cardId)
+    const json = await response.json()
+    //console.log(json)
+  }
+  const CloseModal = () => {
+    setModalOpen(false);
+  }
+  
   const handleDragEnd = async (cardId, sourceLaneId, targetLaneId) => {
     //console.log('drag ended')
     //console.log(`cardId: ${cardId}`)
@@ -315,9 +330,25 @@ const Trello = () => {
       return(
         <div>
             <Board data={data} cardDraggable={true} handleDragEnd={handleDragEnd}
-             style={{backgroundColor: '#F0F5F9',color:'#2C454B'}}
-             laneStyle={{backgroundColor: '#92E3A9'}}
-             cardStyle={{backgroundColor: '#F0F5F9'}} />
+              hideCardDeleteIcon={true}
+              onCardClick={handleCardClick}
+              style={{backgroundColor: '#F0F5F9',color:'#2C454B'}}
+              laneStyle={{backgroundColor: '#92E3A9'}}
+              cardStyle={{backgroundColor: '#F0F5F9'}} />
+            <Modal show={ModalOpen} onHide={CloseModal}>
+              {cardId}
+              <Modal.Header closeButton>
+                <Modal.Title>?</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <p>Modal body text goes here.</p>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={CloseModal}>
+                Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
         </div>
       )
 }

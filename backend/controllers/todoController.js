@@ -43,6 +43,19 @@ const getAllDoing = async (req,res) => {
         res.status(400).json({error:error.message})
     }
 }
+const getTodoById = async (req,res) => {
+    const {id} = req.params
+
+    if (!mongoose.Types.ObjectId.isValid(id)) { // check if the input id is valid
+        return res.status(404).json({error: "no such todo"}) //remember to use return in if to end 
+    }
+    try {
+        const todo = await ToDo.findOne({_id: id})
+        res.status(200).json(todo)
+    } catch (error) {
+        res.status(400).json({error:error.message})
+    }
+}
 const changestatusFinished = async (req,res) => {
     const {id} = req.params
 
@@ -124,6 +137,7 @@ module.exports = {
   getAllDoing,
   getAllFinished,
   getAllUnfinished,
+  getTodoById,
   changestatusFinished,
   changestatusDoing,
   changestatusTODO,
