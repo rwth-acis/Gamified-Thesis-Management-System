@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 const Overview = () => {
-    const [name, setName] = useState('')
+    const [name, setName] = useState('Sign In to Continue')
     const [point,setPoint] = useState(null)
     const [levelName,setLevelName] = useState(' ')
     const [level,setLevel] = useState(null)
@@ -54,27 +54,11 @@ const Overview = () => {
         fetchStatus()
     }, [])
 
-    /*const handleClick = async ()=> {
-        const response = await fetch('http://localhost:8080/gamification/visualization/actions/thesis/first/silyu', {
-                mode: 'cors',
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Basic ' + btoa(token),
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            })
-            console.log(response)
-            const json = await response.json()
-
-    }
-    */
-
     return(
         <Container fluid>
             <Col>
                 <Row><br/></Row>
-                <Row><h3 >Hi {name}!</h3></Row>
+                <Row><h3 >Hi, {name}!</h3></Row>
                 <Row><br/></Row><hr />
                 <Row><h6>Current Points:</h6> <p>{point}</p></Row><hr />
                 <Row><h6>Current Level:</h6> <p>{level}-{levelName}</p></Row><hr />
