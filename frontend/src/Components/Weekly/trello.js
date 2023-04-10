@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react'
 import Board from 'react-trello'
 import jwt_decode from 'jwt-decode';
-import { Modal, Button } from 'react-bootstrap'
+import { Modal, Button, Form } from 'react-bootstrap'
 
 const Trello = () => {
   // The Package delievers possible error messages when drag card to an empty lane(Not 100% happening)! 
   const [ModalOpen, setModalOpen] = useState(false)
   const [cardId, setCardId] = useState('')
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
+  const [ofPlan, setPlan] = useState('')
+  const [dueDate, setDue] = useState('')
   const [taskt, setT] = useState(null)
   const [taskd, setD] = useState(null)
   const [taskf, setF] = useState(null)
@@ -18,9 +22,15 @@ const Trello = () => {
     const response = await fetch('http://localhost:5000/api/todo/'+cardId)
     const json = await response.json()
     //console.log(json)
+    setTitle(json['title'])
+    setContent(json['content'])
+    setDue(json['dueDate'])
   }
   const CloseModal = () => {
     setModalOpen(false);
+  }
+  const handleSubmit = () => {
+
   }
   
   const handleDragEnd = async (cardId, sourceLaneId, targetLaneId) => {
@@ -336,12 +346,36 @@ const Trello = () => {
               laneStyle={{backgroundColor: '#92E3A9'}}
               cardStyle={{backgroundColor: '#F0F5F9'}} />
             <Modal show={ModalOpen} onHide={CloseModal}>
-              {cardId}
+              {/*cardId*/}
               <Modal.Header closeButton>
-                <Modal.Title>?</Modal.Title>
+                <Modal.Title>Edit ToDo</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <p>Modal body text goes here.</p>
+                <Form onSubmit={handleSubmit}>
+                  <Form.Group className='mb-3' controlId='title'>
+                    <Form.Label>Title</Form.Label>
+                    <Form.Control type="text" placeholder="ToDo Title" required
+                    value={title} onChange={(e) => setTitle(e.target.value)} />    
+                  </Form.Group>
+                  <Form.Group className='mb-3' controlId='content'>
+                    <Form.Label>Content</Form.Label>
+                    <Form.Control as={"textarea"} placeholder="ToDo Content" required
+                    value={content} onChange={(e) => setContent(e.target.value)} />             
+                  </Form.Group>
+                  <Form.Group className='mb-3' controlId='dueDate'>
+                    <Form.Label>Due Date</Form.Label>
+                    <Form.Control type="date" required 
+                    value={dueDate} onChange={(e) => setDue(e.target.value)}/>
+                  </Form.Group>
+                  {/*<Form.Group className='mb-3' controlId='ofPlan'>
+                    <Form.Label>Part of Plan</Form.Label>
+                    <Form.Select value={ofPlan} onChange={(e) => setPlan(e.target.value)}>
+                    <option value="">-- Please select --</option>
+                    {planOption}
+                    </Form.Select>
+                  </Form.Group>*/}
+                <Button variant="primary" type="submit">Submit</Button>
+                </Form>
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={CloseModal}>
