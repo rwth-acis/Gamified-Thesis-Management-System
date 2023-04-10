@@ -9,8 +9,12 @@ const Trello = () => {
   const [cardId, setCardId] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [ofPlan, setPlan] = useState('')
+  //const [ofPlan, setPlan] = useState('')
   const [dueDate, setDue] = useState('')
+  const [title2, setTitle2] = useState('')
+  const [content2, setContent2] = useState('')
+  //const [ofPlan2, setPlan2] = useState('')
+  const [dueDate2, setDue2] = useState('')
   const [taskt, setT] = useState(null)
   const [taskd, setD] = useState(null)
   const [taskf, setF] = useState(null)
@@ -25,12 +29,65 @@ const Trello = () => {
     setTitle(json['title'])
     setContent(json['content'])
     setDue(json['dueDate'])
+    setTitle2(json['title'])
+    setContent2(json['content'])
+    setDue2(json['dueDate'])
   }
   const CloseModal = () => {
     setModalOpen(false);
   }
-  const handleSubmit = () => {
+  const handleSubmit = async(e) => {
+    e.preventDefault()
 
+    const token = sessionStorage.getItem('access-token')
+    const tmp = jwt_decode(token)
+    const sub = tmp['sub']
+    const mail = tmp['email']
+    const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+    const userJson = await userRes.json()
+    const uid = userJson._id
+
+    const todo = {"title":title, "content":content, "dueDate":dueDate}
+    const response = await fetch('http://localhost:5000/api/todo/'+cardId, {
+        method: 'PATCH',
+        body: JSON.stringify(todo),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    const json = await response.json()
+    console.log("Todo Updated:",json)
+    console.log("due1:",dueDate)
+    console.log("due2:",dueDate2)
+    if(response.ok) {
+            //create History
+            const response4 = await fetch('http://localhost:5000/api/hist/',{
+                method: 'POST',
+                body: JSON.stringify({
+                  "types": "Update",
+                  "ofUser":uid,
+                  "content": 'ToDo '+title+':'+ (title !== title2 ? ' title,' : '')+(content !== content2 ? ' content,' : '')+(new Date(dueDate).getDay() !== new Date(dueDate2).getDay() ? ' dueDate' : '')  
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const json4 = await response4.json()
+            const hid = json4._id
+            console.log("json4:",json4)
+
+            //pushHistToUser
+            const response5 = await fetch('http://localhost:5000/api/user/history/token/',{
+                method: 'POST',
+                body: JSON.stringify({"token": sub,"hid":hid}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const json5 = await response5.json()
+            console.log(json5)  
+    }
+    CloseModal()  
   }
   
   const handleDragEnd = async (cardId, sourceLaneId, targetLaneId) => {
@@ -340,7 +397,7 @@ const Trello = () => {
       return(
         <div>
             <Board data={data} cardDraggable={true} handleDragEnd={handleDragEnd}
-              hideCardDeleteIcon={true}
+              hideCardDeleteIcon={false}
               onCardClick={handleCardClick}
               style={{backgroundColor: '#F0F5F9',color:'#2C454B'}}
               laneStyle={{backgroundColor: '#92E3A9'}}
@@ -348,7 +405,7 @@ const Trello = () => {
             <Modal show={ModalOpen} onHide={CloseModal}>
               {/*cardId*/}
               <Modal.Header closeButton>
-                <Modal.Title>Edit ToDo</Modal.Title>
+                <Modal.Title>Edit ToDo: {title}</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <Form onSubmit={handleSubmit}>

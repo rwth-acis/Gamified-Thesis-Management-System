@@ -21,6 +21,9 @@ const getAHist = async(req,res) => {
 
 const createHist = async(req,res) => {
     const {types, time, ofUser, content} = req.body
+    if(content === '') {
+        return res.status(404).json({error: "history content can not be empty"})
+    }
     try {
         const hist = await History.create({types, time, ofUser, content})
         res.status(200).json(hist)

@@ -111,7 +111,7 @@ const TodoForm = () => {
                     'Content-Type': 'application/json'
                 }
             })
-            const json5 = response5.json()
+            const json5 = await response5.json()
             console.log(json5)
         }
 

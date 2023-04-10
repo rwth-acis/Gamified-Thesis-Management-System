@@ -129,6 +129,25 @@ const pushPlan = async (req,res) => {
         res.status(400).json({error:error.message})
     }
 }
+const updateTodo = async(req,res) => {
+    const {id} = req.params
+    const {title, content, dueDate} = req.body
+
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({error: "no such todo"})
+    }
+    try {
+        const todo = await ToDo.findOneAndUpdate({_id: id}, {
+            title: title,
+            content: content,
+            dueDate: dueDate
+        })
+        res.status(200).json(todo)
+    } catch (error) {
+        res.status(400).json({error:error.message})
+    }
+
+}
 
 module.exports = {
   createToDo,
@@ -141,5 +160,6 @@ module.exports = {
   changestatusFinished,
   changestatusDoing,
   changestatusTODO,
-  pushPlan
+  pushPlan,
+  updateTodo
 }
