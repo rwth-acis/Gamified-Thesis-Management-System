@@ -12,7 +12,8 @@ const {
     pushTodo,
     pushUser,
     getProgress,
-    getAPlan
+    getAPlan,
+    updatePlan
 } = require('../controllers/planController')
 
 router.post("/",createPlan)
@@ -24,6 +25,7 @@ router.patch("/doing/:id",changestatusDoing)
 router.patch("/finish/:id",changestatusFinished)
 router.post("/pushtodo/",pushTodo)
 router.post("/pushuser/",pushUser)
+router.patch("/:id",updatePlan)
 
 
 module.exports = router

@@ -98,7 +98,54 @@ const Chart = () => {
     setModalOpen(false)
   }
   const handleSubmit = async(e) => {
+    e.preventDefault()
 
+    const token = sessionStorage.getItem('access-token')
+    const tmp = jwt_decode(token)
+    const sub = tmp['sub']
+    const mail = tmp['email']
+    const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+    const userJson = await userRes.json()
+    const uid = userJson._id
+
+    const plan = {"title":title, "startDate":start, "endDate":dueDate}
+    const response = await fetch('http://localhost:5000/api/plan/'+planId, {
+        method: 'PATCH',
+        body: JSON.stringify(plan),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    const json = await response.json()
+    if(response.ok) {
+      //create History
+      const response4 = await fetch('http://localhost:5000/api/hist/',{
+          method: 'POST',
+          body: JSON.stringify({
+            "types": "Update",
+            "ofUser":uid,
+            "content": 'Plan:'+title+'->'+ (title !== title2 ? ' title,' : '')+(dueDate !== dueDate2 ? ' dueDate' : '')+(start !== start2 ? ' startDate' : '')  
+          }),
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      })
+      const json4 = await response4.json()
+      const hid = json4._id
+      console.log("json4:",json4)
+
+      //pushHistToUser
+      const response5 = await fetch('http://localhost:5000/api/user/history/token/',{
+          method: 'POST',
+          body: JSON.stringify({"token": sub,"hid":hid}),
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      })
+      const json5 = await response5.json()
+      console.log(json5)  
+    }
+    CloseModal()
   }
   
   useEffect(() => {

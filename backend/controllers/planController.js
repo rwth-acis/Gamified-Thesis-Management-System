@@ -146,6 +146,26 @@ const getProgress = async(req,res) => {
         res.status(400).json({error:error.message})
     }
 }
+const updatePlan = async(req,res) => {
+    const {id} = req.params
+    const {title, content, start, dueDate} = req.body
+
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({error: "no such Plan"})
+    }
+    try {
+        const plan = await Plan.findOneAndUpdate({_id: id}, {
+            title: title,
+            content: content,
+            startDate: start,
+            endDate: dueDate
+        })
+        res.status(200).json(plan)
+    } catch (error) {
+        res.status(400).json({error:error.message})
+    }
+
+}
 
 module.exports = {
     getAllPlan,
@@ -156,5 +176,6 @@ module.exports = {
     deletePlan,
     pushTodo,
     pushUser,
-    getProgress
+    getProgress,
+    updatePlan
 }

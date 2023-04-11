@@ -121,7 +121,7 @@ const Trello = () => {
                 body: JSON.stringify({
                   "types": "Update",
                   "ofUser":uid,
-                  "content": 'ToDo:'+title+'->'+ (title !== title2 ? ' title,' : '')+(content !== content2 ? ' content,' : '')+(new Date(dueDate).getDay() !== new Date(dueDate2).getDay() ? ' dueDate' : '')  
+                  "content": 'ToDo:'+title+'->'+ (title !== title2 ? ' title,' : '')+(content !== content2 ? ' content,' : '')+(dueDate !== dueDate2 ? ' dueDate' : '')  
                 }),
                 headers: {
                     'Content-Type': 'application/json'
