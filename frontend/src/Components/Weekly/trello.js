@@ -6,6 +6,7 @@ import { Modal, Button, Form } from 'react-bootstrap'
 const Trello = () => {
   // The Package delievers possible error messages when drag card to an empty lane(Not 100% happening)! 
   const [ModalOpen, setModalOpen] = useState(false)
+  const [deleModalOpen, setDeleModalOpen] = useState(false)
   const [cardId, setCardId] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -19,6 +20,53 @@ const Trello = () => {
   const [taskd, setD] = useState(null)
   const [taskf, setF] = useState(null)
 
+  const handleCardDelete = async(cardId, laneId) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this item?');
+    if (confirmDelete) {
+      const token = sessionStorage.getItem('access-token')
+      const tmp = jwt_decode(token)
+      const sub = tmp['sub']
+      const mail = tmp['email']
+      const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+      const userJson = await userRes.json()
+      const uid = userJson._id
+      // Perform deletion logic here
+      console.log('Item deleted',cardId);
+      const response = await fetch('http://localhost:5000/api/todo/'+cardId, {
+      method: 'DELETE'
+    })
+      const json = await response.json()
+      const todoTitle = json.title
+      
+      if(response.ok) {
+        const response4 = await fetch('http://localhost:5000/api/hist/',{
+                method: 'POST',
+                body: JSON.stringify({
+                  "types": "Delete",
+                  "ofUser":uid,
+                  "content": 'ToDo:'+ todoTitle
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const json4 = await response4.json()
+            const hid = json4._id
+            console.log("json4:",json4)
+
+            //pushHistToUser
+            const response5 = await fetch('http://localhost:5000/api/user/history/token/',{
+                method: 'POST',
+                body: JSON.stringify({"token": sub,"hid":hid}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const json5 = await response5.json()
+            console.log(json5)
+      }
+    }
+  }
   const handleCardClick = async (cardId, laneId) => {
     setCardId(cardId)
     setModalOpen(true)
@@ -66,7 +114,7 @@ const Trello = () => {
                 body: JSON.stringify({
                   "types": "Update",
                   "ofUser":uid,
-                  "content": 'ToDo '+title+':'+ (title !== title2 ? ' title,' : '')+(content !== content2 ? ' content,' : '')+(new Date(dueDate).getDay() !== new Date(dueDate2).getDay() ? ' dueDate' : '')  
+                  "content": 'ToDo:'+title+'->'+ (title !== title2 ? ' title,' : '')+(content !== content2 ? ' content,' : '')+(new Date(dueDate).getDay() !== new Date(dueDate2).getDay() ? ' dueDate' : '')  
                 }),
                 headers: {
                     'Content-Type': 'application/json'
@@ -398,10 +446,12 @@ const Trello = () => {
         <div>
             <Board data={data} cardDraggable={true} handleDragEnd={handleDragEnd}
               hideCardDeleteIcon={false}
+              onCardDelete={handleCardDelete}
               onCardClick={handleCardClick}
               style={{backgroundColor: '#F0F5F9',color:'#2C454B'}}
               laneStyle={{backgroundColor: '#92E3A9'}}
               cardStyle={{backgroundColor: '#F0F5F9'}} />
+
             <Modal show={ModalOpen} onHide={CloseModal}>
               {/*cardId*/}
               <Modal.Header closeButton>
@@ -440,6 +490,8 @@ const Trello = () => {
                 </Button>
               </Modal.Footer>
             </Modal>
+
+
         </div>
       )
 }
