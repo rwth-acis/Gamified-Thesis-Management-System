@@ -1,6 +1,7 @@
 import { Gantt, Task, EventOption, StylingOption, ViewMode, DisplayOption } from 'gantt-task-react';
 import { useEffect, useState } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap'
+import jwt_decode from 'jwt-decode';
 import "gantt-task-react/dist/index.css";
 
 const Chart = () => {
@@ -8,7 +9,7 @@ const Chart = () => {
   const [planId, setPlanId] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [start, setStart] = useState('')
+  const [start, setStart] = useState(null)
   const [dueDate, setDue] = useState('')
   const [title2, setTitle2] = useState('')
   const [content2, setContent2] = useState('')
@@ -24,22 +25,79 @@ const Chart = () => {
     isDisabled: true,
     styles:{progressColor: '#ffbb54', progressSelectedColor: '#ff9e0d'}}])
 
+  const handlePlanDelete = async() => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this item?');
+    if (confirmDelete) {
+      const token = sessionStorage.getItem('access-token')
+      const tmp = jwt_decode(token)
+      const sub = tmp['sub']
+      const mail = tmp['email']
+      const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+      const userJson = await userRes.json()
+      const uid = userJson._id
+      // Perform deletion logic here
+      console.log('Item deleted',planId);
+      const response = await fetch('http://localhost:5000/api/plan/'+planId, {
+      method: 'DELETE'
+    })
+      const json = await response.json()
+      const planTitle = json.title
+      
+      if(response.ok) {
+        const response4 = await fetch('http://localhost:5000/api/hist/',{
+                method: 'POST',
+                body: JSON.stringify({
+                  "types": "Delete",
+                  "ofUser":uid,
+                  "content": 'Plan:'+ planTitle
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const json4 = await response4.json()
+            const hid = json4._id
+            console.log("json4:",json4)
+
+            //pushHistToUser
+            const response5 = await fetch('http://localhost:5000/api/user/history/token/',{
+                method: 'POST',
+                body: JSON.stringify({"token": sub,"hid":hid}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const json5 = await response5.json()
+            console.log(json5)
+            CloseModal()
+      }
+    }
+  }
+  const formatDate=(date)=> {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  
   const handlePlanClick = async(task) => {
     console.log("task clicked:",task)
     setPlanId(task.id)
     setModalOpen(true)
 
     setTitle(task.name)
-    setContent("")
-    setDue(task.end)
+    setStart(formatDate(task.start))
+    //setContent("")
+    setDue(formatDate(task.end))
     setTitle2(task.name)
-    setContent2("")
-    setDue2(task.end)
+    setStart2(formatDate(task.start))
+    //setContent2("")
+    setDue2(formatDate(task.end))
   }
   const CloseModal = () => {
     setModalOpen(false)
   }
-  const handleSubmit = async() => {
+  const handleSubmit = async(e) => {
 
   }
   
@@ -96,7 +154,7 @@ const Chart = () => {
   
     return(
         <div>
-          <Gantt tasks={data} viewMode={"Week"} preStepsCount={1} onClick={handlePlanClick}/>
+          <Gantt tasks={data} viewMode={"Week"} preStepsCount={1} onClick={handlePlanClick} />
 
           <Modal show={ModalOpen} onHide={CloseModal}>
               {/*cardId*/}
@@ -110,10 +168,15 @@ const Chart = () => {
                     <Form.Control type="text" placeholder="ToDo Title" required
                     value={title} onChange={(e) => setTitle(e.target.value)} />    
                   </Form.Group>
-                  <Form.Group className='mb-3' controlId='content'>
+                  {/*<Form.Group className='mb-3' controlId='content'>
                     <Form.Label>Content</Form.Label>
                     <Form.Control as={"textarea"} placeholder="ToDo Content" required
                     value={content} onChange={(e) => setContent(e.target.value)} />             
+                  </Form.Group>*/}
+                  <Form.Group className='mb-3' controlId='dueDate'>
+                    <Form.Label>Start Date</Form.Label>
+                    <Form.Control type="date" required 
+                    value={start} onChange={(e) => setStart(e.target.value)}/>
                   </Form.Group>
                   <Form.Group className='mb-3' controlId='dueDate'>
                     <Form.Label>Due Date</Form.Label>
@@ -126,14 +189,13 @@ const Chart = () => {
                     <option value="">-- Please select --</option>
                     {planOption}
                     </Form.Select>
-                  </Form.Group>*/}
+                  </Form.Group>
+                <Button variant="danger" onClick={handlePlanDelete}>Delete Plan</Button>*/}
                 <Button variant="primary" type="submit">Submit</Button>
                 </Form>
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={CloseModal}>
-                Close
-                </Button>
+              <Button variant="danger" onClick={handlePlanDelete}>Delete Plan</Button>
               </Modal.Footer>
             </Modal>
         </div>

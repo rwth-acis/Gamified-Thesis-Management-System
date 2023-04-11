@@ -20,6 +20,13 @@ const Trello = () => {
   const [taskd, setD] = useState(null)
   const [taskf, setF] = useState(null)
 
+  const formatDate=(date)=> {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   const handleCardDelete = async(cardId, laneId) => {
     const confirmDelete = window.confirm('Are you sure you want to delete this item?');
     if (confirmDelete) {
@@ -76,10 +83,10 @@ const Trello = () => {
     //console.log(json)
     setTitle(json['title'])
     setContent(json['content'])
-    setDue(json['dueDate'])
+    setDue(formatDate(new Date(json['dueDate'])))
     setTitle2(json['title'])
     setContent2(json['content'])
-    setDue2(json['dueDate'])
+    setDue2(formatDate(new Date(json['dueDate'])))
   }
   const CloseModal = () => {
     setModalOpen(false);
