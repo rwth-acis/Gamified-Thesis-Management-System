@@ -27,7 +27,7 @@ const Trello = () => {
     return `${year}-${month}-${day}`;
   }
 
-  const handleCardDelete = async(cardId, laneId) => {
+  const handleCardDelete = async() => {
     const confirmDelete = window.confirm('Are you sure you want to delete this item?');
     if (confirmDelete) {
       const token = sessionStorage.getItem('access-token')
@@ -38,7 +38,7 @@ const Trello = () => {
       const userJson = await userRes.json()
       const uid = userJson._id
       // Perform deletion logic here
-      console.log('Item deleted',cardId);
+      //console.log('Item deleted',cardId);
       const response = await fetch('http://localhost:5000/api/todo/'+cardId, {
       method: 'DELETE'
     })
@@ -72,6 +72,7 @@ const Trello = () => {
             const json5 = await response5.json()
             console.log(json5)
       }
+      CloseModal()
     }
   }
   const handleCardClick = async (cardId, laneId) => {
@@ -452,7 +453,7 @@ const Trello = () => {
       return(
         <div>
             <Board data={data} cardDraggable={true} handleDragEnd={handleDragEnd}
-              hideCardDeleteIcon={false}
+              hideCardDeleteIcon={true}
               onCardDelete={handleCardDelete}
               onCardClick={handleCardClick}
               style={{backgroundColor: '#F0F5F9',color:'#2C454B'}}
@@ -492,9 +493,7 @@ const Trello = () => {
                 </Form>
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={CloseModal}>
-                Close
-                </Button>
+              <Button variant="danger" onClick={handleCardDelete}>Delete Plan</Button>
               </Modal.Footer>
             </Modal>
 
