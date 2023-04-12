@@ -205,6 +205,7 @@ const History = () => {
                       <td>Select Student</td>
                       <td>Select Student</td>
                       <td>Select Student</td>
+                      <td>Select Student</td>
                       </tr>)}
                   </tbody>
               </Table>

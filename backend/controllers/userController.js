@@ -41,7 +41,7 @@ const getAllHistOfUser = async (req,res) => {
     }
     try {
         const user = await User.findOne({_id:id}).select('hasHistory')
-        const histories = await History.find({_id: { $in: user.hasHistory }})
+        const histories = await History.find({_id: { $in: user.hasHistory }}).sort({time:-1})
         res.status(200).json(histories)
     } catch (error) {
         res.status(400).json({error: error.message})
@@ -55,7 +55,7 @@ const getAllPlanOfUser = async (req,res) => {
     }
     try {
         const user = await User.findOne({_id:id}).select('hasPlan')
-        const plans = await Plan.find({_id: { $in: user.hasPlan }})
+        const plans = await Plan.find({_id: { $in: user.hasPlan }}).sort({endDate:1})
         res.status(200).json(plans)
     } catch (error) {
         res.status(400).json({error: error.message})
@@ -69,7 +69,7 @@ const getAllTodoOfUser = async (req,res) => {
     }
     try {
         const user = await User.findOne({_id:id}).select('hasToDo')
-        const todos = await Todo.find({_id: { $in: user.hasToDo }})
+        const todos = await Todo.find({_id: { $in: user.hasToDo }}).sort({dueDate:1})
         res.status(200).json(todos)
     } catch (error) {
         res.status(400).json({error: error.message})
