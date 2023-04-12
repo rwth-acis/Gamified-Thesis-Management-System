@@ -68,6 +68,10 @@ const TodoForm = () => {
         const tid = json._id
         
         if(response.ok) {
+            setError(null)
+            setTitle('')
+            setPlan('')
+            setContent('')
             const response2 = await fetch('http://localhost:5000/api/plan/pushtodo/', {
                 method: 'POST',
                 body: JSON.stringify({"pid":ofPlan,"tid":tid}),
@@ -113,17 +117,12 @@ const TodoForm = () => {
             })
             const json5 = await response5.json()
             console.log(json5)
+            if(response5.ok) {
+                window.location.reload()
+            }
         }
 
-        if(response.ok) {
-            setError(null)
-            setTitle('')
-            setPlan('')
-            setContent('')
-
-            console.log("New todo added: ",json)
-            //window.location.reload()
-        }
+        
     }
 
     return(

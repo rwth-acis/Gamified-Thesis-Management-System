@@ -148,7 +148,7 @@ const getProgress = async(req,res) => {
 }
 const updatePlan = async(req,res) => {
     const {id} = req.params
-    const {title, content, start, dueDate} = req.body
+    const {title, start, dueDate} = req.body
 
     if(!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({error: "no such Plan"})
@@ -156,7 +156,6 @@ const updatePlan = async(req,res) => {
     try {
         const plan = await Plan.findOneAndUpdate({_id: id}, {
             title: title,
-            content: content,
             startDate: start,
             endDate: dueDate
         })

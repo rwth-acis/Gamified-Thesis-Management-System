@@ -14,6 +14,7 @@ const History = () => {
     const [hist, setHist] = useState([])
     const [plan, setPlan] = useState([])
     const [todo, setTodo] = useState([])
+
     // Activities Pagination
     const [currentHistPage, setCurrentHistPage] = useState(1);
     const dataPerHistPage = 10;  
@@ -135,16 +136,22 @@ const History = () => {
       <div>
         <Form>
           <Form.Group className='mb-3' controlId='ofPlan'>  
-          <br />                 
-          <Form.Label ><h4>Welcome Admin! Choose One Student:</h4></Form.Label>
-          <Form.Select value={uid} onChange={(e) => setUid(e.target.value)}>
-          <option value="">-- Please select --</option>
-            {stuOption}
-          </Form.Select>                   
+          <br /> 
+          <Row>
+            <Col>
+              <Form.Label ><h4 className="text-muted">Welcome Admin! Choose One Student:</h4></Form.Label>
+            </Col>
+            <Col>
+              <Form.Select value={uid} onChange={(e) => setUid(e.target.value)}>
+              <option value="">-- Please select --</option>
+                {stuOption}
+              </Form.Select>
+            </Col>                 
+          </Row>              
           </Form.Group>                   
         </Form>
-        <br />
         <hr />
+        <br />
         <Tabs
           defaultActiveKey="activity"
           id="uncontrolled-tab-example"

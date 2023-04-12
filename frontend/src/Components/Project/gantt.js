@@ -108,7 +108,7 @@ const Chart = () => {
     const userJson = await userRes.json()
     const uid = userJson._id
 
-    const plan = {"title":title, "startDate":start, "endDate":dueDate}
+    const plan = {"title":title, "start":start, "dueDate":dueDate}
     const response = await fetch('http://localhost:5000/api/plan/'+planId, {
         method: 'PATCH',
         body: JSON.stringify(plan),
@@ -117,6 +117,7 @@ const Chart = () => {
         }
     })
     const json = await response.json()
+    console.log(json)
     if(response.ok) {
       //create History
       const response4 = await fetch('http://localhost:5000/api/hist/',{
@@ -193,7 +194,7 @@ const Chart = () => {
     }
   }
     fetchData()
-  }, [])
+  }, [ModalOpen])
 
     if(!data) {
       return <div>Loading...</div>

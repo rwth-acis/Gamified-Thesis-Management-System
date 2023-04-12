@@ -73,7 +73,7 @@ const Trello = () => {
             console.log(json5)
             if(response5.ok) {
               CloseModal()
-              window.location.reload()
+              //window.location.reload()
             }
       }
       
@@ -324,7 +324,7 @@ const Trello = () => {
       }
     }
     fetchT()
-  },[])
+  },[ModalOpen])
 
   useEffect(() => {
     const cleanUp = false
@@ -375,7 +375,7 @@ const Trello = () => {
       }
     }
     fetchD()
-  },[])
+  },[ModalOpen])
 
   useEffect(() => {
     const cleanUp = false
@@ -426,7 +426,7 @@ const Trello = () => {
       }
     }
     fetchF()
-  },[])
+  },[ModalOpen])
 
     const data = {
         lanes: [

@@ -102,6 +102,7 @@ const PlanForm = () => {
             setEnd('')
             setContent('')
             console.log("New Plan added: ",json)
+            window.location.reload()
         }
     }
 
