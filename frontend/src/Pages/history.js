@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
+import Activity from "../Components/History/activity";
+import TodoHist from "../Components/History/todo";
+import PlanHist from "../Components/History/plan";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 //import Button from "react-bootstrap/Button";
 import Table from 'react-bootstrap/Table'
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 
 const History = () => {
 
-    const [uid, setUid] = useState('63fe3001b7741649e4e2ac68')
+    const [uid, setUid] = useState('')
     const [Students, setStudents] = useState([])
     const [hist, setHist] = useState([])
     const [plan, setPlan] = useState([])
@@ -95,9 +100,119 @@ const History = () => {
     const handleSubmit = (e) => {
 
     }*/
+    
 
     return(
-        <Container>
+      
+      <div>
+        <Form>
+          <Form.Group className='mb-3' controlId='ofPlan'>  
+          <br />                 
+          <Form.Label ><h4>Welcome Admin! Choose One Student:</h4></Form.Label>
+          <Form.Select value={uid} onChange={(e) => setUid(e.target.value)}>
+          <option value="">-- Please select --</option>
+            {stuOption}
+          </Form.Select>                   
+          </Form.Group>                   
+        </Form>
+        <Tabs
+          defaultActiveKey="activity"
+          id="uncontrolled-tab-example"
+          className="mb-3"
+          fill
+        >
+          <Tab eventKey="activity" title="Activities">
+              <Table striped bordered hover size="sm">
+                  <caption>Activities History</caption>
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>Object</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {hist.length > 0 ? (hist.map((his, index) => (
+                      <tr key={index}>
+                        <td >{(new Date(his.time)).toLocaleDateString("en-GB")}</td>
+                        <td >{his.content}</td>
+                        <td >{his.types}</td>
+                      </tr>
+                      ))) 
+                    : (<tr>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
+                      </tr>)}
+                  </tbody>
+              </Table>
+          </Tab>
+          <Tab eventKey="plan" title="Plans">
+              <Table striped bordered hover size="sm">
+                  <caption>Plans Overview</caption>
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Content</th>
+                      <th>StartDate</th>
+                      <th>Progress</th>
+                      <th>DueDate</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {plan.length > 0 ? (plan.map((plan, index) => (
+                      <tr key={index}>
+                        <td >{plan.title}</td>
+                        <td >{plan.content}</td>
+                        <td >{(new Date(plan.startDate)).toLocaleDateString("en-GB")}</td>
+                        <td >{plan.progress.progress*100}%</td>
+                        <td >{(new Date(plan.endDate)).toLocaleDateString("en-GB")}</td>
+                      </tr>
+                      ))) 
+                    : (<tr>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
+                      </tr>)}
+                  </tbody>
+              </Table>
+          </Tab>
+          <Tab eventKey="todo" title="ToDos">
+              <Table striped bordered hover size="sm">
+                  <caption>ToDos Overview</caption>
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Content</th>
+                      <th>CreateDate</th>
+                      <th>Status</th>
+                      <th>DueDate</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {todo.length > 0 ? (todo.map((todo, index) => (
+                      <tr key={index}>
+                        <td >{todo.title}</td>
+                        <td >{todo.content}</td>
+                        <td >{(new Date(todo.date)).toLocaleDateString("en-GB")}</td>
+                        <td >{todo.status}</td>
+                        <td >{(new Date(todo.dueDate)).toLocaleDateString("en-GB")}</td>
+                      </tr>
+                      ))) 
+                    : (<tr>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
+                      </tr>)}
+                  </tbody>
+              </Table>
+          </Tab>
+        </Tabs>
+        {/*<Container>
             <Row>
                 <Form>
                     <Form.Group className='mb-3' controlId='ofPlan'>  
@@ -107,17 +222,13 @@ const History = () => {
                         <option value="">-- Please select --</option>
                             {stuOption}
                         </Form.Select>                   
-                    </Form.Group>
-                    {/* 
-                    <Button variant="primary" type="submit">
-                        Submit
-                    </Button>*/}
+                    </Form.Group>                   
                 </Form>
             </Row>
             <hr />
             <br />
             <Row>
-              <Col>{/*History Table */}
+              <Col>
                 <Table striped bordered hover size="sm">
                   <caption>Activities History</caption>
                   <thead>
@@ -143,7 +254,7 @@ const History = () => {
                   </tbody>
                 </Table>
               </Col>
-              <Col>{/*Plan Table */}
+              <Col>
                 <Table striped bordered hover size="sm">
                   <caption>Plans Overview</caption>
                   <thead>
@@ -175,7 +286,7 @@ const History = () => {
                 </Table>
               </Col>
             </Row>    
-        </ Container>
+        </ Container>*/}</div>
     )
 }
 export default History
