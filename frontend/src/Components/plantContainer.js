@@ -7,6 +7,7 @@ import Render from './Plants/renderOne'
 
 const Pcontainer = () => {
     const [seeds, setSeed] = useState(null)
+    const [content, setContent] = useState(null)
     const [plants, setPlant] = useState(null)
     const [status, setStatus] = useState(null)
     const [title, setTitle] = useState(null)
@@ -43,6 +44,7 @@ const Pcontainer = () => {
             let E = []
             let Due = []
             let Sta = []
+            let Con = []
             let i = 0
             while(i < json.length) {
                 S.push(json[i].seed)
@@ -51,6 +53,7 @@ const Pcontainer = () => {
                 E.push(json[i].title)
                 Due.push(json[i].endDate)
                 Sta.push(json[i].startDate)
+                Con.push(json[i].content)
                 i++
             }
             setPlant(P)
@@ -60,6 +63,7 @@ const Pcontainer = () => {
             setDue(Due)
             setStart(Sta)
             setCount(S.length)
+            setContent(Con)
             }
             return() => {
                 cleanup = true //VERY IMPORTANT!!!------------------CLEAN UP FUNCTION-----------------!!!!!!!!!!!!!!
@@ -72,7 +76,7 @@ const Pcontainer = () => {
         let PT = []
         for(let i = 0; i < count; i++) {
             PT.push(
-              <Render className='col' plant={plants[i]} seed={seeds[i]} status = {status[i]} title = {title[i]} progress = {progress[i]*100} key={i} start = {start[i]} due={due[i]}/>
+              <Render className='col' plant={plants[i]} seed={seeds[i]} status = {status[i]} title = {title[i]} progress = {progress[i]*100} key={i} start = {start[i]} due={due[i]} content={content[i]}/>
               ) //, overflowY: 'scroll' 
         }
         return PT

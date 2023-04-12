@@ -5,7 +5,7 @@ import Pilea from './pilea'
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-const Render = ({plant, seed, status, title, progress, start, due}) => {
+const Render = ({plant, seed, status, title, progress, start, due, content}) => {
     let p = plant
     let s = seed
     let t = status
@@ -13,6 +13,7 @@ const Render = ({plant, seed, status, title, progress, start, due}) => {
     let r = progress
     let st = start
     let d = due
+    let c = content
     const renderRandomPlant = () => {
         switch(true) {
             case (p === "Zamia" && t === "To Do"):
@@ -48,7 +49,7 @@ const Render = ({plant, seed, status, title, progress, start, due}) => {
     }
 
     return(
-        <OverlayTrigger placement="top" overlay={<Tooltip><div>Start: {(new Date(st)).toLocaleDateString("en-GB")}</div> <div>Due: {(new Date(d)).toLocaleDateString("en-GB")}</div></Tooltip>}>
+        <OverlayTrigger placement="top" overlay={<Tooltip><div>Start: {(new Date(st)).toLocaleDateString("en-GB")}</div> <div>Due: {(new Date(d)).toLocaleDateString("en-GB")}</div>"{c}"<div></div></Tooltip>}>
         <div className='card border-success' style={{width: '250px', margin: '10px 10px 10px 10px'}}>
             <div className='card-img-top text-center' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{renderRandomPlant()}</div>
             <hr />    
