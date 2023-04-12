@@ -301,24 +301,28 @@ const Trello = () => {
                     color: 'white',
                     title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")}]
                     */
-                    tags : /*(json[i].status == "Finished") ?
+            tags : /*(json[i].status == "Finished") ?
                     [{ // if due date is later than today
                       bgcolor: '#E0E0E0',
                       color: 'white',
                       title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
                     }]:*/
-                     new Date(json[i].dueDate) > today ? 
+                     ((new Date(json[i].dueDate).getFullYear() > today.getFullYear() || 
+                     (new Date(json[i].dueDate).getFullYear() === today.getFullYear() && 
+                     (new Date(json[i].dueDate).getMonth() > today.getMonth() || 
+                     (new Date(json[i].dueDate).getMonth() === today.getMonth() && 
+                     new Date(json[i].dueDate).getDate() > today.getDate()))))) ? 
                     [{ // if due date is later than today
                         bgcolor: '#61BD4F',
                         color: 'white',
                         title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
                     }] : 
                     (new Date(json[i].dueDate).getDate() === today.getDate() && 
-                     new Date(json[i].dueDate).getMonth() === today.getMonth() && 
-                     new Date(json[i].dueDate).getFullYear() === today.getFullYear()) ? 
+                    new Date(json[i].dueDate).getMonth() === today.getMonth() && 
+                    new Date(json[i].dueDate).getFullYear() === today.getFullYear()) ? 
                         [{ // if due date is today
-                            //bgcolor: 'yellow',
-                            //color: 'white',
+                            bgcolor: '#F0B809 ',
+                            color: 'white',
                             title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
                         }] : 
                         [{ // otherwise (due date is earlier than today)
@@ -365,7 +369,11 @@ const Trello = () => {
             title: json[i].title,
             description: json[i].content,
             label: "Plan:"+pjson.title,
-            tags : new Date(json[i].dueDate) > today ? 
+            tags : ((new Date(json[i].dueDate).getFullYear() > today.getFullYear() || 
+                   (new Date(json[i].dueDate).getFullYear() === today.getFullYear() && 
+                   (new Date(json[i].dueDate).getMonth() > today.getMonth() || 
+                   (new Date(json[i].dueDate).getMonth() === today.getMonth() && 
+                   new Date(json[i].dueDate).getDate() > today.getDate()))))) ? 
                     [{ // if due date is later than today
                         bgcolor: '#61BD4F',
                         color: 'white',
@@ -375,8 +383,8 @@ const Trello = () => {
                      new Date(json[i].dueDate).getMonth() === today.getMonth() && 
                      new Date(json[i].dueDate).getFullYear() === today.getFullYear()) ? 
                         [{ // if due date is today
-                            //bgcolor: 'yellow',
-                            //color: 'white',
+                            bgcolor: '#F0B809',
+                            color: 'white',
                             title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
                         }] : 
                         [{ // otherwise (due date is earlier than today)
