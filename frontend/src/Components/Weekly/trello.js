@@ -273,7 +273,14 @@ const Trello = () => {
     const cleanUp = false
     
     const fetchT = async () => {
-      const response = await fetch('http://localhost:5000/api/todo/unfinished')
+      const token = sessionStorage.getItem('access-token')
+      const tmp = jwt_decode(token)
+      const sub = tmp['sub']
+      const mail = tmp['email']
+      const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+      const userJson = await userRes.json()
+      const uid = userJson._id
+      const response = await fetch('http://localhost:5000/api/user/todo/todo/'+uid)
       const json = await response.json()
       console.log("json: ",json.length)
       if(response.ok && !cleanUp && json !== null) { // Is it necessary to change the while loop into a for each loop?
@@ -335,7 +342,14 @@ const Trello = () => {
   useEffect(() => {
     const cleanUp = false
     const fetchD = async () => {
-      const response = await fetch('http://localhost:5000/api/todo/doing')
+      const token = sessionStorage.getItem('access-token')
+      const tmp = jwt_decode(token)
+      const sub = tmp['sub']
+      const mail = tmp['email']
+      const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+      const userJson = await userRes.json()
+      const uid = userJson._id
+      const response = await fetch('http://localhost:5000/api/user/todo/doing/'+uid)
       const json = await response.json()
       console.log("json: ",json.length)
       if(response.ok && !cleanUp && json.length !== 0) {
@@ -386,7 +400,14 @@ const Trello = () => {
   useEffect(() => {
     const cleanUp = false
     const fetchF = async () => {
-      const response = await fetch('http://localhost:5000/api/todo/finished')
+      const token = sessionStorage.getItem('access-token')
+      const tmp = jwt_decode(token)
+      const sub = tmp['sub']
+      const mail = tmp['email']
+      const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+      const userJson = await userRes.json()
+      const uid = userJson._id
+      const response = await fetch('http://localhost:5000/api/user/todo/finished/'+uid)
       const json = await response.json()
       console.log("jsonf: ",json)
       if(response.ok && !cleanUp && (json !==null)) {

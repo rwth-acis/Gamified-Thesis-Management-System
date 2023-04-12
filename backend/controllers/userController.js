@@ -75,6 +75,48 @@ const getAllTodoOfUser = async (req,res) => {
         res.status(400).json({error: error.message})
     }
 }
+const getAllTodoTodoOfUser = async (req,res) => {
+    const {id} = req.params
+
+    if (!mongoose.Types.ObjectId.isValid(id)) { 
+        return res.status(404).json({error: "no such user"}) 
+    }
+    try {
+        const user = await User.findOne({_id:id}).select('hasToDo')
+        const todos = await Todo.find({_id: { $in: user.hasToDo }, status: "To Do"}).sort({dueDate:1})
+        res.status(200).json(todos)
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
+const getAllTodoDoingOfUser = async (req,res) => {
+    const {id} = req.params
+
+    if (!mongoose.Types.ObjectId.isValid(id)) { 
+        return res.status(404).json({error: "no such user"}) 
+    }
+    try {
+        const user = await User.findOne({_id:id}).select('hasToDo')
+        const todos = await Todo.find({_id: { $in: user.hasToDo },status: "Doing"}).sort({dueDate:1})
+        res.status(200).json(todos)
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
+const getAllTodoFinishedOfUser = async (req,res) => {
+    const {id} = req.params
+
+    if (!mongoose.Types.ObjectId.isValid(id)) { 
+        return res.status(404).json({error: "no such user"}) 
+    }
+    try {
+        const user = await User.findOne({_id:id}).select('hasToDo')
+        const todos = await Todo.find({_id: { $in: user.hasToDo },status:"Finished"}).sort({dueDate:1})
+        res.status(200).json(todos)
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
 
 const createUser = async (req,res) => {
     const {firstName, lastName, email, token, role, workType, history, hasPlan, hasToDo} = req.body 
@@ -254,6 +296,9 @@ module.exports = {
     getAllHistOfUser,
     getAllPlanOfUser,
     getAllTodoOfUser,
+    getAllTodoTodoOfUser,
+    getAllTodoDoingOfUser,
+    getAllTodoFinishedOfUser,
     createUser,
     updateRole,
     updateToken,
