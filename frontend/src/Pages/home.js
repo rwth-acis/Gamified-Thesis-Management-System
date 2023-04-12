@@ -18,6 +18,7 @@ const Home = () => {
     const [name, setName] = useState(' ')
     const [fname, setFname] = useState('')
     const [lname, setLname] = useState('')
+    const [tmp, setTmp] = useState(null)
     //const [isLoading, setIsLoading] = useState(true);
 
     /*useEffect(() => {
@@ -51,8 +52,32 @@ const Home = () => {
       console.log(json2)
       }
   }
-     
+      
     useEffect(() => {
+      const getUser = async() => {
+        const token = sessionStorage.getItem('access-token')
+        setToken(token)
+        const tmp = jwt_decode(token)
+        setName(tmp['name'])
+        //const name = tmp(['name'])
+        setLname(tmp['family_name'])
+        const lName = tmp['family_name']
+        setFname(tmp['given_name'])
+        const fName = tmp['given_name']
+        const email = tmp['email']
+        const sub = tmp['sub'] 
+        const currUser = await findOrCreate(fName,lName,email,sub)
+        if(currUser) {
+          localStorage.setItem('userId',true)
+        }
+        console.log("user id:",currUser._id)
+        setUid(currUser._id)
+        console.log("uid:",uid)
+        console.log("working")
+      }
+      getUser()
+    },[]) 
+    /*useEffect(() => {
         const newInterval = async() => {
           const token = sessionStorage.getItem('access-token')
           if (!token) {
@@ -73,6 +98,8 @@ const Home = () => {
               localStorage.setItem('userId',true)
             }
             console.log("user id:",currUser._id)
+            setUid(currUser._id)
+            console.log("uid:",uid)
             console.log("working")
           }
         }
@@ -84,7 +111,7 @@ const Home = () => {
             console.log("cleaning up")
           }
           }
-    }, []);
+    }, [])*/
     
     /*
     useEffect(() => {

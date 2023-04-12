@@ -2,7 +2,8 @@ import Zamia from './Plants/zamia'
 import Bushy from './Plants/bushy'
 import Dragon from './Plants/dragonTree'
 import Pilea from './Plants/pilea'
-import { useState, useEffect, useMemo } from 'react'
+import jwt_decode from 'jwt-decode';
+import { useState, useEffect, useLayoutEffect } from 'react'
 import Render from './Plants/renderOne'
 
 const Pcontainer = () => {
@@ -15,26 +16,44 @@ const Pcontainer = () => {
     const [progress, setProgress] = useState([])
     const [due, setDue] = useState([])
     const [start, setStart] = useState([])
+    const [uid, setUid] = useState('')
     //const memo = useMemo(() => fetchData(),seeds)
 
     useEffect(() => {
-        let cleanup = false
+        const getId = async() => {
+            const token = sessionStorage.getItem('access-token')
+            const tmp = jwt_decode(token)
+            const email = tmp['email']
+            const response = await fetch('http://localhost:5000/api/user/mail/'+email)
+            const json = await response.json()
+            if(response.ok) {
+              setUid(json._id)
+            }
+        }
+        getId()
+    },[])
+
+    useEffect(() => {
+        console.log("uid",uid)
         const fetchDataS = async ()=> { // modify here, change it to take a user id as input and only renders the plans of this single user
-            const response = await fetch('http://localhost:5000/api/plan/', {
+            console.log("fetch working")
+            const response = await fetch('http://localhost:5000/api/user/plan/'+uid, {
                 method: 'GET'
             })
-            if(!cleanup) {
                 const json = await response.json()
                 const progres = []
-                for (const plan of json) {
-                    const p = await fetch(`http://localhost:5000/api/plan/progress/${plan._id}`, {
+                let s = 0
+                while (s < json.length) {
+                    const p = await fetch(`http://localhost:5000/api/plan/progress/${json[s]._id}`, {
                         method: 'GET'
                     });
                 if(p.ok) {
+                    console.log("progress working")
                     const pjson = await p.json()
                     console.log(pjson)
                     progres.push(await pjson.progress);
                     }
+                s++
                 }
                 setProgress(progres)
 
@@ -64,13 +83,10 @@ const Pcontainer = () => {
             setStart(Sta)
             setCount(S.length)
             setContent(Con)
-            }
-            return() => {
-                cleanup = true //VERY IMPORTANT!!!------------------CLEAN UP FUNCTION-----------------!!!!!!!!!!!!!!
-            }
+            
         }
         fetchDataS()
-    },[])
+    },[uid])
     
     const renderPlant = ()=> {
         let PT = []

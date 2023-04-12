@@ -152,8 +152,15 @@ const Chart = () => {
   useEffect(() => {
     let cleanUp = false
     const fetchData = async () => {
+      const token = sessionStorage.getItem('access-token')
+      const tmp = jwt_decode(token)
+      const sub = tmp['sub']
+      const mail = tmp['email']
+      const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+      const userJson = await userRes.json()
+      const uid = userJson._id
       
-      const response = await fetch('http://localhost:5000/api/plan', {
+      const response = await fetch('http://localhost:5000/api/user/plan/'+uid, {
         method: 'GET'
       })
       const json = await response.json()
