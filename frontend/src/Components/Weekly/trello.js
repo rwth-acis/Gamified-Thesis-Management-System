@@ -294,7 +294,13 @@ const Trello = () => {
                     color: 'white',
                     title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")}]
                     */
-                    tags : new Date(json[i].dueDate) > today ? 
+                    tags : /*(json[i].status == "Finished") ?
+                    [{ // if due date is later than today
+                      bgcolor: '#E0E0E0',
+                      color: 'white',
+                      title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
+                    }]:*/
+                     new Date(json[i].dueDate) > today ? 
                     [{ // if due date is later than today
                         bgcolor: '#61BD4F',
                         color: 'white',
@@ -396,7 +402,13 @@ const Trello = () => {
             title: json[i].title,
             description: json[i].content,
             label: "Plan:"+pjson.title,
-            tags : new Date(json[i].dueDate) > today ? 
+            tags : [{ // if due date is later than today
+              bgcolor: '#E0E0E0',
+              color: 'white',
+              title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
+              }]
+            
+                    /*new Date(json[i].dueDate) > today ? 
                     [{ // if due date is later than today
                         bgcolor: '#61BD4F',
                         color: 'white',
@@ -414,7 +426,7 @@ const Trello = () => {
                             bgcolor: '#EB5A46',
                             color: 'white',
                             title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
-                        }]  
+                        }]*/  
           })
           i++
         }
