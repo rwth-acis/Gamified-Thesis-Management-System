@@ -73,7 +73,16 @@ const History = () => {
         const fetchTodo = async() => {
           const response4 = await fetch('http://localhost:5000/api/user/todo/'+uid)
           const json4 = await response4.json()
-          console.log("todo: ",json4)
+          
+
+          let i = 0
+          while (i < json4.length) {
+            const response5 = await fetch('http://localhost:5000/api/plan/'+json4[i].ofPlan)
+            const json5 = await response5.json()
+            json4[i].ofPlanName = json5.title
+            console.log("todo: ",json4)
+            i++
+          }
           setTodo(json4)
         }
         fetchHist()
@@ -81,26 +90,11 @@ const History = () => {
         fetchTodo()
       },[uid])
       
-
       const stuOption = Students.map((stu, index) => (
         <option key={index} value={stu.id}>
             {stu.firstname + " " + stu.lastname}
         </option>
     ))
-
-      /*const histTable = hist.map((his, index) => (
-        <tr key={index}>
-          <td >{his.time}</td>
-          <td >{his.content}</td>
-          <td >{his.types}</td>
-        </tr>
-      ))
-
-    
-    const handleSubmit = (e) => {
-
-    }*/
-    
 
     return(
       
@@ -115,6 +109,8 @@ const History = () => {
           </Form.Select>                   
           </Form.Group>                   
         </Form>
+        <br />
+        <hr />
         <Tabs
           defaultActiveKey="activity"
           id="uncontrolled-tab-example"
@@ -189,6 +185,7 @@ const History = () => {
                       <th>CreateDate</th>
                       <th>Status</th>
                       <th>DueDate</th>
+                      <th>Part Of</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -199,6 +196,7 @@ const History = () => {
                         <td >{(new Date(todo.date)).toLocaleDateString("en-GB")}</td>
                         <td >{todo.status}</td>
                         <td >{(new Date(todo.dueDate)).toLocaleDateString("en-GB")}</td>
+                        <td>{todo.ofPlanName}</td>
                       </tr>
                       ))) 
                     : (<tr>
@@ -212,81 +210,7 @@ const History = () => {
               </Table>
           </Tab>
         </Tabs>
-        {/*<Container>
-            <Row>
-                <Form>
-                    <Form.Group className='mb-3' controlId='ofPlan'>  
-                    <br />                 
-                        <Form.Label><h4>Welcome Admin! Choose One Student:</h4></Form.Label>
-                        <Form.Select value={uid} onChange={(e) => setUid(e.target.value)}>
-                        <option value="">-- Please select --</option>
-                            {stuOption}
-                        </Form.Select>                   
-                    </Form.Group>                   
-                </Form>
-            </Row>
-            <hr />
-            <br />
-            <Row>
-              <Col>
-                <Table striped bordered hover size="sm">
-                  <caption>Activities History</caption>
-                  <thead>
-                    <tr>
-                      <th>Time</th>
-                      <th>Object</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {hist.length > 0 ? (hist.map((his, index) => (
-                      <tr key={index}>
-                        <td >{(new Date(his.time)).toLocaleDateString("en-GB")}</td>
-                        <td >{his.content}</td>
-                        <td >{his.types}</td>
-                      </tr>
-                      ))) 
-                    : (<tr>
-                      <td>Select Student</td>
-                      <td>Select Student</td>
-                      <td>Select Student</td>
-                      </tr>)}
-                  </tbody>
-                </Table>
-              </Col>
-              <Col>
-                <Table striped bordered hover size="sm">
-                  <caption>Plans Overview</caption>
-                  <thead>
-                    <tr>
-                      <th>Title</th>
-                      <th>Content</th>
-                      <th>StartDate</th>
-                      <th>Progress</th>
-                      <th>DueDate</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {plan.length > 0 ? (plan.map((plan, index) => (
-                      <tr key={index}>
-                        <td >{plan.title}</td>
-                        <td >{plan.content}</td>
-                        <td >{(new Date(plan.startDate)).toLocaleDateString("en-GB")}</td>
-                        <td >{plan.progress.progress*100}%</td>
-                        <td >{(new Date(plan.endDate)).toLocaleDateString("en-GB")}</td>
-                      </tr>
-                      ))) 
-                    : (<tr>
-                      <td>Select Student</td>
-                      <td>Select Student</td>
-                      <td>Select Student</td>
-                      <td>Select Student</td>
-                      </tr>)}
-                  </tbody>
-                </Table>
-              </Col>
-            </Row>    
-        </ Container>*/}</div>
+      </div>
     )
 }
 export default History
