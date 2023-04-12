@@ -71,8 +71,13 @@ const Trello = () => {
             })
             const json5 = await response5.json()
             console.log(json5)
+            if(response5.ok) {
+              CloseModal()
+              window.location.reload()
+            }
       }
-      CloseModal()
+      
+      
     }
   }
   const handleCardClick = async (cardId, laneId) => {
@@ -493,7 +498,7 @@ const Trello = () => {
                 </Form>
               </Modal.Body>
               <Modal.Footer>
-              <Button variant="danger" onClick={handleCardDelete}>Delete Plan</Button>
+              <Button variant="danger" onClick={handleCardDelete}>Delete ToDo</Button>
               </Modal.Footer>
             </Modal>
 
