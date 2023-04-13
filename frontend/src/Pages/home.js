@@ -152,7 +152,7 @@ const Home = () => {
                 <Row><h4 className="text-center">An Overview of the Most Important Plans of Your Bachelor Thesis:</h4></Row>
                 <Row><br /></Row>
                 <Row>
-                  <div style={{ maxHeight: '550px', overflowY: 'auto' }}>
+                  <div style={{ maxHeight: '550px', overflowY: 'auto', scrollbarWidth: 'thin' }}>
                     <Pcontainer />
                   </div>
                 </Row>
