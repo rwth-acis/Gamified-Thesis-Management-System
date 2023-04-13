@@ -50,7 +50,7 @@ const Render = ({plant, seed, status, title, progress, start, due, content}) => 
 
     return(
         <OverlayTrigger placement="top" overlay={<Tooltip><div>Start: {(new Date(st)).toLocaleDateString("en-GB")}</div> <div>Due: {(new Date(d)).toLocaleDateString("en-GB")}</div>"{c}"<div></div></Tooltip>}>
-        <div className='card border-success' style={{width: '250px', margin: '10px 10px 10px 10px'}}>
+        <div className='card border-success' style={{width: '200px', margin: '10px 10px 10px 10px'}}>
             <div className='card-img-top text-center' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{renderRandomPlant()}</div>
             <hr />    
             <div className='card-body'>

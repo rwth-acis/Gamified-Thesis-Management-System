@@ -151,7 +151,11 @@ const Home = () => {
                 <Row><hr /></Row>
                 <Row><h4 className="text-center">An Overview of the Most Important Plans of Your Bachelor Thesis:</h4></Row>
                 <Row><br /></Row>
-                <Row><Pcontainer /></Row>
+                <Row>
+                  <div style={{ maxHeight: '550px', overflowY: 'auto' }}>
+                    <Pcontainer />
+                  </div>
+                </Row>
               </Col>
             </Row>            
         </Container> 
