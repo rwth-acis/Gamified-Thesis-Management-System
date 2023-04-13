@@ -66,7 +66,8 @@ const History = () => {
                 id: user._id,
                 firstname: user.firstName,
                 lastname: user.lastName,
-                workType: user.workType
+                workType: user.workType,
+                role: user.role
                 }
               })
             console.log(userData)
@@ -128,7 +129,7 @@ const History = () => {
       
       const stuOption = Students.map((stu, index) => (
         <option key={index} value={stu.id}>
-            {stu.firstname + " " + stu.lastname + " :  "+stu.workType}
+            {stu.firstname  + " " + stu.lastname + "("+ stu.role + ")" + " :  "+stu.workType}
         </option>
     ))
 
