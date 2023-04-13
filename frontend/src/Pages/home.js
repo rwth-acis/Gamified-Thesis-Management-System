@@ -149,7 +149,7 @@ const Home = () => {
                 <Row><br /></Row>
                 <Row><h3 className="text-center">Welcome to the thesis management system of the RWTH Informatik 5</h3></Row>
                 <Row><hr /></Row>
-                <Row><h4 className="text-center">An Overview of the Most Important Plans of Your Bachelor Thesis:</h4></Row>
+                <Row><h4 className="text-center">An Overview of the Most Important Plans of Your Project:</h4></Row>
                 <Row><br /></Row>
                 <Row>
                   <div style={{ maxHeight: '550px', overflowY: 'auto', scrollbarWidth: 'thin' }}>
