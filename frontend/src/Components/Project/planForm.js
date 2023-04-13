@@ -3,6 +3,9 @@ import Form from 'react-bootstrap/Form';
 import 'bootstrap/dist/css/bootstrap.css';
 import {useEffect, useState} from 'react';
 import jwt_decode from 'jwt-decode';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 const PlanForm = () => {
     const [title, setTitle] = useState('')
@@ -107,6 +110,48 @@ const PlanForm = () => {
     }
 
     return(
+        <Container fluid>
+            <Form onSubmit={handleSubmit}>
+                <Row>
+                    <Col>
+                        <Form.Group className='mb-3' controlId='title'>
+                        <Form.Label>Title</Form.Label>
+                        <Form.Control type="text" placeholder="Plan Title" required
+                          value={title} onChange={(e) => setTitle(e.target.value)} />
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <Form.Group className='mb-3' controlId='content'>
+                        <Form.Label>Content</Form.Label>
+                        <Form.Control as={"textarea"} placeholder="Plan Content" required
+                          value={content} onChange={(e) => setContent(e.target.value)} />
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Form.Group className='mb-3' controlId='startDate'>
+                        <Form.Label>Start Date</Form.Label>
+                        <Form.Control type="date" required 
+                          value={startDate} onChange={(e) => setStart(e.target.value)}/>
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <Form.Group className='mb-3' controlId='endDate'>
+                        <Form.Label>End Date</Form.Label>
+                        <Form.Control type="date" required 
+                          value={endDate} onChange={(e) => setEnd(e.target.value)}/>
+                        </Form.Group>
+                    </Col>
+                </Row>
+            <Button variant="primary" type="submit">
+                 Submit
+            </Button>
+            </Form>
+        </Container>
+    )
+    /*
+    return(
         <Form onSubmit={handleSubmit}>
             <Form.Group className='mb-3' controlId='title'>
                 <Form.Label>Title</Form.Label>
@@ -134,44 +179,7 @@ const PlanForm = () => {
                  Submit
             </Button>
         </Form>
-    )
+    )*/
 
-    /*
-    return(
-        <form className='create_plan' onSubmit={handleSubmit}>
-            <h4>Add a plan here</h4>
-            <div className='form-group'>
-                <label>Title:</label>
-                <input type='text'
-                       className='form-control'
-                       onChange={(e) => setTitle(e.target.value)}
-                       value={title}
-                       placeholder='eg. write reports' 
-                       required />
-            </div>
-            <div className='form-group'>
-                <label>Content:</label>
-                <input type='text'
-                       className='form-control'
-                       onChange={(e) => setContent(e.target.value)}
-                       value={content} 
-                       required />
-            </div>
-            <div className="row">
-                <div className='col'>
-                    <label>Start:</label>
-                    <DatePicker selected={startDate} onChange={(date) => setStart(date.getTime())} value={startDate}/>
-                </div>
-                <div className='col'>
-                    <label>End:</label>
-                    <DatePicker selected={endDate} onChange={(date) => setEnd(date.getTime())} value={endDate}/>
-                </div>
-            </div><br/>
-            <div className='col'>
-                <button className='btn btn-primary' type='submit'>Add It!</button>
-            </div>                      
-        </form>
-    )
-    */
 }
 export default PlanForm
