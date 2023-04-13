@@ -21,7 +21,8 @@ const {
     pushTodoWithToken,
     getAllTodoTodoOfUser,
     getAllTodoDoingOfUser,
-    getAllTodoFinishedOfUser
+    getAllTodoFinishedOfUser,
+    validateAdmin
 } = require('../controllers/userController')
 
 router.get("/",getAllUser)
@@ -43,5 +44,6 @@ router.post("/plan/",pushPlan)
 router.post("/plan/token/",pushPlanWitToken)
 router.post("/todo/",pushTodo)
 router.post("/todo/token/",pushTodoWithToken)
+router.post("/admin/:id",validateAdmin)
 
 module.exports = router

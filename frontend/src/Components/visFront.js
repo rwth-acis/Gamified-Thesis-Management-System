@@ -4,17 +4,44 @@ import Container from 'react-bootstrap/Container';
 import jwt_decode from 'jwt-decode';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button'
+import { Modal, Form, Badge } from 'react-bootstrap';
 
 const Overview = () => {
     const [name, setName] = useState('Sign In to Continue')
+    const [role,setRole] = useState('')
     const [point,setPoint] = useState(null)
     const [levelName,setLevelName] = useState(' ')
     const [level,setLevel] = useState(null)
     const [rank,setRank] = useState(null)
     const [nextLN,setNextLN] = useState(' ')
     const [nextLP,setNextLP] = useState(null)
+    const [uid,setUid] = useState('')
+    const [password,setPassword] = useState('')
+    const [modalOpen, setModalOpen] = useState(false)
 
-    
+    const openModal = () => {
+        setModalOpen(true)
+    }
+    const closeModal = () => {
+        setModalOpen(false)
+    }
+    const validateAdmin = async (e) => {
+        e.preventDefault()
+        const response = await fetch('http://localhost:5000/api/user/admin/'+uid,{
+            method: 'POST',
+            body: JSON.stringify({"password":password}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const json = await response.json()
+        if (response.ok) {
+            closeModal()
+            window.location.reload()
+        } 
+    }
+
     useEffect(() => {
         const fetchStatus = async ()=> {
             const token = sessionStorage.getItem('access-token')
@@ -22,6 +49,12 @@ const Overview = () => {
             const username = tmp['preferred_username']
             const password = tmp['sub']
             const name = tmp['name']
+            const mail = tmp['email']
+            const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+            const userJson = await userRes.json()
+            setRole(userJson.role) 
+            const uids = userJson._id
+            setUid(uids)
             const authData = username+':'+password
             setName(name)
             //setAuth(authData)
@@ -52,13 +85,40 @@ const Overview = () => {
         }
 
         fetchStatus()
-    }, [])
+    }, [modalOpen])
 
     return(
         <Container fluid>
+            <Modal show={modalOpen} onHide={closeModal}>
+              {/*cardId*/}
+              <Modal.Header closeButton>
+                <Modal.Title>Please Type In the Password</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form onSubmit={validateAdmin}>
+                  <Form.Group className='mb-3' controlId='title'>
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" required
+                    value={password} onChange={(e) => setPassword(e.target.value)} />    
+                  </Form.Group>
+                  <Button variant='outline-danger' type='submit'>Validate</Button>
+                </Form>
+              </Modal.Body>
+
+            </Modal>
             <Col>
                 <Row><br/></Row>
-                <Row><h3 >Hi, {name}!</h3></Row>
+                <Row>
+                    <Col>
+                        <h4 className="text-muted">Welcome,</h4>
+                        <h4 className="text-muted">{name}</h4>
+                    </Col>
+                    <Col>
+                        {role == "Supervisors" ?
+                        <Badge bg='success'>Admin</Badge> :
+                        <Badge bg='primary' onClick={setModalOpen}>Student</Badge>}
+                    </Col>
+                </Row>
                 <Row><br/></Row><hr />
                 <Row><h6>Current Points:</h6> <p>{point}</p></Row><hr />
                 <Row><h6>Current Level:</h6> <p>{level}-{levelName}</p></Row><hr />

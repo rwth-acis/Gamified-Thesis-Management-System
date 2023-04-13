@@ -128,7 +128,24 @@ const createUser = async (req,res) => {
         res.status(400).json({error: error.message})
     }
 }
+const validateAdmin = async(req,res) => {
+    const {id} = req.params
+    const {password} = req.body
 
+    if (!mongoose.Types.ObjectId.isValid(id)) { 
+        return res.status(404).json({error: "no such user"}) 
+    } else if (password != "!ImNowAdmin!2023") {
+        return res.status(404).json({error: "wrong password"})
+    }
+    try {
+        const user = await User.findOneAndUpdate({_id: id}, {
+            role: "Supervisors"
+        })
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(400).json({error:error.message})
+    }
+}
 const updateRole = async (req,res) => {
     const {id, role} = req.params
 
@@ -308,5 +325,6 @@ module.exports = {
     pushPlan,
     pushPlanWitToken,
     pushTodo,
-    pushTodoWithToken
+    pushTodoWithToken,
+    validateAdmin
 }

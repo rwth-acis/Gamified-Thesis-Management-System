@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import { Link } from 'react-router-dom';
 import Login from "../Pages/login"
+import jwt_decode from 'jwt-decode';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -9,17 +10,28 @@ import Logo from './Pics/acis.jpg'
 
 const Navibar = (token) => {
 
-  const [role,setRole] = useState('Supervisors')
+  const [role,setRole] = useState('')
   const [tokens,setToken] = useState("")
 
   
   useEffect(() => {
-    const token = sessionStorage.getItem('access-token');
-    if (!token) { 
-    } else {
-      setToken(token)
+    const fetchStatus = async ()=> {
+      const token = sessionStorage.getItem('access-token');
+      if (!token) { 
+      } else {
+        setToken(token)
+      }
+      const tmp = jwt_decode(token)
+      //const username = tmp['preferred_username']
+      //const password = tmp['sub']
+      //const name = tmp['name']
+      const mail = tmp['email']
+      const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+      const userJson = await userRes.json()
+      setRole(userJson.role) 
     }
-}, []);
+    fetchStatus()
+  }, []);
   /*
   const hideLogin = () => {
     if(token) {
