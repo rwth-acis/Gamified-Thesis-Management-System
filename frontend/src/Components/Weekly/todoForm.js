@@ -13,10 +13,14 @@ const TodoForm = () => {
     const [dueDate, setDue] = useState('')
     const [plans, setPlans] = useState([])
     const [error, setError] = useState(null)
+    const [token, setToken] = useState('')
 
     useEffect(() => {
         const cleanUp = false
         const fetchPlan = async () => {
+          const token = sessionStorage.getItem('access-token')
+          const tmp = jwt_decode(token)
+          setToken(tmp)
           const response = await fetch('http://localhost:5000/api/plan/')
           const json = await response.json()
           console.log("json: ",json)
@@ -47,10 +51,11 @@ const TodoForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const token = sessionStorage.getItem('access-token')
-        const tmp = jwt_decode(token)
-        const sub = tmp['sub']
-        const mail = tmp['email']
+        //const token = sessionStorage.getItem('access-token')
+        //const tmp = jwt_decode(token)
+        //setToken(tmp)
+        const sub = token['sub']
+        const mail = token['email']
         const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
         const userJson = await userRes.json()
         const uid = userJson._id
@@ -118,7 +123,24 @@ const TodoForm = () => {
             const json5 = await response5.json()
             console.log(json5)
             if(response5.ok) {
-                window.location.reload()
+                const username = token['preferred_username']
+                const password = token['sub']
+                const authData = username+':'+password
+                //window.location.reload()
+                const response6 = await fetch('http://localhost:8080/gamification/visualization/actions/gtms/1/silyu', {
+                mode: 'cors',
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Basic ' + btoa(authData),
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            const json6 = await response6.json()
+            console.log(json6)
+            if(response6.ok) {
+                //window.location.reload()
+            }
             }
         }
 

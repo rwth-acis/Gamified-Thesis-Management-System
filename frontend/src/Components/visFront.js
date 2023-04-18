@@ -16,11 +16,13 @@ const Overview = () => {
     const [rank,setRank] = useState(null)
     const [nextLN,setNextLN] = useState(' ')
     const [nextLP,setNextLP] = useState(null)
+    const [achiev, setAchiev] = useState(null)
     const [uid,setUid] = useState('')
     const [password,setPassword] = useState('')
     const [modalOpen, setModalOpen] = useState(false)
     const [connected, setConnected] = useState(localStorage.getItem("connected") || "false")
     const [token, setToken] = useState("")
+    const [badges, setBadges] = useState(null)
 
     const openModal = () => {
         setModalOpen(true)
@@ -121,9 +123,70 @@ const Overview = () => {
                 setRank(rank_json)
             }
         }
+        const fetchAchiev = async() => {
+            const token = sessionStorage.getItem('access-token')
+            const tmp = jwt_decode(token)
+            const username = tmp['preferred_username']
+            const password = tmp['sub']
+            const authData = username+':'+password
+            const response = await fetch('http://localhost:8080/gamification/visualization/achievements/gtms/silyu', {
+                mode: 'cors',
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Basic ' + btoa(authData),
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            const json = await response.json()
+            if(response.ok) {
+                setAchiev(json)
+            }
+        }
+        const fetchBadges = async() => {
+            const token = sessionStorage.getItem('access-token')
+            const tmp = jwt_decode(token)
+            const username = tmp['preferred_username']
+            const password = tmp['sub']
+            const authData = username+':'+password
+            const response = await fetch('http://localhost:8080/gamification/visualization/badges/gtms/silyu', {
+                mode: 'cors',
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Basic ' + btoa(authData),
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            const json = await response.json()
+            if(response.ok) {
+                //setAchiev(json)
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64data = reader.result;                
+                    //console.log(base64data);
+                }
+                const response = await fetch('http://localhost:8080/gamification/badges/gtms/1/img', {
+                    mode: 'cors',
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Basic ' + btoa(authData),
+                    }
+                })
+                const imgBlob = await response.blob()
+                setBadges(URL.createObjectURL(imgBlob))
+                const url = reader.readAsDataURL(imgBlob);
+                if(response.ok) {
+                    console.log(imgBlob)
+                }
+            }
+        }
 
         fetchStatus()
+        fetchAchiev()
+        fetchBadges()
     }, [modalOpen])
+
 
     return(
         <Container fluid>
@@ -167,11 +230,14 @@ const Overview = () => {
                 <Row><h6>Next Level:</h6> <p>{nextLN} <span className='text-muted'>at</span> {nextLP} <span className='text-muted'>points!</span></p></Row><hr />
                 <Row>
                 <h6>Current Achievement:</h6>
-                    <p></p> 
-                    <p></p>
+                {achiev?
+                achiev.map(obj => (
+          <li key={obj.id}>{obj.name}</li>
+        )):<p></p>}
                     <p></p></Row><hr />
                 <h6>Current Badges:</h6>
                     <div>
+                    <img src={badges} width='40px'/>
                         {/*<img src={require('./Pics/Badges/badges1.1.jpg')} style={{width:'60px',height:'60px'}} alt="badges1.1"></img>
                         <img src={require('./Pics/Badges/badges1.2.jpg')} style={{width:'60px',height:'60px'}} alt="badges1.1"></img>
                         <img src={require('./Pics/Badges/badges1.3.jpg')} style={{width:'60px',height:'60px'}} alt="badges1.1"></img>
