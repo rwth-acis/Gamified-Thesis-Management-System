@@ -19,9 +19,14 @@ const Overview = () => {
     const [uid,setUid] = useState('')
     const [password,setPassword] = useState('')
     const [modalOpen, setModalOpen] = useState(false)
+    const [connected, setConnected] = useState(localStorage.getItem("connected") || false)
 
     const openModal = () => {
         setModalOpen(true)
+    }
+    const connect = () => {
+        setConnected(true)
+        localStorage.setItem("connected",true)
     }
     const closeModal = () => {
         setModalOpen(false)
@@ -89,6 +94,7 @@ const Overview = () => {
 
     return(
         <Container fluid>
+            
             <Modal show={modalOpen} onHide={closeModal}>
               {/*cardId*/}
               <Modal.Header closeButton>
@@ -119,23 +125,33 @@ const Overview = () => {
                         <Badge bg='primary' onClick={setModalOpen}>Student</Badge>}
                     </Col>
                 </Row>
+                <hr />
+                {connected == "true" ?
+                <div>
                 <Row><br/></Row><hr />
                 <Row><h6>Current Points:</h6> <p>{point}</p></Row><hr />
                 <Row><h6>Current Level:</h6> <p>{level}-{levelName}</p></Row><hr />
-                <Row><h6>Next Level:</h6> <p>Starter{nextLN} at 999{nextLP} points!{point}</p></Row><hr />
+                <Row><h6>Next Level:</h6> <p>{nextLN} at {nextLP} points!</p></Row><hr />
                 <Row>
                 <h6>Current Achievement:</h6>
-                    <p>Welcome!</p> 
-                    <p>First ToDo Added!</p>
-                    <p>First Plan Added!</p></Row><hr />
+                    <p></p> 
+                    <p></p>
+                    <p></p></Row><hr />
                 <h6>Current Badges:</h6>
                     <div>
-                        <img src={require('./Pics/Badges/badges1.1.jpg')} style={{width:'60px',height:'60px'}} alt="badges1.1"></img>
+                        {/*<img src={require('./Pics/Badges/badges1.1.jpg')} style={{width:'60px',height:'60px'}} alt="badges1.1"></img>
                         <img src={require('./Pics/Badges/badges1.2.jpg')} style={{width:'60px',height:'60px'}} alt="badges1.1"></img>
                         <img src={require('./Pics/Badges/badges1.3.jpg')} style={{width:'60px',height:'60px'}} alt="badges1.1"></img>
-                        <img src={require('./Pics/Badges/badges2.3.jpg')} style={{width:'60px',height:'60px'}} alt="badges1.1"></img>
-                    </div><hr />               
+                        <img src={require('./Pics/Badges/badges2.3.jpg')} style={{width:'60px',height:'60px'}} alt="badges1.1"></img>*/}
+                    </div><hr />
+                </div>
+                :
+                <Col>
+                <p>Connect to the Gamification Framework to view your gamification information!</p>
+                <Button onClick={connect}>Connect</Button> 
+                </Col>}            
             </Col>
+
         </Container>
     )
 }
