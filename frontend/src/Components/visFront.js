@@ -19,17 +19,48 @@ const Overview = () => {
     const [uid,setUid] = useState('')
     const [password,setPassword] = useState('')
     const [modalOpen, setModalOpen] = useState(false)
-    const [connected, setConnected] = useState(localStorage.getItem("connected") || false)
+    const [connected, setConnected] = useState(localStorage.getItem("connected") || "false")
+    const [token, setToken] = useState("")
 
     const openModal = () => {
         setModalOpen(true)
     }
     const connect = () => {
-        setConnected(true)
+        setConnected("true")    
         localStorage.setItem("connected",true)
     }
     const closeModal = () => {
         setModalOpen(false)
+    }
+    const validateMember = async() => {
+        const username = token['preferred_username']
+        const password = token['sub']
+        const authData = username+':'+password
+
+        const response = await fetch('http://localhost:8080/gamification/games/validation', {
+                mode: 'cors',
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Basic ' + btoa(authData),
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+        })
+        const json = await response.json()
+        if(response.ok) {
+            console.log(json)
+            const response2 = await fetch('http://localhost:8080/gamification/games/data/gtms/silyu', {
+                mode: 'cors',
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Basic ' + btoa(authData),
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+        })
+        const json2 = await response2.json()
+        console.log(json2)
+        }
     }
     const validateAdmin = async (e) => {
         e.preventDefault()
@@ -50,7 +81,10 @@ const Overview = () => {
     useEffect(() => {
         const fetchStatus = async ()=> {
             const token = sessionStorage.getItem('access-token')
+            const c = localStorage.getItem('connected')
+            
             const tmp = jwt_decode(token)
+            setToken(tmp)
             const username = tmp['preferred_username']
             const password = tmp['sub']
             const name = tmp['name']
@@ -62,8 +96,7 @@ const Overview = () => {
             setUid(uids)
             const authData = username+':'+password
             setName(name)
-            //setAuth(authData)
-            const response = await fetch('http://localhost:8080/gamification/visualization/status/thesis/silyu', {
+            const response = await fetch('http://localhost:8080/gamification/visualization/status/gtms/silyu', {
                 mode: 'cors',
                 method: 'GET',
                 headers: {
@@ -125,13 +158,13 @@ const Overview = () => {
                         <Badge bg='primary' onClick={setModalOpen}>Student</Badge>}
                     </Col>
                 </Row>
-                <hr />
-                {connected == "true" ?
-                <div>
                 <Row><br/></Row><hr />
+                {connected === "true" ?
+                <div>
+                
                 <Row><h6>Current Points:</h6> <p>{point}</p></Row><hr />
-                <Row><h6>Current Level:</h6> <p>{level}-{levelName}</p></Row><hr />
-                <Row><h6>Next Level:</h6> <p>{nextLN} at {nextLP} points!</p></Row><hr />
+                <Row><h6>Current Level:</h6> <p><span className='text-muted'>Level</span> {level} <span className='text-muted'>:</span> {levelName}</p></Row><hr />
+                <Row><h6>Next Level:</h6> <p>{nextLN} <span className='text-muted'>at</span> {nextLP} <span className='text-muted'>points!</span></p></Row><hr />
                 <Row>
                 <h6>Current Achievement:</h6>
                     <p></p> 
@@ -148,7 +181,7 @@ const Overview = () => {
                 :
                 <Col>
                 <p>Connect to the Gamification Framework to view your gamification information!</p>
-                <Button onClick={connect}>Connect</Button> 
+                <Button onClick={()=>[connect(),validateMember()] }>Connect</Button> 
                 </Col>}            
             </Col>
 
