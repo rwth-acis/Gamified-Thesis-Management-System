@@ -30,7 +30,9 @@ const Chart = () => {
     const confirmComplete = window.confirm('Please confirm the plan is finished?')
     if(confirmComplete) {
       const sub = tokens['sub']
+      const username = tokens['preferred_username']
       const mail = tokens['email']
+      const authData = username+':'+sub
       const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
       const userJson = await userRes.json()
       const uid = userJson._id
@@ -65,7 +67,17 @@ const Chart = () => {
                 }
             })
             const json5 = await response5.json()
-            console.log(json5)
+            const response6 = await fetch('http://localhost:8080/gamification/visualization/actions/gtms/4/silyu', {
+                mode: 'cors',
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Basic ' + btoa(authData),
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            const json6 = await response6.json()
+            console.log("json6:",json6)
             CloseModal()
       }
     }

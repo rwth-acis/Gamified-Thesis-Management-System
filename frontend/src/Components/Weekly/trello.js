@@ -7,6 +7,7 @@ const Trello = () => {
   // The Package delievers possible error messages when drag card to an empty lane(Not 100% happening)! 
   const [ModalOpen, setModalOpen] = useState(false)
   const [deleModalOpen, setDeleModalOpen] = useState(false)
+  const [token, setToken] = useState('')
   const [cardId, setCardId] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -159,6 +160,8 @@ const Trello = () => {
     const token = sessionStorage.getItem('access-token')
     const tmp = jwt_decode(token)
     const sub = tmp['sub']
+    const username = tmp['preferred_username']
+    const authData = username+':'+sub
     if(sourceLaneId !== targetLaneId) {
     switch (targetLaneId) {
       case "lane1":
@@ -191,7 +194,7 @@ const Trello = () => {
               'Content-Type': 'application/json'
             }
         })
-        const tjson2 = res2.json()
+        const tjson2 = await res2.json()
         console.log(tjson2)
         break;
 
@@ -225,7 +228,7 @@ const Trello = () => {
               'Content-Type': 'application/json'
             }
         })
-        const tjson4 = res4.json()
+        const tjson4 = await res4.json()
         console.log(tjson4)
         break;
 
@@ -259,8 +262,19 @@ const Trello = () => {
               'Content-Type': 'application/json'
             }
         })
-        const tjson6 = res6.json()
-        console.log(tjson6)
+        const tjson6 = await res6.json()
+        console.log(tjson6)//window.location.reload()
+        const response6 = await fetch('http://localhost:8080/gamification/visualization/actions/gtms/3/silyu', {
+            mode: 'cors',
+            method: 'POST',
+            headers: {
+                'Authorization': 'Basic ' + btoa(authData),
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+        const json6 = await response6.json()
+        console.log("json6:",json6)
         break;
 
       default:
