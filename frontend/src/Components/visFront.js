@@ -166,18 +166,26 @@ const Overview = () => {
                     const base64data = reader.result;                
                     //console.log(base64data);
                 }
-                const response = await fetch('http://localhost:8080/gamification/badges/gtms/1/img', {
-                    mode: 'cors',
-                    method: 'GET',
-                    headers: {
-                        'Authorization': 'Basic ' + btoa(authData),
-                    }
-                })
-                const imgBlob = await response.blob()
-                setBadges(URL.createObjectURL(imgBlob))
-                const url = reader.readAsDataURL(imgBlob);
+                const badgeId = []
+                const badgeImg = []
+                for(const badge of json){
+                    badgeId.push(badge.id)
+                    const response = await fetch('http://localhost:8080/gamification/badges/gtms/'+badge.id+'/img', {
+                        mode: 'cors',
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'Basic ' + btoa(authData),
+                        }
+                    })
+                    const imgBlob = await response.blob()
+                    badgeImg.push(URL.createObjectURL(imgBlob))
+                }
+                setBadges(badgeImg)
+                console.log(badges)
+                
+                //const url = reader.readAsDataURL(imgBlob);
                 if(response.ok) {
-                    console.log(imgBlob)
+                    //console.log(imgBlob)
                 }
             }
         }
@@ -237,7 +245,13 @@ const Overview = () => {
                     <p></p></Row><hr />
                 <h6>Current Badges:</h6>
                     <div>
-                    <img src={badges} width='40px'/>
+                    {badges?
+                    badges.map(badgeImage => (
+                        <img src={badgeImage} alt="badge" key={badgeImage} width='40px' style={{marginRight:'10px'}}/>
+                    )):
+                    <p>No Badges Currently</p>}
+
+                    
                         {/*<img src={require('./Pics/Badges/badges1.1.jpg')} style={{width:'60px',height:'60px'}} alt="badges1.1"></img>
                         <img src={require('./Pics/Badges/badges1.2.jpg')} style={{width:'60px',height:'60px'}} alt="badges1.1"></img>
                         <img src={require('./Pics/Badges/badges1.3.jpg')} style={{width:'60px',height:'60px'}} alt="badges1.1"></img>

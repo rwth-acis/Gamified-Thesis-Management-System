@@ -13,12 +13,14 @@ const PlanForm = () => {
     const [content, setContent] = useState('')
     const [startDate, setStart] = useState('')
     const [endDate, setEnd] = useState('')
+    const [tokens, setToken] = useState(null)
 
 
     useEffect(() => {
         const cleanUp = false
         const token = sessionStorage.getItem('access-token')
         const tmp = jwt_decode(token)
+        setToken(tmp)
         const sub = tmp['sub']
         const mail = tmp['email']
         const fetchPlan = async () => {
@@ -36,13 +38,24 @@ const PlanForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const token = sessionStorage.getItem('access-token')
+        const sub = tokens['sub']
+        const mail = tokens['email']
+        /*if(tokens) {
+            const sub = tokens['sub']
+            const mail = tokens['email']
+        } else {
+            const token = sessionStorage.getItem('access-token')
+            const tmp = jwt_decode(token)
+            const sub = tmp['sub']
+            const mail = tmp['email']
+        }*/
+        //
         // why does a if{} makees the two lines unsichtbar for response2 
-        const tmp = jwt_decode(token)
-        const sub = tmp['sub']
-        const mail = tmp['email']
+        //
+        //setToken(tmp)
+        
 
-        if(!tmp || !mail) {
+        if(!mail) {
             console.error("No Valid User Info!")
         }
 /*
@@ -97,8 +110,21 @@ const PlanForm = () => {
         })
         const json4 = await response4.json()
         console.log(json4)
+            const username = tokens['preferred_username']
+            const password = tokens['sub']
+            const authData = username+':'+password
+            //window.location.reload()
+            const response5 = await fetch('http://localhost:8080/gamification/visualization/actions/gtms/2/silyu', {
+                mode: 'cors',
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Basic ' + btoa(authData),
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
 
-        if(response.ok && response2.ok && response3.ok && response4.ok) {
+        if(response.ok && response2.ok && response3.ok && response4.ok && response5.ok) {
             // setError(null)
             setTitle('')
             setStart('')
