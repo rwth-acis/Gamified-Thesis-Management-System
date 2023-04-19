@@ -15,6 +15,7 @@ const Chart = () => {
   const [content2, setContent2] = useState('')
   const [start2, setStart2] = useState('')
   const [dueDate2, setDue2] = useState('')
+  const [tokens, setToken] = useState('')
   const [data, setData] = useState(
     [{start: new Date(2020, 6, 1),
     end: new Date(2020, 6, 1),
@@ -25,6 +26,51 @@ const Chart = () => {
     isDisabled: true,
     styles:{progressColor: '#ffbb54', progressSelectedColor: '#ff9e0d'}}])
 
+  const handlePlanComplete = async() => {
+    const confirmComplete = window.confirm('Please confirm the plan is finished?')
+    if(confirmComplete) {
+      const sub = tokens['sub']
+      const mail = tokens['email']
+      const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+      const userJson = await userRes.json()
+      const uid = userJson._id
+      const response = await fetch('http://localhost:5000/api/plan/finish/'+planId, {
+          method: 'PATCH'
+        })
+      const json = await response.json()
+      const planTitle = json.title
+
+      if(response.ok) {
+        const response4 = await fetch('http://localhost:5000/api/hist/',{
+                method: 'POST',
+                body: JSON.stringify({
+                  "types": "Update",
+                  "ofUser":uid,
+                  "content": 'Plan:'+ planTitle + "->'Finished'"
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const json4 = await response4.json()
+            const hid = json4._id
+            console.log("json4:",json4)
+
+            //pushHistToUser
+            const response5 = await fetch('http://localhost:5000/api/user/history/token/',{
+                method: 'POST',
+                body: JSON.stringify({"token": sub,"hid":hid}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const json5 = await response5.json()
+            console.log(json5)
+            CloseModal()
+      }
+    }
+  }
+  
   const handlePlanDelete = async() => {
     const confirmDelete = window.confirm('Are you sure you want to delete this item?');
     if (confirmDelete) {
@@ -154,6 +200,7 @@ const Chart = () => {
     const fetchData = async () => {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
+      setToken(tmp)
       const sub = tmp['sub']
       const mail = tmp['email']
       const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
@@ -220,7 +267,7 @@ const Chart = () => {
                 <Form onSubmit={handleSubmit}>
                   <Form.Group className='mb-3' controlId='title'>
                     <Form.Label>Title</Form.Label>
-                    <Form.Control type="text" placeholder="ToDo Title" required
+                    <Form.Control type="text" placeholder="Plan Title" required
                     value={title} onChange={(e) => setTitle(e.target.value)} />    
                   </Form.Group>
                   {/*<Form.Group className='mb-3' controlId='content'>
@@ -251,6 +298,7 @@ const Chart = () => {
               </Modal.Body>
               <Modal.Footer>
               <Button variant="danger" onClick={handlePlanDelete}>Delete Plan</Button>
+              <Button variant="success" onClick={handlePlanComplete}>Plan Completed</Button>
               </Modal.Footer>
             </Modal>
         </div>
