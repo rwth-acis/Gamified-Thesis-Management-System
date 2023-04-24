@@ -89,7 +89,7 @@ const Overview = () => {
             setToken(tmp)
             const username = tmp['preferred_username']
             const password = tmp['sub']
-            const name = tmp['name']
+            const name = tmp['given_name']
             const mail = tmp['email']
             const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
             const userJson = await userRes.json()

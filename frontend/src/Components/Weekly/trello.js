@@ -230,6 +230,9 @@ const Trello = () => {
         })
         const tjson4 = await res4.json()
         console.log(tjson4)
+        if(res4.ok){
+          window.location.reload()
+        }
         break;
 
       case "lane3":
@@ -345,10 +348,13 @@ const Trello = () => {
                             title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
                         }]
           })
-          i++
+          if(res.ok) {
+            i++
+          }
         }
         console.log(data1)
         setT(data1)
+        console.log("taskt:",taskt)
       }
       return () => {
         cleanUp = true
@@ -407,11 +413,16 @@ const Trello = () => {
                             title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
                         }] 
           })
-          i++
+          if(res.ok) {
+            i++
+          }
         }
         console.log(data2)
+        
         setD(data2)
+        
       }
+      console.log("taskd:",taskd)
       return () => {
         cleanUp = true
       }
@@ -471,10 +482,13 @@ const Trello = () => {
                             title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
                         }]*/  
           })
-          i++
+          if(res.ok) {
+            i++
+          }
         }
         console.log(data3)
         setF(data3)
+        console.log("taskf:",taskf)
       }
       return () => {
         cleanUp = true
@@ -483,25 +497,60 @@ const Trello = () => {
     fetchF()
   },[ModalOpen])
 
+  /*
+    useEffect(()=>{
+      const data = {
+        lanes: [
+          {
+            id: 'lane1',
+            title: 'To Do',
+            label: '',
+            cards: taskt || [{
+              id: "placeholder",
+              title: "placeholder",
+              description: "Placeholders will disappear when new todo is added on the lane",
+              label: ":)"}]
+          },
+          {
+            id: 'lane2',
+            title: 'Doing',
+            label: '',
+            cards: taskd 
+          },
+          {
+            id: 'lane3',
+            title: 'Finished',
+            label: '',
+            cards: taskf || [{
+              id: "placeholder3",
+              title: "placeholder",
+              description: "Placeholders will disappear when new todo is added on the lane",
+              label: ":)"}]
+          }
+        ]
+      }
+      setData(data)
+    },[taskd,taskf,taskt])
+    */
     const data = {
         lanes: [
           {
             id: 'lane1',
             title: 'To Do',
             label: '',
-            cards: taskt
+            cards: taskt 
           },
           {
             id: 'lane2',
             title: 'Doing',
             label: '',
-            cards: taskd
+            cards: taskd 
           },
           {
             id: 'lane3',
             title: 'Finished',
             label: '',
-            cards: taskf
+            cards: taskf 
           }
         ]
       }
