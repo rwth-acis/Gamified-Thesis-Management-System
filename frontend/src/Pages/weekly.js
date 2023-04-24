@@ -19,6 +19,7 @@ const Weekly = () => {
                   <Trello />
                 </Col>  
                 <Col sm={4}>
+                  <br/>
                   <TodoForm />
                 </Col>
             </Row>

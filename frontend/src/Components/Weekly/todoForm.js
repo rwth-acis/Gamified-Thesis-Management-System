@@ -149,8 +149,11 @@ const TodoForm = () => {
 
     return(
         <Form onSubmit={handleSubmit}>
+            <h4 className='text-muted'>Let's create a Todo for today!</h4>
+            <br/>
+            <hr/>
             <Form.Group className='mb-3' controlId='title'>
-                <Form.Label>Title</Form.Label>
+                <Form.Label className=''>Title</Form.Label>
                 <Form.Control type="text" placeholder="ToDo Title" required
                 value={title} onChange={(e) => setTitle(e.target.value)} />
                 
@@ -173,6 +176,7 @@ const TodoForm = () => {
                     {planOption}
                 </Form.Select>
             </Form.Group>
+            <hr/>
             <Button variant="primary" type="submit">
                  Submit
             </Button>

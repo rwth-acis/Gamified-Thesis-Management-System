@@ -561,11 +561,12 @@ const Trello = () => {
       
       return(
         <div>
+          <br />
             <Board data={data} cardDraggable={true} handleDragEnd={handleDragEnd}
               hideCardDeleteIcon={true}
               onCardDelete={handleCardDelete}
               onCardClick={handleCardClick}
-              style={{backgroundColor: '#F0F5F9',color:'#2C454B'}}
+              style={{backgroundColor: '#FCFCFC',color:'#2C454B'}}
               laneStyle={{backgroundColor: '#92E3A9'}}
               cardStyle={{backgroundColor: '#F0F5F9'}} />
 

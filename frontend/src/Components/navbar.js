@@ -8,6 +8,7 @@ import { useState,useEffect } from 'react';
 import Logo from './Pics/acis.jpg'
 import DropdownMenu from 'react-bootstrap/esm/DropdownMenu';
 import Overview from './visFront';
+import { NavDropdown } from 'react-bootstrap';
 
 const Navibar = (token) => {
 
@@ -55,10 +56,11 @@ const Navibar = (token) => {
         <Navbar.Brand href="/"><img src={Logo} alt='Logo' style={{width: "80px"}} /></Navbar.Brand>
         {tokens ?
         <Nav className="me-auto">
-          <Dropdown drop='left'>
+          <NavDropdown title='Statistics' drop='left'><div style={{width: '300px'}}><Overview ></Overview></div></NavDropdown>
+          {/*<Dropdown drop='left'>
               <Dropdown.Toggle variant='outline-primary'>Statistics</Dropdown.Toggle>
               <DropdownMenu style={{width: '300px'}}><Overview></Overview></DropdownMenu>
-          </Dropdown>
+          </Dropdown>*/}
           <Nav.Link href="/">Home</Nav.Link>
           <Nav.Link href="/weekly">ToDos</Nav.Link>
           <Nav.Link href="/project">Plans</Nav.Link>
