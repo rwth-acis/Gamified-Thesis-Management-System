@@ -9,10 +9,11 @@ const Project = () => {
     return(
         <Container fluid>
             <Row>
+              {/**
                 <Col sm={2} className="bg-light">
                   <Overview name={"Silyu"}></Overview>
-                </Col>
-                <Col sm={10}>
+                </Col> */}
+                <Col sm={12}>
                   <Chart />
                   <hr />
                   <PlanForm />

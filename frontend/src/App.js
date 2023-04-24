@@ -8,9 +8,7 @@ import Login from "./Pages/login";
 import History from "./Pages/history";
 import LoginPage from "./Pages/loginPage";
 import Spinner from "react-bootstrap/Spinner";
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-// import LoginPage from "./Pages/loginPage";
+
 
 function App() {
 
@@ -26,6 +24,7 @@ function App() {
 }, [tokens]);
 
   return ( // login not really finished
+
     <div className="App" >
       <BrowserRouter>
         <Navibar />
@@ -46,6 +45,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </div>
+
   )
 }
 

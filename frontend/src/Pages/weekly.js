@@ -11,13 +11,14 @@ const Weekly = () => {
     return(
         <Container fluid>
             <Row>
+              {/** 
                 <Col sm={2} className="bg-light">
                   <Overview name={"Silyu"}></Overview>
-                </Col>
-                <Col sm={7}>
+    </Col>*/}
+                <Col sm={8}>
                   <Trello />
                 </Col>  
-                <Col sm={3}>
+                <Col sm={4}>
                   <TodoForm />
                 </Col>
             </Row>

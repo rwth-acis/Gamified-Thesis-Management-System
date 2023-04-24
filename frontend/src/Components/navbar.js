@@ -1,12 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.css';
-import { Link } from 'react-router-dom';
-import Login from "../Pages/login"
+import Dropdown from 'react-bootstrap/Dropdown';
 import jwt_decode from 'jwt-decode';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useState,useEffect } from 'react';
 import Logo from './Pics/acis.jpg'
+import DropdownMenu from 'react-bootstrap/esm/DropdownMenu';
+import Overview from './visFront';
 
 const Navibar = (token) => {
 
@@ -54,6 +55,10 @@ const Navibar = (token) => {
         <Navbar.Brand href="/"><img src={Logo} alt='Logo' style={{width: "80px"}} /></Navbar.Brand>
         {tokens ?
         <Nav className="me-auto">
+          <Dropdown drop='left'>
+              <Dropdown.Toggle variant='outline-primary'>Statistics</Dropdown.Toggle>
+              <DropdownMenu style={{width: '300px'}}><Overview></Overview></DropdownMenu>
+          </Dropdown>
           <Nav.Link href="/">Home</Nav.Link>
           <Nav.Link href="/weekly">ToDos</Nav.Link>
           <Nav.Link href="/project">Plans</Nav.Link>

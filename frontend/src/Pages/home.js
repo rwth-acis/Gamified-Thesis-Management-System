@@ -142,10 +142,10 @@ const Home = () => {
     return( 
         <Container fluid>
             <Row>
-              <Col sm={2} className="bg-light">
+              {/*<Col sm={2} className="bg-light">
                 <Overview></Overview>
-              </Col>
-              <Col sm={10}>
+    </Col>*/}
+              <Col sm={12}>
                 <Row><br /></Row>
                 <Row><h3 className="text-center">Welcome to the thesis management system of the RWTH Informatik 5</h3></Row>
                 <Row><hr /></Row>
