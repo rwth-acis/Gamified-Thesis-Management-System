@@ -122,7 +122,7 @@ const deleteTodo = async (req,res) => {
             await Plan.updateOne({ _id: plan._id }, { $pull: { todos: id } });
         })
         const todo = await ToDo.findByIdAndDelete({_id: id})
-        res.status(200).json([users,plans,todo])
+        res.status(200).json({user:users,plan:plans,todo:todo})
     } catch (error) {
         res.status(400).json({error:error.message})
     }

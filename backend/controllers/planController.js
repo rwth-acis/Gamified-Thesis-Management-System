@@ -1,5 +1,6 @@
 const Plan = require('../models/planModel')
-const Todo = require('../models/todoModel')
+const ToDo = require('../models/todoModel') 
+const User = require('../models/userModel')
 const mongoose = require('mongoose')
 
 const getAllPlan = async (req,res) => {
@@ -66,8 +67,36 @@ const deletePlan = async (req,res) => {
         return res.status(404).json({error: "no such plan"}) 
     }
     try {
+        const todos = await ToDo.find({ ofPlan: id });
+        await ToDo.deleteMany({ofPlan: {$in: [id]}})
+        const users = await User.find({ hasPlan: id });
+
+        await Promise.all(
+          users.map(async (user) => {
+            user.hasPlan.pull(id);
+            todos.forEach((todo) => {
+              user.hasToDo.pull(todo.id);
+            });
+    
+            await user.save();
+          })
+        )
+        /*
+        const users = await User.findOneAndUpdate({hasPlan: {$in: [id]}},{
+            $pull: {
+                hasPlan: id,
+                hasToDo: {$in: todos.map((todo) => todo._id)}
+            }
+        })*/
+        //const users2 = await User.findOneAndUpdate({_id:users._id},{
+        //    $pull: {hasToDo: {$in: todos.map((todo) => todo._id)}}
+        //})
+        
+        //todos.forEach(async (Todo) => {
+        //    await Todo.updateOne({ _id: Todo._id }, { $pull: {ofPlan : id } });
+        //})
         const plan = await Plan.findByIdAndDelete({_id: id})
-        res.status(200).json(plan)
+        res.status(200).json({user:users,todo:todos,plan:plan})
     } catch (error) {
         res.status(400).json({error:error.message})
     }
