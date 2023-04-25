@@ -1,4 +1,6 @@
 const ToDo = require('../models/todoModel') 
+const User = require('../models/userModel')
+const Plan = require('../models/planModel')
 const mongoose = require('mongoose')
 
 const createToDo = async (req,res) => {
@@ -108,8 +110,19 @@ const deleteTodo = async (req,res) => {
         return res.status(404).json({error: "no such todo"}) 
     }
     try {
+        const users = await User.findOneAndUpdate({hasToDo: {$in: [id]}},{
+            $pull: {hasToDo: id}
+        })
+        
+        //users.forEach(async (user) => {
+        //    await User.updateOne({ _id: user._id }, { $pull: { hasTodo: id } });
+        //})
+        const plans = await Plan.find({todos: {$in: [id]}})
+        plans.forEach(async (plan) => {
+            await Plan.updateOne({ _id: plan._id }, { $pull: { todos: id } });
+        })
         const todo = await ToDo.findByIdAndDelete({_id: id})
-        res.status(200).json(todo)
+        res.status(200).json([users,plans,todo])
     } catch (error) {
         res.status(400).json({error:error.message})
     }
