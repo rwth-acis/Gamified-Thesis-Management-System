@@ -1,24 +1,46 @@
 import Chart from "../Components/Project/gantt";
 import PlanForm from "../Components/Project/planForm";
-import Overview from "../Components/visFront";
+import { useState } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { Button, Modal } from "react-bootstrap";
 
 const Project = () => {
+    const [ModalOpen, setModalOpen] = useState(false)
+    const CloseModal = () => {
+      setModalOpen(false)
+    }
+    const handleClick = () => {
+      setModalOpen(true)
+    }
     return(
         <Container fluid>
-            <Row>
+            
               {/**
                 <Col sm={2} className="bg-light">
                   <Overview name={"Silyu"}></Overview>
-                </Col> */}
-                <Col sm={12}>
-                  <Chart />
-                  <hr />
+                </Col> 
+                <Col sm={3}>
                   <PlanForm />
                 </Col>
-            </Row>
+                <Modal show={ModalOpen} onHide={CloseModal}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>New Plan</Modal.Title>
+                    </Modal.Header>
+                <Modal.Body>
+                    <PlanForm />
+                </Modal.Body>
+                </Modal>*/}
+                  <br />
+                  <Row>
+                    <Col sm={8}>
+                        <Chart />
+                    </Col>
+                    <Col sm={4}>
+                        <PlanForm />
+                    </Col>           
+                  </Row>
         </Container>
     )
 }

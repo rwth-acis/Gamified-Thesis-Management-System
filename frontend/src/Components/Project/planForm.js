@@ -138,6 +138,9 @@ const PlanForm = () => {
     return(
         <Container fluid>
             <Form onSubmit={handleSubmit}>
+            <h4 className='text-muted'>Let's create a Plan for today!</h4>
+            <br/>
+            <hr/>
                 <Row>
                     <Col>
                         <Form.Group className='mb-3' controlId='title'>
@@ -170,6 +173,7 @@ const PlanForm = () => {
                         </Form.Group>
                     </Col>
                 </Row>
+                <hr />
             <Button variant="primary" type="submit">
                  Submit
             </Button>
