@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import Board from 'react-trello'
 import jwt_decode from 'jwt-decode';
-import { Modal, Button, Form } from 'react-bootstrap'
+import { Modal, Button, Form, ToastContainer } from 'react-bootstrap'
+import Toast from 'react-bootstrap/Toast'
 
 const Trello = () => {
   // The Package delievers possible error messages when drag card to an empty lane(Not 100% happening)! 
   const [ModalOpen, setModalOpen] = useState(false)
+  const [showToast, setShowToast] = useState(false)
   const [deleModalOpen, setDeleModalOpen] = useState(false)
   const [token, setToken] = useState('')
   const [cardId, setCardId] = useState('')
@@ -27,6 +29,18 @@ const Trello = () => {
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
+
+  const toggleToast = () => {
+    setShowToast(!showToast)
+  }
+  /*
+  const openToast = () => {
+    setShowToast(true)
+  }
+  const closeToast = () => {
+    setShowToast(false)
+  }
+  */
 
   const handleCardDelete = async() => {
     const confirmDelete = window.confirm('Are you sure you want to delete this item?');
@@ -244,6 +258,9 @@ const Trello = () => {
             }
         })
         const json3 = await response3.json()
+        if(response3.ok) {
+          toggleToast()
+        }
         const title3 = json3.title
         console.log(json3)
         //create History
@@ -277,7 +294,6 @@ const Trello = () => {
             }
         })
         const json6 = await response6.json()
-        console.log("json6:",json6)
         break;
 
       default:
@@ -361,7 +377,7 @@ const Trello = () => {
       }
     }
     fetchT()
-  },[ModalOpen])
+  },[ModalOpen, showToast])
 
   useEffect(() => {
     const cleanUp = false
@@ -428,7 +444,7 @@ const Trello = () => {
       }
     }
     fetchD()
-  },[ModalOpen])
+  },[ModalOpen, showToast])
 
   useEffect(() => {
     const cleanUp = false
@@ -458,6 +474,7 @@ const Trello = () => {
             label: "Plan:"+pjson.title,
             tags : [{ // if due date is later than today
               bgcolor: '#E0E0E0',
+              //bgcolor: '#4D4DFF',
               color: 'white',
               title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
               }]
@@ -495,7 +512,7 @@ const Trello = () => {
       }
     }
     fetchF()
-  },[ModalOpen])
+  },[ModalOpen, showToast])
 
   /*
     useEffect(()=>{
@@ -569,6 +586,15 @@ const Trello = () => {
               style={{backgroundColor: '#FCFCFC',color:'#2C454B'}}
               laneStyle={{backgroundColor: '#92E3A9'}}
               cardStyle={{backgroundColor: '#F0F5F9'}} />
+
+            <ToastContainer position='top-center'>
+            <Toast show={showToast} onClose={toggleToast} bg='light'>
+                <Toast.Header >
+                   <h5>Congrats!</h5>
+                </Toast.Header>
+                <Toast.Body><h6>Woohoo, you're one step closer to success!</h6></Toast.Body>
+            </Toast>
+            </ToastContainer>
 
             <Modal show={ModalOpen} onHide={CloseModal}>
               {/*cardId*/}

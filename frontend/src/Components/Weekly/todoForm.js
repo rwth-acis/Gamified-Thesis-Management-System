@@ -149,7 +149,7 @@ const TodoForm = () => {
 
     return(
         <Form onSubmit={handleSubmit}>
-            <h4 className='text-muted'>Let's create a Plan for Today!</h4>
+            <h4 className='text-muted'>Let's create a Todo for Today!</h4>
             <br/>
             <hr/>
             <Form.Group className='mb-3' controlId='title'>
