@@ -473,7 +473,7 @@ const Trello = () => {
             description: json[i].content,
             label: "Plan:"+pjson.title,
             tags : [{ // if due date is later than today
-              bgcolor: '#E0E0E0',
+              bgcolor: '#6495ED',
               //bgcolor: '#4D4DFF',
               color: 'white',
               title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
