@@ -209,7 +209,11 @@ const Trello = () => {
             }
         })
         const tjson2 = await res2.json()
-        console.log(tjson2)
+        if(res2.ok) {
+          if(sourceLaneId === "lane2") {
+            window.location.reload()
+          }
+        }
         break;
 
       case "lane2":
@@ -294,6 +298,11 @@ const Trello = () => {
             }
         })
         const json6 = await response6.json()
+        if(response6.ok) {
+          if(sourceLaneId === "lane2") {
+            window.location.reload()
+          }
+        }
         break;
 
       default:
@@ -561,7 +570,11 @@ const Trello = () => {
             id: 'lane2',
             title: 'Doing',
             label: '',
-            cards: taskd 
+            cards: taskd || [{
+              id: "placeholder3",
+              title: "placeholder",
+              description: "Placeholders will disappear when new todo is added on the lane",
+              label: ":)"}]
           },
           {
             id: 'lane3',
@@ -584,7 +597,7 @@ const Trello = () => {
               onCardDelete={handleCardDelete}
               onCardClick={handleCardClick}
               style={{backgroundColor: '#FCFCFC',color:'#2C454B'}}
-              laneStyle={{backgroundColor: '#92E3A9'}}
+              laneStyle={{backgroundColor: '#DAEBF2'}}
               cardStyle={{backgroundColor: '#F0F5F9'}} />
 
             <ToastContainer position='top-center'>
