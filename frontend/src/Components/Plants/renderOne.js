@@ -4,6 +4,7 @@ import Dragon from './dragonTree'
 import Pilea from './pilea'
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
 
 const Render = ({plant, seed, status, title, progress, start, due, content}) => {
     let p = plant
@@ -50,18 +51,22 @@ const Render = ({plant, seed, status, title, progress, start, due, content}) => 
 
     return(
         <OverlayTrigger placement="top" overlay={<Tooltip><div>Start: {(new Date(st)).toLocaleDateString("en-GB")}</div> <div>Due: {(new Date(d)).toLocaleDateString("en-GB")}</div>"{c}"<div></div></Tooltip>}>
-        <div className='card border-success' style={{width: '200px', margin: '10px 10px 10px 10px'}}>
-            <div className='card-img-top text-center' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{renderRandomPlant()}</div>
+        <Card style={{width: '200px', margin: '10px 10px 10px 10px',boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)'}}>
+            {/*<Card.Img className='card-img-top text-center' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{renderRandomPlant()}</Card.Img>*/}
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{renderRandomPlant()}</div>
             <hr />    
-            <div className='card-body'>
-                <h6 className='card-title'>{i}</h6>
-                <ProgressBar style={{height: '3px'}} striped variant="success" now={r} />
+            <Card.Body >
+                <Card.Title>{i}</Card.Title>
+                
                 {/*<div className="progress" style={{height: '5px'}}>
                     <div className="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style={{width: r}} aria-valuenow={r} aria-valuemin="0" aria-valuemax="100">{r}</div>
                     
                 </div>*/}
-            </div>
-        </div>
+            </Card.Body>
+            <ProgressBar style={{height: '3px'}} striped variant="success" now={r} />
+            <br />
+            <br />
+        </Card>
         </OverlayTrigger>
     )
 }
