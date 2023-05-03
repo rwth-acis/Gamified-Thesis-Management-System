@@ -63,7 +63,7 @@ const Render = ({plant, seed, status, title, progress, start, due, content}) => 
                     
                 </div>*/}
             </Card.Body>
-            <ProgressBar style={{height: '3px'}} striped variant="success" now={r} />
+            <ProgressBar style={{height: '3px'}} striped variant="#6495ED" now={r} />
             <br />
             <br />
         </Card>

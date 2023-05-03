@@ -24,7 +24,7 @@ const Chart = () => {
     type:'Add a plan',
     progress: 45,
     isDisabled: true,
-    styles:{progressColor: '#ffbb54', progressSelectedColor: '#ff9e0d'}}])
+    styles:{progressColor: '#6495ED', progressSelectedColor: '#ff9e0d'}}])
 
   const handlePlanComplete = async() => {
     const confirmComplete = window.confirm('Please confirm the plan is finished?')
@@ -249,7 +249,7 @@ const Chart = () => {
             type:'task',
             progress: progress[i]*100,
             isDisabled: true,
-            styles: { progressColor: '#ffbb54', progressSelectedColor: '#ff9e0d' }
+            styles: { progressColor: '#6495ED', progressSelectedColor: '#6495ED' }
           })
           i++
         setData(data1)
