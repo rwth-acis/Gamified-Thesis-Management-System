@@ -29,7 +29,7 @@ app.use('/api/hist',histRoutes)
 mongoose.connect(process.env.MONGO_URI)
     .then(()=>{
         //listen for requests
-        app.listen(process.env.PORT, ()=>{
+        app.listen(process.env.PORT, 'https://milki-psy.dbis.rwth-aachen.de/thesis-system' , ()=>{
         console.log("connected to db and listening on port 5000")
         })
     })
