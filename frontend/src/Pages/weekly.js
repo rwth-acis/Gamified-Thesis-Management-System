@@ -9,7 +9,7 @@ import Col from 'react-bootstrap/Col';
 const Weekly = () => {
   
     return(
-        <Container fluid>
+        <Container >
             <Row>
               {/** 
                 <Col sm={2} className="bg-light">

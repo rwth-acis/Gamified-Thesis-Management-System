@@ -268,7 +268,7 @@ const Chart = () => {
   
     return(
         <div>
-          <Gantt tasks={data} viewMode={"Week"} preStepsCount={1} onClick={handlePlanClick} ganttHeight={"500px"} />
+          <Gantt tasks={data} viewMode={"Week"} preStepsCount={1} onClick={handlePlanClick} ganttHeight={"300px"} />
 
           <Modal show={ModalOpen} onHide={CloseModal}>
               {/*cardId*/}

@@ -15,7 +15,7 @@ const Project = () => {
       setModalOpen(true)
     }
     return(
-        <Container fluid>
+        <Container >
             
               {/**
                 <Col sm={2} className="bg-light">
@@ -33,14 +33,14 @@ const Project = () => {
                 </Modal.Body>
                 </Modal>*/}
                   <br />
-                  <Row>
-                    <Col sm={8}>
+                  <Col>
+                    <Row >
                         <Chart />
-                    </Col>
-                    <Col sm={4}>
+                    </Row>
+                    <Row >
                         <PlanForm />
-                    </Col>           
-                  </Row>
+                    </Row>           
+                  </Col>
         </Container>
     )
 }

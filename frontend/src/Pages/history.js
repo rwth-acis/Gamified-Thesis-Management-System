@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import Table from 'react-bootstrap/Table'
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import { Container } from "react-bootstrap";
 
 const History = () => {
 
@@ -134,7 +135,7 @@ const History = () => {
     ))
 
     return(
-      
+      <Container>
       <div>
         <Form>
           <Form.Group className='mb-3' controlId='ofPlan'>  
@@ -345,6 +346,7 @@ const History = () => {
           </Tab>
         </Tabs>
       </div>
+      </Container>
     )
 }
 export default History

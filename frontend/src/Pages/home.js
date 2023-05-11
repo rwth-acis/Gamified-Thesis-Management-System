@@ -140,14 +140,14 @@ const Home = () => {
 
     // conditionally rendering
     return( 
-        <Container fluid>
+        <Container >{/**fluid */}
             <Row>
               {/*<Col sm={2} className="bg-light">
                 <Overview></Overview>
     </Col>*/}
               <Col sm={12}>
                 <Row><br /></Row>
-                <Row><h3 className="text-center">Welcome to the thesis management system of the RWTH Informatik 5</h3></Row>
+                <Row><h1 className="text-center">Welcome to the thesis management system of the RWTH Informatik 5</h1></Row>
                 <Row><hr /></Row>
                 <Row><h4 className="text-center">An Overview of the Most Important Plans of Your Project:</h4></Row>
                 <Row><br /></Row>
