@@ -67,7 +67,7 @@ const Chart = () => {
                 }
             })
             const json5 = await response5.json()
-            const response6 = await fetch('http://localhost:8080/gamification/visualization/actions/gtms/4/silyu', {
+            const response6 = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/actions/gtms/4/silyu', {
                 mode: 'cors',
                 method: 'POST',
                 headers: {

@@ -14,7 +14,7 @@ const Home = () => {
     const [tokens, setToken] = useState('')
     const [uid, setUid] = useState('')
     // const [gameid, setId] = useState('thesis')
-    // const [url, setUrl] = useState('http://localhost:8080/gamification')
+    // const [url, setUrl] = useState('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification')
     const [name, setName] = useState(' ')
     const [fname, setFname] = useState('')
     const [lname, setLname] = useState('')
@@ -118,7 +118,7 @@ const Home = () => {
         const validate = async() => {
             const cleanUp = false
             
-            const response = await fetch('http://localhost:8080/gamification/games/validation', {
+            const response = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/games/validation', {
                 mode: 'cors',
                 method: 'POST',
                 headers: {

@@ -114,7 +114,7 @@ const PlanForm = () => {
             const password = tokens['sub']
             const authData = username+':'+password
             //window.location.reload()
-            const response5 = await fetch('http://localhost:8080/gamification/visualization/actions/gtms/2/silyu', {
+            const response5 = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/actions/gtms/2/silyu', {
                 mode: 'cors',
                 method: 'POST',
                 headers: {

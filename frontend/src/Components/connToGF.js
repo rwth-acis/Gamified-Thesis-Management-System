@@ -5,7 +5,7 @@ const Conn = (token) => {
 
     useState = (() => {
         const validate = async() => {
-            const response = await fetch('http://localhost:8080/gamification/games/validation', {
+            const response = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/games/validation', {
                 method: 'POST',
                 //body: JSON.stringify({
                 //  statue: "Finished"

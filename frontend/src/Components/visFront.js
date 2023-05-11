@@ -39,7 +39,7 @@ const Overview = () => {
         const password = token['sub']
         const authData = username+':'+password
 
-        const response = await fetch('http://localhost:8080/gamification/games/validation', {
+        const response = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/games/validation', {
                 mode: 'cors',
                 method: 'POST',
                 headers: {
@@ -51,7 +51,7 @@ const Overview = () => {
         const json = await response.json()
         if(response.ok) {
             console.log(json)
-            const response2 = await fetch('http://localhost:8080/gamification/games/data/gtms/silyu', {
+            const response2 = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/games/data/gtms/silyu', {
                 mode: 'cors',
                 method: 'POST',
                 headers: {
@@ -98,7 +98,7 @@ const Overview = () => {
             setUid(uids)
             const authData = username+':'+password
             setName(name)
-            const response = await fetch('http://localhost:8080/gamification/visualization/status/gtms/silyu', {
+            const response = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/status/gtms/silyu', {
                 mode: 'cors',
                 method: 'GET',
                 headers: {
@@ -129,7 +129,7 @@ const Overview = () => {
             const username = tmp['preferred_username']
             const password = tmp['sub']
             const authData = username+':'+password
-            const response = await fetch('http://localhost:8080/gamification/visualization/achievements/gtms/silyu', {
+            const response = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/achievements/gtms/silyu', {
                 mode: 'cors',
                 method: 'GET',
                 headers: {
@@ -149,7 +149,7 @@ const Overview = () => {
             const username = tmp['preferred_username']
             const password = tmp['sub']
             const authData = username+':'+password
-            const response = await fetch('http://localhost:8080/gamification/visualization/badges/gtms/silyu', {
+            const response = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/badges/gtms/silyu', {
                 mode: 'cors',
                 method: 'GET',
                 headers: {
@@ -170,7 +170,7 @@ const Overview = () => {
                 const badgeImg = []
                 for(const badge of json){
                     badgeId.push(badge.id)
-                    const response = await fetch('http://localhost:8080/gamification/badges/gtms/'+badge.id+'/img', {
+                    const response = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/badges/gtms/'+badge.id+'/img', {
                         mode: 'cors',
                         method: 'GET',
                         headers: {
