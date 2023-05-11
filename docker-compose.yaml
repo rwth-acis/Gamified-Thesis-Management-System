@@ -12,3 +12,13 @@ services:
       - '3000:3000'
     stdin_open: true
     tty: true
+  database:
+    image: mongo
+    container_name: database_container
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb_data:/data/db
+volumes:
+  mongodb_data:
+    driver: local

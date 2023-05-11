@@ -16,31 +16,15 @@ const Project = () => {
     }
     return(
         <Container >
-            
-              {/**
-                <Col sm={2} className="bg-light">
-                  <Overview name={"Silyu"}></Overview>
-                </Col> 
-                <Col sm={3}>
-                  <PlanForm />
-                </Col>
-                <Modal show={ModalOpen} onHide={CloseModal}>
-                    <Modal.Header closeButton>
-                    <Modal.Title>New Plan</Modal.Title>
-                    </Modal.Header>
-                <Modal.Body>
-                    <PlanForm />
-                </Modal.Body>
-                </Modal>*/}
-                  <br />
-                  <Col>
-                    <Row >
-                        <Chart />
-                    </Row>
-                    <Row >
-                        <PlanForm />
-                    </Row>           
-                  </Col>
+          <br />
+          <Col>
+            <Row >
+              <Chart />
+            </Row>
+            <Row >
+              <PlanForm />
+            </Row>           
+          </Col>
         </Container>
     )
 }

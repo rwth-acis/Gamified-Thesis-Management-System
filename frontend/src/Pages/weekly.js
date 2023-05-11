@@ -11,10 +11,6 @@ const Weekly = () => {
     return(
         <Container >
             <Row>
-              {/** 
-                <Col sm={2} className="bg-light">
-                  <Overview name={"Silyu"}></Overview>
-    </Col>*/}
                 <Col sm={8}>
                   <Trello />
                 </Col>  

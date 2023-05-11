@@ -127,7 +127,7 @@ const TodoForm = () => {
                 const password = token['sub']
                 const authData = username+':'+password
                 //window.location.reload()
-                const response6 = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/actions/gtms/1/silyu', {
+                const response6 = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/actions/thesis_system/1/'+username, {
                 mode: 'cors',
                 method: 'POST',
                 headers: {

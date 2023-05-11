@@ -288,7 +288,7 @@ const Trello = () => {
         })
         const tjson6 = await res6.json()
         console.log(tjson6)//window.location.reload()
-        const response6 = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/actions/gtms/3/silyu', {
+        const response6 = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/actions/thesis_system/3/'+username, {
             mode: 'cors',
             method: 'POST',
             headers: {

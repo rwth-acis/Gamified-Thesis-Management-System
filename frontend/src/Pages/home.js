@@ -113,30 +113,7 @@ const Home = () => {
           }
     }, [])*/
     
-    /*
-    useEffect(() => {
-        const validate = async() => {
-            const cleanUp = false
-            
-            const response = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/games/validation', {
-                mode: 'cors',
-                method: 'POST',
-                headers: {
-                  //"access-token": items,
-                  'Authorization': 'Basic ' + btoa('silyu:'+token),
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json'
-                }
-              })
-            const json = await response.json()
-            console.log("res: ",json)
-            return () => {
-                cleanUp = true
-              }
-        }
-        validate()
-    },[items])
-    */
+   
 
     // conditionally rendering
     return( 
