@@ -9,6 +9,7 @@ import Logo from './Pics/acis.jpg'
 import DropdownMenu from 'react-bootstrap/esm/DropdownMenu';
 import Overview from './visFront';
 import { NavDropdown } from 'react-bootstrap';
+require('dotenv').config()
 
 const Navibar = (token) => {
 
@@ -28,7 +29,7 @@ const Navibar = (token) => {
       //const password = tmp['sub']
       //const name = tmp['name']
       const mail = tmp['email']
-      const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+      const userRes = await fetch('${process.env.BACKEND_URI}/api/user/mail/'+mail)
       const userJson = await userRes.json()
       setRole(userJson.role) 
     }

@@ -5,6 +5,7 @@ import Pilea from './Plants/pilea'
 import jwt_decode from 'jwt-decode';
 import { useState, useEffect, useLayoutEffect } from 'react'
 import Render from './Plants/renderOne'
+require('dotenv').config()
 
 const Pcontainer = () => {
     const [seeds, setSeed] = useState(null)
@@ -24,7 +25,7 @@ const Pcontainer = () => {
             const token = sessionStorage.getItem('access-token')
             const tmp = jwt_decode(token)
             const email = tmp['email']
-            const response = await fetch('http://localhost:5000/api/user/mail/'+email)
+            const response = await fetch('${process.env.BACKEND_URI}/api/user/mail/'+email)
             const json = await response.json()
             if(response.ok) {
               setUid(json._id)
@@ -37,14 +38,14 @@ const Pcontainer = () => {
         console.log("uid",uid)
         const fetchDataS = async ()=> { // modify here, change it to take a user id as input and only renders the plans of this single user
             console.log("fetch working")
-            const response = await fetch('http://localhost:5000/api/user/plan/'+uid, {
+            const response = await fetch('${process.env.BACKEND_URI}/api/user/plan/'+uid, {
                 method: 'GET'
             })
                 const json = await response.json()
                 const progres = []
                 let s = 0
                 while (s < json.length) {
-                    const p = await fetch(`http://localhost:5000/api/plan/progress/${json[s]._id}`, {
+                    const p = await fetch(`${process.env.BACKEND_URI}/api/plan/progress/${json[s]._id}`, {
                         method: 'GET'
                     });
                 if(p.ok) {

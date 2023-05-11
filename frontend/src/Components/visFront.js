@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button'
 import { Modal, Form, Badge } from 'react-bootstrap';
+require('dotenv').config()
 
 const Overview = () => {
     const [name, setName] = useState('Sign In to Continue')
@@ -66,7 +67,7 @@ const Overview = () => {
     }
     const validateAdmin = async (e) => {
         e.preventDefault()
-        const response = await fetch('http://localhost:5000/api/user/admin/'+uid,{
+        const response = await fetch('${process.env.BACKEND_URI}/api/user/admin/'+uid,{
             method: 'POST',
             body: JSON.stringify({"password":password}),
             headers: {
@@ -91,7 +92,7 @@ const Overview = () => {
             const password = tmp['sub']
             const name = tmp['given_name']
             const mail = tmp['email']
-            const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+            const userRes = await fetch('${process.env.BACKEND_URI}/api/user/mail/'+mail)
             const userJson = await userRes.json()
             setRole(userJson.role) 
             const uids = userJson._id

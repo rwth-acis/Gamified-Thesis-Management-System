@@ -5,8 +5,7 @@ import jwt_decode from 'jwt-decode';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import LoginPage from "./loginPage";
-import Spinner from 'react-bootstrap/Spinner';
+require('dotenv').config()
 
 
 
@@ -31,14 +30,14 @@ const Home = () => {
   }, []);
   */
   const findOrCreate = async(fName,lName,mail,sub) => {
-    const response = await fetch('http://localhost:5000/api/user/mail/'+mail)
+    const response = await fetch('${process.env.BACKEND_URI}/api/user/mail/'+mail)
     const json = await response.json()
     if(response.ok && json !== null) {
       return json
     } else if(response.ok && json === null) {
       const user = {'firstName': fName,'lastName': lName,'email':mail,'token': sub, 'workType': 'Bachelor Thesis'}
       console.log('Creating new user')
-      const response2 = await fetch('http://localhost:5000/api/user/', {
+      const response2 = await fetch('${process.env.BACKEND_URI}/api/user/', {
         method: 'POST',
         body: JSON.stringify(user),
         headers: {
