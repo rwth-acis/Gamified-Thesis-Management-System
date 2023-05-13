@@ -12,6 +12,8 @@ const Overview = () => {
     const [name, setName] = useState('Sign In to Continue')
     const [role, setRole] = useState('')
     const [workType, setWorkType] = useState('')
+    const [workName, setWorkName] = useState('')
+    const [isVisible, setIsVisible] = useState(true)
     const [point,setPoint] = useState(null)
     const [levelName,setLevelName] = useState(' ')
     const [level,setLevel] = useState(null)
@@ -97,6 +99,8 @@ const Overview = () => {
             const userJson = await userRes.json()
             setRole(userJson.role) 
             setWorkType(userJson.workType)
+            setWorkName(userJson.workName)
+            setIsVisible(userJson.visible)
             const uids = userJson._id
             setUid(uids)
             const authData = username+':'+password
@@ -225,12 +229,17 @@ const Overview = () => {
                     <Col>
                         <h4 className="text-muted">Welcome,</h4>
                         <h4 className="text-muted">{name}</h4>
-                        <h6>{workType}</h6>
+                        <h7>"{workName}"</h7>
                     </Col>
                     <Col>
                         {role == "Supervisors" ?
                         <Badge bg='success'>Admin</Badge> :
                         <Badge bg='primary' onClick={setModalOpen}>Student</Badge>}
+                        <br />
+                        {workType == "Bachelor Thesis" ?
+                        <Badge bg='info'>BA</Badge> : 
+                        <Badge bg='info'>MA</Badge>
+                        }
                     </Col>
                 </Row>
                 <Row><br/></Row><hr />

@@ -56,7 +56,7 @@ const Navibar = (token) => {
         <Navbar.Brand href="/"><img src={Logo} alt='Logo' style={{width: "80px"}} /></Navbar.Brand>
         {tokens ?
         <Nav className="me-auto">
-          <NavDropdown title='Statistics' drop='down'><div style={{width: '300px'}}><Overview ></Overview></div></NavDropdown>
+          <NavDropdown title='Statistics' drop='down'><div style={{width: '500px'}}><Overview ></Overview></div></NavDropdown>
           {/*<Dropdown drop='left'>
               <Dropdown.Toggle variant='outline-primary'>Statistics</Dropdown.Toggle>
               <DropdownMenu style={{width: '300px'}}><Overview></Overview></DropdownMenu>

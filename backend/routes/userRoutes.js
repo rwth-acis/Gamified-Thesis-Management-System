@@ -24,10 +24,12 @@ const {
     getAllTodoFinishedOfUser,
     validateAdmin,
     getProgressOfUser,
-    updateWorkName
+    updateWorkName,
+    getAllVisibleUser
 } = require('../controllers/userController')
 
 router.get("/",getAllUser)
+router.get("/visible/",getAllVisibleUser)
 router.get("/:id",getUserById)
 router.get("/mail/:mail",getUserByMail)
 router.get("/history/:id",getAllHistOfUser)

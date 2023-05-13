@@ -12,6 +12,14 @@ const getAllUser = async (req,res) => {
         res.status(400).json({error: error.message})
     }
 }
+const getAllVisibleUser = async (req,res) => {
+    try {
+        const user = await User.find({visible: true}).sort({firstName: 1})
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
 const getUserById = async (req,res) => {
     const {id} = req.params
     if (!mongoose.Types.ObjectId.isValid(id)) { 
@@ -363,6 +371,7 @@ const addTodo = async (req,res) => {
 
 module.exports = {
     getAllUser,
+    getAllVisibleUser,
     getUserById,
     getUserByMail,
     getAllHistOfUser,

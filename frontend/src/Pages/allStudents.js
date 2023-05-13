@@ -11,7 +11,7 @@ const All = () => {
     useEffect ( () => {
         const getUserData = async() => {
             try {
-                const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/')
+                const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/visible')
                 const json = await response.json()
                 setUsers(json)
 
