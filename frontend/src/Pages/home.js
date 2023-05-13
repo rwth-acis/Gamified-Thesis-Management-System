@@ -14,10 +14,7 @@ const Home = () => {
     const [uid, setUid] = useState('')
     // const [gameid, setId] = useState('thesis')
     // const [url, setUrl] = useState('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification')
-    const [name, setName] = useState(' ')
-    const [fname, setFname] = useState('')
-    const [lname, setLname] = useState('')
-    const [tmp, setTmp] = useState(null)
+    //const [userId, setUserId] = useState('')
     //const [isLoading, setIsLoading] = useState(true);
 
     /*useEffect(() => {
@@ -34,6 +31,7 @@ const Home = () => {
     const json = await response.json()
     if(response.ok && json !== null) {
       return json
+      //setUserId(json._id)
     } else if(response.ok && json === null) {
       const user = {'firstName': fName,'lastName': lName,'email':mail,'token': sub, 'workType': 'Bachelor Thesis'}
       console.log('Creating new user')
@@ -45,6 +43,7 @@ const Home = () => {
         }
       })
       const json2 = response2.json()
+      //setUserId(json2._id)
       if(response.ok && json2 !== null) {
         return json2
       }
@@ -78,11 +77,8 @@ const Home = () => {
       const getUser = async() => {
         const token = sessionStorage.getItem('access-token')
         setToken(token)
-        const tmp = jwt_decode(token)
-        setName(tmp['name'])
-        setLname(tmp['family_name'])
+        const tmp = jwt_decode(token)  
         const lName = tmp['family_name']
-        setFname(tmp['given_name'])
         const fName = tmp['given_name']
         const email = tmp['email']
         const username = tmp['preferred_username']
@@ -145,7 +141,9 @@ const Home = () => {
                 <Row><br /></Row>
                 <Row><h1 className="text-center">Welcome to the thesis management system of the RWTH Informatik 5</h1></Row>
                 <Row><hr /></Row>
-                <Row><h4 className="text-center">An Overview of the Most Important Plans of Your Project:</h4></Row>
+                <Row>
+                  <h4 className="text-center">An Overview of the Most Important Plans of Your Project:</h4>
+                </Row>
                 <Row><br /></Row>
                 <Row>
                   <div style={{ maxHeight: '550px', overflowY: 'auto', scrollbarWidth: 'thin' }}>

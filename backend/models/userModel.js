@@ -31,9 +31,17 @@ const userSchema = new Schema({
         type: String,
         default: ''
     },
+    workName: {
+        type: String,
+        default: 'No Name Added'
+    },
     workType: {
         type: String,
         required: true
+    },
+    visible: {
+        type: Boolean,
+        default: true
     },
     hasHistory: [{
         type: mongoose.Schema.Types.ObjectId, ref: 'History'

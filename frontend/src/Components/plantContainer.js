@@ -21,6 +21,7 @@ const Pcontainer = () => {
     //const memo = useMemo(() => fetchData(),seeds)
 
     useEffect(() => {
+        
         const getId = async() => {
             const token = sessionStorage.getItem('access-token')
             const tmp = jwt_decode(token)

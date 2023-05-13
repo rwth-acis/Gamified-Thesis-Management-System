@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from "./Pages/home";
 import Weekly from "./Pages/weekly";
 import Project from "./Pages/project";
-import Login from "./Pages/login";
+import All from "./Pages/allStudents";
 import History from "./Pages/history";
 import LoginPage from "./Pages/loginPage";
 import Spinner from "react-bootstrap/Spinner";
@@ -41,7 +41,7 @@ function App() {
           <Route path="/project" element={<Project />} />
           <Route path="/weekly" element={<Weekly />} />
           <Route path="/history" element={<History />} />
-
+          <Route path="/allstudents" element={<All />} />
         </Routes>
       </BrowserRouter>
     </div>

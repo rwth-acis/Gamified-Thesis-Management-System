@@ -15,7 +15,7 @@ const getAllUser = async (req,res) => {
 const getUserById = async (req,res) => {
     const {id} = req.params
     if (!mongoose.Types.ObjectId.isValid(id)) { 
-        return res.status(404).json({error: "no such user"}) 
+        return res.status(404).json({error: "User not found"}) 
     }
     try {
         const user = await User.findOne({_id:id})
@@ -37,7 +37,7 @@ const getAllHistOfUser = async (req,res) => {
     const {id} = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) { 
-        return res.status(404).json({error: "no such user"}) 
+        return res.status(404).json({error: "User not found"}) 
     }
     try {
         const user = await User.findOne({_id:id}).select('hasHistory')
@@ -51,7 +51,7 @@ const getAllPlanOfUser = async (req,res) => {
     const {id} = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) { 
-        return res.status(404).json({error: "no such user"}) 
+        return res.status(404).json({error: "User not found"}) 
     }
     try {
         const user = await User.findOne({_id:id}).select('hasPlan')
@@ -65,7 +65,7 @@ const getAllTodoOfUser = async (req,res) => {
     const {id} = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) { 
-        return res.status(404).json({error: "no such user"}) 
+        return res.status(404).json({error: "User not found"}) 
     }
     try {
         const user = await User.findOne({_id:id}).select('hasToDo')
@@ -79,7 +79,7 @@ const getAllTodoTodoOfUser = async (req,res) => {
     const {id} = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) { 
-        return res.status(404).json({error: "no such user"}) 
+        return res.status(404).json({error: "User not found"}) 
     }
     try {
         const user = await User.findOne({_id:id}).select('hasToDo')
@@ -93,7 +93,7 @@ const getAllTodoDoingOfUser = async (req,res) => {
     const {id} = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) { 
-        return res.status(404).json({error: "no such user"}) 
+        return res.status(404).json({error: "User not found"}) 
     }
     try {
         const user = await User.findOne({_id:id}).select('hasToDo')
@@ -107,7 +107,7 @@ const getAllTodoFinishedOfUser = async (req,res) => {
     const {id} = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) { 
-        return res.status(404).json({error: "no such user"}) 
+        return res.status(404).json({error: "User not found"}) 
     }
     try {
         const user = await User.findOne({_id:id}).select('hasToDo')
@@ -133,7 +133,7 @@ const validateAdmin = async(req,res) => {
     const {password} = req.body
 
     if (!mongoose.Types.ObjectId.isValid(id)) { 
-        return res.status(404).json({error: "no such user"}) 
+        return res.status(404).json({error: "User not found"}) 
     } else if (password != "!ImNowAdmin!2023") {
         return res.status(404).json({error: "wrong password"})
     }
@@ -150,7 +150,7 @@ const updateRole = async (req,res) => {
     const {id, role} = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) { 
-        return res.status(404).json({error: "no such user"}) 
+        return res.status(404).json({error: "User not found"}) 
     }
     try {
         const user = await User.findOneAndUpdate({_id: id}, {
@@ -161,11 +161,27 @@ const updateRole = async (req,res) => {
         res.status(400).json({error:error.message})
     }
 }
+const updateWorkName = async (req,res) => {
+    const {id} = req.params
+    const {workName} = req.body
+
+    if (!mongoose.Types.ObjectId.isValid(id)) { 
+        return res.status(404).json({error: "User not found"}) 
+    }
+    try {
+        const user = await User.findOneAndUpdate({_id: id}, {
+            workName: workName
+        },{ new: true })
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(400).json({error:error.message})
+    }
+}
 const updateToken = async (req,res) => {
     const {id, token} = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) { 
-        return res.status(404).json({error: "no such user"}) 
+        return res.status(404).json({error: "User not found"}) 
     }
     try {
         const user = await User.findOneAndUpdate({_id: id}, {
@@ -180,7 +196,7 @@ const updateWorkType = async (req,res) => {
     const {id, type} = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) { 
-        return res.status(404).json({error: "no such user"}) 
+        return res.status(404).json({error: "User not found"}) 
     }
     try {
         const user = await User.findOneAndUpdate({_id: id}, {
@@ -195,7 +211,7 @@ const pushPlan = async (req,res) => {
     const {uid, pid} = req.body
     
     if(!mongoose.Types.ObjectId.isValid(uid)) {
-        return res.status(404).json({error: "no such user"})
+        return res.status(404).json({error: "User not found"})
     }
     try {
         const user = await User.findOneAndUpdate({_id: uid}, {
@@ -222,7 +238,7 @@ const pushTodo = async (req,res) => {
     const {uid, tid} = req.body
     
     if(!mongoose.Types.ObjectId.isValid(uid)) {
-        return res.status(404).json({error: "no such user"})
+        return res.status(404).json({error: "User not found"})
     }
     try {
         const user = await User.findOneAndUpdate({_id: uid}, {
@@ -249,7 +265,7 @@ const pushHistory = async (req,res) => {
     const {uid, hid} = req.body
     
     if(!mongoose.Types.ObjectId.isValid(uid)) {
-        return res.status(404).json({error: "no such user"})
+        return res.status(404).json({error: "User not found"})
     }
     try {
         const user = await User.findOneAndUpdate({_id: uid}, {
@@ -272,13 +288,52 @@ const pushHistoryWithToken = async (req,res) => {
         res.status(400).json({error:error.message})
     }
 }
+const getProgressOfUser = async (req,res) => {
+    const {id} = req.params
 
+    if (!mongoose.Types.ObjectId.isValid(id)) { 
+        return res.status(404).json({error: "User not found"}) 
+    }
+    try {
+        const user = await User.findOne({_id:id}).populate('hasPlan')
+        
+        let numTodo = 0
+        let numDoing = 0
+        let numFinished = 0
+
+        user.hasPlan.forEach(plan => {
+            if(plan) {
+                switch (plan.status) {
+                    case 'To Do':
+                        numTodo++
+                        break;   
+                    case 'Doing':
+                        numDoing++
+                        break;
+                    case 'Finished':
+                        numFinished++
+                        break;
+                    default:
+                        break;
+                }
+            }
+        })
+        if (numDoing + numFinished + numTodo !== 0) {
+            const progress = (numTodo * 0 + numDoing * 1 + numFinished * 5) / ((numDoing + numTodo + numFinished) * 5)
+            res.status(200).json({"progress": progress})
+        } else {
+            res.status(200).json({"progress": 0})
+        }
+    } catch (error) {
+        res.status(400).json({error:error.message})
+    }
+}
 /*
 const addPlan = async (req,res) => {
     const {id, plan} = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) { 
-        return res.status(404).json({error: "no such user"}) 
+        return res.status(404).json({error: "User not found"}) 
     }
     try {
         const user = await User.findOneAndUpdate({_id: id}, {
@@ -293,7 +348,7 @@ const addTodo = async (req,res) => {
     const {id, todo} = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) { 
-        return res.status(404).json({error: "no such user"}) 
+        return res.status(404).json({error: "User not found"}) 
     }
     try {
         const user = await User.findOneAndUpdate({_id: id}, {
@@ -326,5 +381,7 @@ module.exports = {
     pushPlanWitToken,
     pushTodo,
     pushTodoWithToken,
-    validateAdmin
+    validateAdmin,
+    getProgressOfUser,
+    updateWorkName
 }

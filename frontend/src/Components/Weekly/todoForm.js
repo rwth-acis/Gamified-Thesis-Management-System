@@ -126,7 +126,14 @@ const TodoForm = () => {
             })
             const json5 = await response5.json()
             console.log(json5)
-            if(response5.ok) {
+            const response7 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/doing/'+ofPlan, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const json7 = await response7.json()
+            if(response5.ok && response7.ok) {
                 const username = token['preferred_username']
                 const password = token['sub']
                 const authData = username+':'+password
@@ -140,11 +147,11 @@ const TodoForm = () => {
                     //'Accept': 'application/json'
                 }
             })
-            const json6 = await response6.json()
-            console.log(json6)
-            if(response6.ok) {
-                //window.location.reload()
-            }
+                const json6 = await response6.json()
+                if (response6.ok) {
+                    window.location.reload()
+                }
+
             }
         }
 

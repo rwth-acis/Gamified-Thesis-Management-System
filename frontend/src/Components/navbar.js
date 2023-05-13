@@ -64,6 +64,7 @@ const Navibar = (token) => {
           <Nav.Link href="/">Home</Nav.Link>
           <Nav.Link href="/weekly">ToDos</Nav.Link>
           <Nav.Link href="/project">Plans</Nav.Link>
+          <Nav.Link href="/allstudents">Peers</Nav.Link>
           {role === 'Supervisors' && (
             <Nav.Link href="/history">History</Nav.Link>)}
         </Nav> : null}
