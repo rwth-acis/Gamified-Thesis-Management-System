@@ -22,7 +22,7 @@ function App() {
     }
     setLoading(false)
 }, [tokens]);
-
+  //console.log(process.env.REACT_APP_BACKEND_URI_TEST)
   return ( // login not really finished
 
     <div className="App" >

@@ -26,10 +26,10 @@ app.use('/api/plan',planRoutes)
 app.use('/api/user',userRoutes)
 app.use('/api/hist',histRoutes)
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.REACT_APP_MONGO_URI_TEST)
     .then(()=>{
-        //listen for requests
-        app.listen(process.env.PORT, 'https://milki-psy.dbis.rwth-aachen.de/thesis-system' , ()=>{
+        //listen for requests, 'https://milki-psy.dbis.rwth-aachen.de/thesis-system'
+        app.listen(process.env.REACT_APP_BACKEND_PORT , ()=>{
         console.log("connected to db and listening on port 5000")
         })
     })

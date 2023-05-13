@@ -6,11 +6,12 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button'
 import { Modal, Form, Badge } from 'react-bootstrap';
-require('dotenv').config()
+//require('dotenv').config()
 
 const Overview = () => {
     const [name, setName] = useState('Sign In to Continue')
-    const [role,setRole] = useState('')
+    const [role, setRole] = useState('')
+    const [workType, setWorkType] = useState('')
     const [point,setPoint] = useState(null)
     const [levelName,setLevelName] = useState(' ')
     const [level,setLevel] = useState(null)
@@ -35,6 +36,7 @@ const Overview = () => {
     const closeModal = () => {
         setModalOpen(false)
     }
+    /*
     const validateMember = async() => {
         const username = token['preferred_username']
         const password = token['sub']
@@ -65,9 +67,10 @@ const Overview = () => {
         console.log(json2)
         }
     }
+    */
     const validateAdmin = async (e) => {
         e.preventDefault()
-        const response = await fetch('${process.env.BACKEND_URI}/api/user/admin/'+uid,{
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/admin/'+uid,{
             method: 'POST',
             body: JSON.stringify({"password":password}),
             headers: {
@@ -84,17 +87,16 @@ const Overview = () => {
     useEffect(() => {
         const fetchStatus = async ()=> {
             const token = sessionStorage.getItem('access-token')
-            const c = localStorage.getItem('connected')
-            
             const tmp = jwt_decode(token)
             setToken(tmp)
             const username = tmp['preferred_username']
             const password = tmp['sub']
             const name = tmp['given_name']
             const mail = tmp['email']
-            const userRes = await fetch('${process.env.BACKEND_URI}/api/user/mail/'+mail)
+            const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
             const userJson = await userRes.json()
             setRole(userJson.role) 
+            setWorkType(userJson.workType)
             const uids = userJson._id
             setUid(uids)
             const authData = username+':'+password
@@ -223,6 +225,7 @@ const Overview = () => {
                     <Col>
                         <h4 className="text-muted">Welcome,</h4>
                         <h4 className="text-muted">{name}</h4>
+                        <h6>{workType}</h6>
                     </Col>
                     <Col>
                         {role == "Supervisors" ?
@@ -251,18 +254,12 @@ const Overview = () => {
                         <img src={badgeImage} alt="badge" key={badgeImage} width='40px' style={{marginRight:'10px'}}/>
                     )):
                     <p>No Badges Currently</p>}
-
-                    
-                        {/*<img src={require('./Pics/Badges/badges1.1.jpg')} style={{width:'60px',height:'60px'}} alt="badges1.1"></img>
-                        <img src={require('./Pics/Badges/badges1.2.jpg')} style={{width:'60px',height:'60px'}} alt="badges1.1"></img>
-                        <img src={require('./Pics/Badges/badges1.3.jpg')} style={{width:'60px',height:'60px'}} alt="badges1.1"></img>
-                        <img src={require('./Pics/Badges/badges2.3.jpg')} style={{width:'60px',height:'60px'}} alt="badges1.1"></img>*/}
                     </div><hr />
                 </div>
                 :
                 <Col>
-                <p>Connect to the Gamification Framework to view your gamification information!</p>
-                <Button onClick={()=>[connect(),validateMember()] }>Connect</Button> 
+                    <p>Connect to the Gamification Framework to view your gamification information!</p>
+                {/*<Button onClick={()=>[connect(),validateMember()] }>Connect</Button>*/} 
                 </Col>}            
             </Col>
 

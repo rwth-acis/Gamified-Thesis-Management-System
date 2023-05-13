@@ -6,10 +6,9 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useState,useEffect } from 'react';
 import Logo from './Pics/acis.jpg'
-import DropdownMenu from 'react-bootstrap/esm/DropdownMenu';
 import Overview from './visFront';
 import { NavDropdown } from 'react-bootstrap';
-require('dotenv').config()
+//require('dotenv').config()
 
 const Navibar = (token) => {
 
@@ -29,7 +28,7 @@ const Navibar = (token) => {
       //const password = tmp['sub']
       //const name = tmp['name']
       const mail = tmp['email']
-      const userRes = await fetch('${process.env.BACKEND_URI}/api/user/mail/'+mail)
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
       setRole(userJson.role) 
     }
@@ -57,7 +56,7 @@ const Navibar = (token) => {
         <Navbar.Brand href="/"><img src={Logo} alt='Logo' style={{width: "80px"}} /></Navbar.Brand>
         {tokens ?
         <Nav className="me-auto">
-          <NavDropdown title='Statistics' drop='left'><div style={{width: '300px'}}><Overview ></Overview></div></NavDropdown>
+          <NavDropdown title='Statistics' drop='down'><div style={{width: '300px'}}><Overview ></Overview></div></NavDropdown>
           {/*<Dropdown drop='left'>
               <Dropdown.Toggle variant='outline-primary'>Statistics</Dropdown.Toggle>
               <DropdownMenu style={{width: '300px'}}><Overview></Overview></DropdownMenu>

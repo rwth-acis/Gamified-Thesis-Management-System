@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import Table from 'react-bootstrap/Table'
-require('dotenv').config()
+//require('dotenv').config()
 
 const Activity = (uid) => {
     const [hist, setHist] = useState([])
@@ -8,7 +8,7 @@ const Activity = (uid) => {
 
     useEffect = (() => {
         const fetchHist = async() => {
-            const response2 = await fetch('${process.env.BACKEND_URI}/api/user/history/'+userid)
+            const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/'+userid)
             const json2 = await response2.json()
             console.log("history: ",json2)
             setHist(json2)

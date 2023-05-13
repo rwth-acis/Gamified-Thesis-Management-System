@@ -7,7 +7,7 @@ import Table from 'react-bootstrap/Table'
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { Container } from "react-bootstrap";
-require('dotenv').config()
+//require('dotenv').config()
 
 const History = () => {
 
@@ -59,7 +59,7 @@ const History = () => {
     useEffect(() => {
         const cleanUp = false
         const fetchStu = async () => {
-          const response = await fetch('${process.env.BACKEND_URI}/api/user/')
+          const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/')
           const json = await response.json()
           console.log("json: ",json)
           if(response.ok && !cleanUp && json !== null) {
@@ -86,18 +86,18 @@ const History = () => {
       
       useEffect (() => {
         const fetchHist = async() => {
-            const response2 = await fetch('${process.env.BACKEND_URI}/api/user/history/'+uid)
+            const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/'+uid)
             const json2 = await response2.json()
             console.log("history: ",json2)
             setHist(json2)
         }
         const fetchPlan = async() => {
-          const response3 = await fetch('${process.env.BACKEND_URI}/api/user/plan/'+uid)
+          const response3 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/plan/'+uid)
           const json3 = await response3.json()
           console.log("plan: ",json3)
           if(response3.ok && json3) {
             for (const plan of json3) {
-              const progress = await fetch(`${process.env.BACKEND_URI}/api/plan/progress/${plan._id}`, {
+              const progress = await fetch(`${process.env.REACT_APP_BACKEND_URI_TEST}/api/plan/progress/${plan._id}`, {
                 method: 'GET'
               });
               if(progress.ok) {
@@ -110,13 +110,13 @@ const History = () => {
           setPlan(json3)
         }
         const fetchTodo = async() => {
-          const response4 = await fetch('${process.env.BACKEND_URI}/api/user/todo/'+uid)
+          const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/todo/'+uid)
           const json4 = await response4.json()
           
 
           let i = 0
           while (i < json4.length) {
-            const response5 = await fetch('${process.env.BACKEND_URI}/api/plan/'+json4[i].ofPlan)
+            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+json4[i].ofPlan)
             const json5 = await response5.json()
             json4[i].ofPlanName = json5.title
             console.log("todo: ",json4)
