@@ -25,6 +25,7 @@ const Pcontainer = ({id}) => {
         const getId = async() => {
             if(id) {
                 setUid(id)
+                fetchDataS(id)
             } else {
                 const token = sessionStorage.getItem('access-token')
                 const tmp = jwt_decode(token)
@@ -33,12 +34,13 @@ const Pcontainer = ({id}) => {
                 const json = await response.json()
                 if(response.ok) {
                   setUid(json._id)
+                  fetchDataS(json._id)
                 }
             }
         }
 
-        const fetchDataS = async ()=> { // modify here, change it to take a user id as input and only renders the plans of this single user
-            const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/plan/'+uid, {
+        const fetchDataS = async (id)=> { // modify here, change it to take a user id as input and only renders the plans of this single user
+            const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/plan/'+id, {
                 method: 'GET'
             })
                 const json = await response.json()
@@ -88,7 +90,7 @@ const Pcontainer = ({id}) => {
         }
 
         getId()
-        fetchDataS()
+        //fetchDataS()
     },[uid])
 
     /*

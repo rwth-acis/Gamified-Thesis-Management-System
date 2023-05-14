@@ -33,7 +33,7 @@ const userSchema = new Schema({
     },
     workName: {
         type: String,
-        default: 'No Name Added'
+        default: ''
     },
     workType: {
         type: String,

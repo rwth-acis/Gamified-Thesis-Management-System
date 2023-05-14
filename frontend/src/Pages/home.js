@@ -61,7 +61,7 @@ const Home = () => {
           }
       })
       if (response.ok) {
-        const response = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/games/data/thesis_system/'+username, {
+        const response2 = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/games/data/thesis_system/'+username, {
             mode: 'cors',
             method: 'POST',
             headers: {
@@ -70,6 +70,8 @@ const Home = () => {
                 'Accept': 'application/json'
             }
         })
+        const json2 = await response2.json()
+        console.log(json2)
       }
   }
       
@@ -86,7 +88,7 @@ const Home = () => {
         const authData = username+':'+sub
         const currUser = await findOrCreate(fName,lName,email,sub)
         if(currUser) {
-          validateAndAddToGame(authData,username)
+          await validateAndAddToGame(authData,username)
         }
         setUid(currUser._id)
       }

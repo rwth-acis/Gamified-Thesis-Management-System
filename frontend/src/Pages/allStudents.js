@@ -75,8 +75,8 @@ const All = () => {
             <Row>
             { users ?
             users.map(user => (
-                <Col sm={2} style={{ marginBottom: '10px' }}>
-                <Card key={user._id} style={{margin: '10px 10px 10px 10px',boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)', cursor: 'pointer', width: '200px', height: '100%'}}
+                <Col key={user._id} sm={2} style={{ marginBottom: '10px' }}>
+                <Card style={{margin: '10px 10px 10px 10px',boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)', cursor: 'pointer', width: '200px', height: '100%'}}
                        onClick={()=>[handleClick(user._id, user.firstName, user.lastName, user.workName, user.workType),openModal()]}>
                     {
                         user.workType == "Bachelor Thesis" ?

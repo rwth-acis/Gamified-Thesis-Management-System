@@ -150,6 +150,7 @@ const Overview = () => {
                 }
             })
             const json = await response.json()
+            console.log(json)
             if(response.ok) {
                 const point_json = (json.memberPoint)
                 setPoint(point_json)
@@ -181,8 +182,10 @@ const Overview = () => {
                 }
             })
             const json = await response.json()
+            console.log(json)
             if(response.ok) {
                 setAchiev(json)
+                connect()
             }
         }
         const fetchBadges = async() => {
@@ -239,7 +242,7 @@ const Overview = () => {
 
 
     return(
-        <Container fluid>
+        <Container >
             
             <Modal show={modalOpen} onHide={closeModal}>
               {/*cardId*/}
@@ -275,11 +278,7 @@ const Overview = () => {
                     <Form.Control type="text" required
                     value={lName} onChange={(e) => setLName(e.target.value)} />    
                   </Form.Group>
-                  <Form.Group className='mb-3' controlId='mail'>
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" required
-                    value={mail} onChange={(e) => setMail(e.target.value)} />    
-                  </Form.Group>
+                
                   <Form.Group className='mb-3' controlId='workType'>
                     <Form.Label>Work Type</Form.Label>
                     <Form.Select type="text" required
@@ -320,14 +319,14 @@ const Overview = () => {
                     <Col>
                         {role == "Supervisors" ?
                         <Badge bg='success'>Admin</Badge> :
-                        <Badge bg='primary' onClick={setModalOpen}>Student</Badge>}
+                        <Badge bg='primary' onClick={openModal}>Student</Badge>}
                         <br />
                         {workType == "Bachelor Thesis" ?
                         <Badge bg='info'>BA</Badge> : 
                         <Badge bg='info'>MA</Badge>
                         }
                         <br />
-                        <AiOutlineSetting size={'1.5em'} color={'#BBBBBB'} onClick={setModalOpen2} style={{ cursor: 'pointer' }}/>
+                        <AiOutlineSetting size={'1.5em'} color={'#BBBBBB'} onClick={openModal2} style={{ cursor: 'pointer' }}/>
                     </Col>
                 </Row>
                 <Row><br/></Row><hr />
@@ -339,7 +338,7 @@ const Overview = () => {
                 <Row><h6>Next Level:</h6> <p>{nextLN} <span className='text-muted'>at</span> {nextLP} <span className='text-muted'>points!</span></p></Row><hr />
                 <Row>
                 <h6>Current Achievement:</h6>
-                {achiev?
+                {achiev ?
                 achiev.map(obj => (
           <li key={obj.id}>{obj.name}</li>
         )):<p></p>}
