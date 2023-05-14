@@ -309,7 +309,12 @@ const Overview = () => {
                     <Col>
                         <h4 className="text-muted">Welcome,</h4>
                         <h4 className="text-muted">{name}</h4>
-                        <p>"{workName}"</p>
+                        {
+                            workName ? 
+                            <p>"{workName}"</p> : 
+                            <p>Click the Setting Icon to Update Thesis Information</p>
+                        }
+                        
                         
                     </Col>
                     <Col>
@@ -322,7 +327,7 @@ const Overview = () => {
                         <Badge bg='info'>MA</Badge>
                         }
                         <br />
-                        <AiOutlineSetting size={'1.5em'} color={'#BBBBBB'} onClick={setModalOpen2}/>
+                        <AiOutlineSetting size={'1.5em'} color={'#BBBBBB'} onClick={setModalOpen2} style={{ cursor: 'pointer' }}/>
                     </Col>
                 </Row>
                 <Row><br/></Row><hr />

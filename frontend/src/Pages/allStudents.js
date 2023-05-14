@@ -1,12 +1,31 @@
 import { useEffect, useState } from 'react';
-import { Container, Card, Row, Col, ProgressBar } from 'react-bootstrap';
+import { Container, Card, Row, Col, ProgressBar, Modal, CardGroup } from 'react-bootstrap';
 import MA from '../Components/Pics/MA.png'
 import BA from '../Components/Pics/BA.png'
+import Pcontainer from '../Components/plantContainer';
 
 
 const All = () => {
 
     const [users, setUsers] = useState(null)
+    const [modalOpen, setModalOpen] = useState(false)
+    const [visitId, setVisitId] = useState('')
+    const [visiter, setVisiter] = useState('')
+    const [workType, setWorkType] = useState('')
+    const [workName, setWorkName] = useState('')
+
+    const openModal = () => {
+        setModalOpen(true)
+    }
+    const closeModal = () => {
+        setModalOpen(false)
+    }
+    const handleClick = (id, fname, lname, workname, worktype) => {
+        setVisitId(id)  
+        setVisiter(fname+' '+lname)
+        setWorkName(workname)
+        setWorkType(worktype)
+    }
 
     useEffect ( () => {
         const getUserData = async() => {
@@ -37,15 +56,28 @@ const All = () => {
 
     return (
         <Container>
+            <Modal show={modalOpen} onHide={closeModal} size='xl'>
+              {/*cardId*/}
+              <Modal.Header closeButton>
+                <Modal.Title>{workName}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <h5 className='text-center'>An Overview of The Selected Thesis</h5>
+                <br />
+                <Pcontainer id={visitId} />
+              </Modal.Body>
+            </Modal>
+
             <Row><br /></Row>
             <Row><h3 className='text-center'>An Overview Of All Visible Thesis</h3></Row>
             <Row><br /></Row>
             <hr />
-            <Row style={{maxWidth: '1000px'}}>
+            <Row>
             { users ?
             users.map(user => (
-                <Col key={user._id}>
-                <Card style={{width: '200px', margin: '10px 10px 10px 10px',boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)'}}>
+                <Col sm={2} style={{ marginBottom: '10px' }}>
+                <Card key={user._id} style={{margin: '10px 10px 10px 10px',boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)', cursor: 'pointer', width: '200px', height: '100%'}}
+                       onClick={()=>[handleClick(user._id, user.firstName, user.lastName, user.workName, user.workType),openModal()]}>
                     {
                         user.workType == "Bachelor Thesis" ?
                         <Card.Img variant="top" src={BA} /> : 

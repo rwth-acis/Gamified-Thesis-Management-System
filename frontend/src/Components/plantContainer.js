@@ -7,7 +7,7 @@ import { useState, useEffect, useLayoutEffect } from 'react'
 import Render from './Plants/renderOne'
 //require('dotenv').config()
 
-const Pcontainer = () => {
+const Pcontainer = ({id}) => {
     const [seeds, setSeed] = useState(null)
     const [content, setContent] = useState(null)
     const [plants, setPlant] = useState(null)
@@ -23,13 +23,17 @@ const Pcontainer = () => {
     useEffect(() => {
         
         const getId = async() => {
-            const token = sessionStorage.getItem('access-token')
-            const tmp = jwt_decode(token)
-            const email = tmp['email']
-            const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+email)
-            const json = await response.json()
-            if(response.ok) {
-              setUid(json._id)
+            if(id) {
+                setUid(id)
+            } else {
+                const token = sessionStorage.getItem('access-token')
+                const tmp = jwt_decode(token)
+                const email = tmp['email']
+                const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+email)
+                const json = await response.json()
+                if(response.ok) {
+                  setUid(json._id)
+                }
             }
         }
 
