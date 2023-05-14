@@ -8,6 +8,7 @@ import All from "./Pages/allStudents";
 import History from "./Pages/history";
 import LoginPage from "./Pages/loginPage";
 import Spinner from "react-bootstrap/Spinner";
+import { Container } from "react-bootstrap";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
   return ( // login not really finished
 
     <div className="App" >
+      <Container>
       <BrowserRouter>
         <Navibar />
         <Routes>
@@ -44,6 +46,7 @@ function App() {
           <Route path="/allstudents" element={<All />} />
         </Routes>
       </BrowserRouter>
+      </Container>
     </div>
 
   )

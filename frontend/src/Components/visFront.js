@@ -6,10 +6,13 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button'
 import { Modal, Form, Badge } from 'react-bootstrap';
-//require('dotenv').config()
+import {AiOutlineSetting} from 'react-icons/ai'
 
 const Overview = () => {
     const [name, setName] = useState('Sign In to Continue')
+    const [fName, setFName] = useState('')
+    const [lName, setLName] = useState('')
+    const [mail, setMail] = useState('')
     const [role, setRole] = useState('')
     const [workType, setWorkType] = useState('')
     const [workName, setWorkName] = useState('')
@@ -24,6 +27,7 @@ const Overview = () => {
     const [uid,setUid] = useState('')
     const [password,setPassword] = useState('')
     const [modalOpen, setModalOpen] = useState(false)
+    const [modalOpen2, setModalOpen2] = useState(false)
     const [connected, setConnected] = useState(localStorage.getItem("connected") || "false")
     const [token, setToken] = useState("")
     const [badges, setBadges] = useState(null)
@@ -31,12 +35,18 @@ const Overview = () => {
     const openModal = () => {
         setModalOpen(true)
     }
+    const openModal2 = () => {
+        setModalOpen2(true)
+    }
     const connect = () => {
         setConnected("true")    
         localStorage.setItem("connected",true)
     }
     const closeModal = () => {
         setModalOpen(false)
+    }
+    const closeModal2 = () => {
+        setModalOpen2(false)
     }
     /*
     const validateMember = async() => {
@@ -85,6 +95,28 @@ const Overview = () => {
             window.location.reload()
         } 
     }
+    const updateUser = async (e) => {
+        e.preventDefault()
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/'+uid,{
+            method: 'PATCH',
+            body: JSON.stringify({
+                "firstName": fName,
+                "lastName": lName,
+                "email": mail,
+                "workType": workType,
+                "workName": workName,
+                "visible": isVisible
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const json = await response.json()
+        if (response.ok) {
+            closeModal()
+            window.location.reload()
+        } 
+    }
 
     useEffect(() => {
         const fetchStatus = async ()=> {
@@ -101,6 +133,9 @@ const Overview = () => {
             setWorkType(userJson.workType)
             setWorkName(userJson.workName)
             setIsVisible(userJson.visible)
+            setFName(userJson.firstName)
+            setLName(userJson.lastName)
+            setMail(userJson.email)
             const uids = userJson._id
             setUid(uids)
             const authData = username+':'+password
@@ -221,15 +256,61 @@ const Overview = () => {
                   <Button variant='outline-danger' type='submit'>Validate</Button>
                 </Form>
               </Modal.Body>
-
             </Modal>
+
+            <Modal show={modalOpen2} onHide={closeModal2}>
+              {/*cardId*/}
+              <Modal.Header closeButton>
+                <Modal.Title>Edit Information</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form onSubmit={updateUser}>
+                  <Form.Group className='mb-3' controlId='fName'>
+                    <Form.Label>First Name</Form.Label>
+                    <Form.Control type="text" required
+                    value={fName} onChange={(e) => setFName(e.target.value)} />    
+                  </Form.Group>
+                  <Form.Group className='mb-3' controlId='lName'>
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control type="text" required
+                    value={lName} onChange={(e) => setLName(e.target.value)} />    
+                  </Form.Group>
+                  <Form.Group className='mb-3' controlId='mail'>
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control type="email" required
+                    value={mail} onChange={(e) => setMail(e.target.value)} />    
+                  </Form.Group>
+                  <Form.Group className='mb-3' controlId='workType'>
+                    <Form.Label>Work Type</Form.Label>
+                    <Form.Select type="text" required
+                    value={workType} onChange={(e) => setWorkType(e.target.value)} >  
+                    <option value="Bachelor Thesis">Bachelor Thesis</option>
+                    <option value="Master Thesis">Master Thesis</option>  
+                    </Form.Select>
+                  </Form.Group>
+                  <Form.Group className='mb-3' controlId='workName'>
+                    <Form.Label>Work Name</Form.Label>
+                    <Form.Control type="text" required
+                    value={workName} onChange={(e) => setWorkName(e.target.value)} />    
+                  </Form.Group>
+                  <Form.Group className='mb-3' controlId='visible'>
+                    <Form.Label>Visible To Others?</Form.Label>
+                    <Form.Check type="switch"
+                    checked={isVisible} onChange={(e) => setIsVisible(e.target.checked)} />    
+                  </Form.Group>
+                  <Button variant='primary' type='submit' onClick={closeModal2}>Submit</Button>
+                </Form>
+              </Modal.Body>
+            </Modal>
+
             <Col>
                 <Row><br/></Row>
                 <Row>
                     <Col>
                         <h4 className="text-muted">Welcome,</h4>
                         <h4 className="text-muted">{name}</h4>
-                        <h7>"{workName}"</h7>
+                        <p>"{workName}"</p>
+                        
                     </Col>
                     <Col>
                         {role == "Supervisors" ?
@@ -240,6 +321,8 @@ const Overview = () => {
                         <Badge bg='info'>BA</Badge> : 
                         <Badge bg='info'>MA</Badge>
                         }
+                        <br />
+                        <AiOutlineSetting size={'1.5em'} color={'#BBBBBB'} onClick={setModalOpen2}/>
                     </Col>
                 </Row>
                 <Row><br/></Row><hr />

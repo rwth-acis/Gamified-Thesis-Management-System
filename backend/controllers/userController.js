@@ -136,6 +136,27 @@ const createUser = async (req,res) => {
         res.status(400).json({error: error.message})
     }
 }
+const updateUser = async (req,res) => {
+    const {id} = req.params
+    const {firstName, lastName, email, workType, workName, visible} = req.body 
+    if (!mongoose.Types.ObjectId.isValid(id)) { 
+        return res.status(404).json({error: "User not found"}) 
+    }
+
+    try {
+        const user = await User.findOneAndUpdate({_id: id}, {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            workType: workType,
+            workName: workName,
+            visible: visible
+        })
+        res.status(200).json(user)
+    } catch (error) { 
+        res.status(400).json({error: error.message})
+    }
+}
 const validateAdmin = async(req,res) => {
     const {id} = req.params
     const {password} = req.body
@@ -392,5 +413,6 @@ module.exports = {
     pushTodoWithToken,
     validateAdmin,
     getProgressOfUser,
-    updateWorkName
+    updateWorkName,
+    updateUser
 }
