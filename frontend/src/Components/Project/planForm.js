@@ -25,7 +25,7 @@ const PlanForm = () => {
         const sub = tmp['sub']
         const mail = tmp['email']
         const fetchPlan = async () => {
-        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
+        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
         const userJson = await userRes.json()
         const uid = userJson._id
         console.log("user:",uid)
@@ -60,14 +60,14 @@ const PlanForm = () => {
             console.error("No Valid User Info!")
         }
 /*
-        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
+        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
         const userJson = await userRes.json()
         console.log("user:",userJson)
         const uid = await userJson._id
 */
         const plan = {"title":title, "content":content, "startDate":startDate, "endDate":endDate, "ofUser":ofUser} //how to implement ofUser here?
         console.log(plan)
-        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/', {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/', {
             method: 'POST',
             body: JSON.stringify(plan),
             headers: {
@@ -79,7 +79,7 @@ const PlanForm = () => {
        
         console.log("res: ",json)
         // insert Plan
-        const response2 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/plan/token/',{
+        const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/plan/token/',{
             method: 'POST',
             body: JSON.stringify({"token": sub,"pid":pid}),
             headers: {
@@ -90,7 +90,7 @@ const PlanForm = () => {
         console.log(json2)
 
         //create History
-        const response3 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
+        const response3 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
             method: 'POST',
             body: JSON.stringify({"types": "Create","ofUser":json2._id,"content":"Plan:"+title}),
             headers: {
@@ -102,7 +102,7 @@ const PlanForm = () => {
         console.log(json3)
 
         //pushHistToUser
-        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
+        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
             method: 'POST',
             body: JSON.stringify({"token": sub,"hid":hid}),
             headers: {

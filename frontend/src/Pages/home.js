@@ -27,7 +27,7 @@ const Home = () => {
   }, []);
   */
   const findOrCreate = async(fName,lName,mail,sub) => {
-    const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
+    const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
     const json = await response.json()
     if(response.ok && json !== null) {
       return json
@@ -35,7 +35,7 @@ const Home = () => {
     } else if(response.ok && json === null) {
       const user = {'firstName': fName,'lastName': lName,'email':mail,'token': sub, 'workType': 'Bachelor Thesis'}
       console.log('Creating new user')
-      const response2 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/', {
+      const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/', {
         method: 'POST',
         body: JSON.stringify(user),
         headers: {
