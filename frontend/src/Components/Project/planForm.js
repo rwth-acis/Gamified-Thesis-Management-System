@@ -15,6 +15,7 @@ const PlanForm = () => {
     const [startDate, setStart] = useState('')
     const [endDate, setEnd] = useState('')
     const [tokens, setToken] = useState(null)
+    const [plant, setPlant] = useState(null)
 
 
     useEffect(() => {
@@ -65,7 +66,7 @@ const PlanForm = () => {
         console.log("user:",userJson)
         const uid = await userJson._id
 */
-        const plan = {"title":title, "content":content, "startDate":startDate, "endDate":endDate, "ofUser":ofUser} //how to implement ofUser here?
+        const plan = {"title":title, "content":content, "startDate":startDate, "endDate":endDate, "ofUser":ofUser, "plant": plant} //how to implement ofUser here?
         console.log(plan)
         const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/', {
             method: 'POST',
@@ -155,6 +156,18 @@ const PlanForm = () => {
                         <Form.Label>Content</Form.Label>
                         <Form.Control as={"textarea"} placeholder="Plan Content" required
                           value={content} onChange={(e) => setContent(e.target.value)} />
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <Form.Group className='mb-3' controlId='workType'>
+                        <Form.Label>Plant Type</Form.Label>
+                        <Form.Select type="text" required
+                            value={plant} onChange={(e) => setPlant(e.target.value)} >  
+                            <option value="Bushy">BushyPlantGenus</option>
+                            <option value="Dragon">DragonTreeGenus</option>
+                            <option value="Zamia">ZamiaGenus</option>
+                            <option value="Pilea">PileaGenus</option>  
+                        </Form.Select>
                         </Form.Group>
                     </Col>
                 </Row>

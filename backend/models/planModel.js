@@ -29,7 +29,8 @@ const planSchema = new Schema ({
     },
     plant: {
         type: String,
-        default: ["Bushy","Dragon","Pilea","Zamia"][Math.floor(Math.random()*4)]
+        enum: ["Bushy","Dragon","Pilea","Zamia"],
+        default: ["Bushy","Dragon","Pilea","Zamia"][Math.floor(Math.random() * 4)]
     },
     todos: [{
         type: mongoose.Schema.Types.ObjectId, ref: 'ToDo'
