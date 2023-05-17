@@ -119,7 +119,6 @@ const Overview = () => {
                 }
             })
             const json = await response.json()
-            console.log(json)
             if(response.ok) {
                 const point_json = (json.memberPoint)
                 setPoint(point_json)
@@ -151,7 +150,6 @@ const Overview = () => {
                 }
             })
             const json = await response.json()
-            console.log(json)
             if(response.ok) {
                 setAchiev(json)
                 connect()

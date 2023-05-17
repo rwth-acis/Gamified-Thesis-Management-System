@@ -44,9 +44,7 @@ const All = () => {
                     const updatedUser = { ...user, progress: json2.progress }
                     updatedUsers.push(updatedUser);
                   }
-                  setUsers(updatedUsers);
-                  console.log(updatedUsers)
-                
+                  setUsers(updatedUsers)                
             } catch (error) {
                 console.error(error)
             }

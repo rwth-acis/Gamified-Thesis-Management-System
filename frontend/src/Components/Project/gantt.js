@@ -138,7 +138,6 @@ const Chart = () => {
   }
   
   const handlePlanClick = async(task) => {
-    console.log("task clicked:",task)
     setPlanId(task.id)
     setModalOpen(true)
 
@@ -222,7 +221,6 @@ const Chart = () => {
         method: 'GET'
       })
       const json = await response.json()
-      console.log("json: ",json)
       if(response.ok && !cleanUp) {
         const data1 = []
         const progress = []
@@ -232,7 +230,6 @@ const Chart = () => {
           });
           if(p.ok) {
             const pjson = await p.json()
-            console.log(pjson)
             progress.push(await pjson.progress);
           }
         }

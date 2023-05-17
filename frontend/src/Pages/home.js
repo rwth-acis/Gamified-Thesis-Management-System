@@ -57,7 +57,6 @@ const Home = () => {
             }
         })
         const json2 = await response2.json()
-        console.log(json2)
       }
   }
       

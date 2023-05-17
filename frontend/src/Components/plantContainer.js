@@ -40,7 +40,6 @@ const Pcontainer = ({id}) => {
                 method: 'GET'
             })
                 const json = await response.json()
-                console.log(json)
                 const progres = []
                 let s = 0
                 while (s < json.length) {

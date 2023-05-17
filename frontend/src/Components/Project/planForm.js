@@ -15,7 +15,7 @@ const PlanForm = () => {
     const [startDate, setStart] = useState('')
     const [endDate, setEnd] = useState('')
     const [tokens, setToken] = useState(null)
-    const [plant, setPlant] = useState(null)
+    const [plant, setPlant] = useState('')
 
 
     useEffect(() => {
@@ -28,7 +28,6 @@ const PlanForm = () => {
         const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
         const userJson = await userRes.json()
         const uid = userJson._id
-        console.log("user:",uid)
         setUser(uid)
         
         }
@@ -39,21 +38,6 @@ const PlanForm = () => {
         e.preventDefault()
         const sub = tokens['sub']
         const mail = tokens['email']
-        /*if(tokens) {
-            const sub = tokens['sub']
-            const mail = tokens['email']
-        } else {
-            const token = sessionStorage.getItem('access-token')
-            const tmp = jwt_decode(token)
-            const sub = tmp['sub']
-            const mail = tmp['email']
-        }*/
-        //
-        // why does a if{} makees the two lines unsichtbar for response2 
-        //
-        //setToken(tmp)
-        
-
         if(!mail) {
             console.error("No Valid User Info!")
         }

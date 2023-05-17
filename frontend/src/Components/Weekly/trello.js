@@ -323,7 +323,6 @@ const Trello = () => {
       const uid = userJson._id
       const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/todo/todo/'+uid)
       const json = await response.json()
-      console.log("json: ",json.length)
       if(response.ok && json !== null) { // Is it necessary to change the while loop into a for each loop?
         const data1 = []
         let i = 0
@@ -365,7 +364,6 @@ const Trello = () => {
             i++
           }
         }
-        console.log(data1)
         setT(data1)
       }
     }
@@ -376,14 +374,12 @@ const Trello = () => {
     const fetchD = async () => {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
-      // const sub = tmp['sub']
       const mail = tmp['email']
       const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
       const uid = userJson._id
       const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/todo/doing/'+uid)
       const json = await response.json()
-      console.log("json: ",json.length)
       if(response.ok && json.length !== 0) {
         const data2 = []
         let i = 0
@@ -425,7 +421,6 @@ const Trello = () => {
             i++
           }
         }
-        console.log(data2) 
         setD(data2)
       }
     }
@@ -443,7 +438,6 @@ const Trello = () => {
       const uid = userJson._id
       const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/todo/finished/'+uid)
       const json = await response.json()
-      console.log("jsonf: ",json)
       if(response.ok && (json !==null)) {
         const data3 = []
         let i = 0
@@ -451,7 +445,6 @@ const Trello = () => {
         while(i < json.length) {
           const res = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+json[i].ofPlan)
           const pjson = await res.json()
-          // const today = new Date()
           data3.push({
             id: json[i]._id,
             title: json[i].title,
@@ -468,9 +461,7 @@ const Trello = () => {
             i++
           }
         }
-        console.log(data3)
-        setF(data3)
-        
+        setF(data3)     
       }
     }
     fetchF()

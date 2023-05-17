@@ -62,7 +62,6 @@ const History = () => {
         const fetchStu = async () => {
           const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/')
           const json = await response.json()
-          console.log("json: ",json)
           if(response.ok && json !== null) {
             const userData = json.map(user => {
                 return {
@@ -86,13 +85,11 @@ const History = () => {
         const fetchHist = async() => {
             const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/'+uid)
             const json2 = await response2.json()
-            console.log("history: ",json2)
             setHist(json2)
         }
         const fetchPlan = async() => {
           const response3 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/plan/'+uid)
           const json3 = await response3.json()
-          console.log("plan: ",json3)
           if(response3.ok && json3) {
             for (const plan of json3) {
               const progress = await fetch(`${process.env.REACT_APP_BACKEND_URI_TEST}/api/plan/progress/${plan._id}`, {
@@ -100,7 +97,6 @@ const History = () => {
               });
               if(progress.ok) {
                 const pjson = await progress.json()
-                console.log(pjson)
                 plan.progress = pjson
               }
             }
@@ -117,7 +113,6 @@ const History = () => {
             const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+json4[i].ofPlan)
             const json5 = await response5.json()
             json4[i].ofPlanName = json5.title
-            console.log("todo: ",json4)
             i++
           }
           setTodo(json4)
