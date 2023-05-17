@@ -22,9 +22,9 @@ const TodoForm = () => {
           const tmp = jwt_decode(token)
           setToken(tmp)
           const email = tmp['email']
-          const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+email)
+          const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+email)
           const json = await response.json()
-          const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/plan/'+json._id)
+          const response2 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/plan/'+json._id)
           const json2 = await response2.json()
           if(response.ok && json2 !== null) {
             const planData = json2.map(plan => {
@@ -54,13 +54,13 @@ const TodoForm = () => {
         //setToken(tmp)
         const sub = token['sub']
         const mail = token['email']
-        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
+        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
         const userJson = await userRes.json()
         const uid = userJson._id
 
         //console.log("title:",title,"content:",content,"plan:",ofPlan,"due:",dueDate)
         const todo = {"title":title, "content":content, "dueDate":dueDate, "ofPlan":ofPlan, "ofUser":uid}
-        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/todo/', {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/todo/', {
             method: 'POST',
             body: JSON.stringify(todo),
             headers: {
@@ -75,7 +75,7 @@ const TodoForm = () => {
             setTitle('')
             setPlan('')
             setContent('')
-            const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/pushtodo/', {
+            const response2 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/pushtodo/', {
                 method: 'POST',
                 body: JSON.stringify({"pid":ofPlan,"tid":tid}),
                 headers: {
@@ -86,7 +86,7 @@ const TodoForm = () => {
             console.log(json2)
             
             
-            const response3 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/todo/token', {
+            const response3 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/todo/token', {
                 method: 'POST',
                 body: JSON.stringify({"token": sub, "tid": tid}),
                 headers: {
@@ -99,7 +99,7 @@ const TodoForm = () => {
 
             
             //create History
-            const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
+            const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({"types": "Create","ofUser":json3._id,"content":"ToDo:"+title}),
                 headers: {
@@ -111,7 +111,7 @@ const TodoForm = () => {
             console.log("json4:",json4)
 
             //pushHistToUser
-            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
+            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
                 method: 'POST',
                 body: JSON.stringify({"token": sub,"hid":hid}),
                 headers: {
@@ -120,7 +120,7 @@ const TodoForm = () => {
             })
             const json5 = await response5.json()
             console.log(json5)
-            const response7 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/doing/'+ofPlan, {
+            const response7 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/doing/'+ofPlan, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'

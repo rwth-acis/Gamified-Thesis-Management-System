@@ -51,7 +51,7 @@ const Overview = () => {
 
     const validateAdmin = async (e) => {
         e.preventDefault()
-        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/admin/'+uid,{
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/admin/'+uid,{
             method: 'POST',
             body: JSON.stringify({"password":password}),
             headers: {
@@ -66,7 +66,7 @@ const Overview = () => {
     }
     const updateUser = async (e) => {
         e.preventDefault()
-        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/'+uid,{
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/'+uid,{
             method: 'PATCH',
             body: JSON.stringify({
                 "firstName": fName,
@@ -96,7 +96,7 @@ const Overview = () => {
             const password = tmp['sub']
             const name = tmp['given_name']
             const mail = tmp['email']
-            const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
+            const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
             const userJson = await userRes.json()
             setRole(userJson.role) 
             setWorkType(userJson.workType)
