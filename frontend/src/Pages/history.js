@@ -30,7 +30,7 @@ const History = () => {
       totalHistPages = Math.ceil(hist.length / dataPerHistPage)
     } else {
       currentHistData = hist
-    }
+    } 
 
     // Plans Pagination
     const [currentPlanPage, setCurrentPlanPage] = useState(1);
@@ -59,12 +59,11 @@ const History = () => {
     
 
     useEffect(() => {
-        const cleanUp = false
         const fetchStu = async () => {
           const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/')
           const json = await response.json()
           console.log("json: ",json)
-          if(response.ok && !cleanUp && json !== null) {
+          if(response.ok && json !== null) {
             const userData = json.map(user => {
                 return {
                 id: user._id,
@@ -74,12 +73,9 @@ const History = () => {
                 role: user.role
                 }
               })
-            console.log(userData)
+            // console.log(userData)
             setStudents(userData)
-            console.log(Students)
-          }
-          return () => {
-            cleanUp = true
+            // console.log(Students)
           }
         }
         fetchStu()

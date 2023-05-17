@@ -19,11 +19,10 @@ const PlanForm = () => {
 
 
     useEffect(() => {
-        const cleanUp = false
         const token = sessionStorage.getItem('access-token')
         const tmp = jwt_decode(token)
         setToken(tmp)
-        const sub = tmp['sub']
+        // const sub = tmp['sub']
         const mail = tmp['email']
         const fetchPlan = async () => {
         const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
@@ -31,9 +30,7 @@ const PlanForm = () => {
         const uid = userJson._id
         console.log("user:",uid)
         setUser(uid)
-        return () => {
-        cleanUp = true
-        }
+        
         }
         fetchPlan()
       },[])
@@ -64,7 +61,7 @@ const PlanForm = () => {
         const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
         const userJson = await userRes.json()
         console.log("user:",userJson)
-        const uid = await userJson._id
+        const uid = await userJson._id 
 */
         const plan = {"title":title, "content":content, "startDate":startDate, "endDate":endDate, "ofUser":ofUser, "plant": plant} //how to implement ofUser here?
         console.log(plan)

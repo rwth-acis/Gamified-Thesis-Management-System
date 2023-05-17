@@ -1,12 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
-import { SvgPlant, ZamiaGenus, BushyPlantGenus, DragonTreeGenus, PileaGenus } from 'svg-plant';
+import { useEffect, useRef } from 'react';
+import { SvgPlant, ZamiaGenus} from 'svg-plant';
 
 const Zamia = ({seedd, status}) => {
     const svg = useRef(null)
-    //const [s,setS] = useState(seedd)
 
     useEffect(() => {
-        //const seed = s
         const genus = new ZamiaGenus( seedd )
         const cfg = {
             color: true,    // Boolean

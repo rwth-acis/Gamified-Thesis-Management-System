@@ -39,5 +39,5 @@ mongoose.connect(process.env.REACT_APP_MONGO_URI_TEST)
         })
     })
     .catch((error)=>{
-        console.log("error occured: ", error)
+        console.log("error: ", error)
     })

@@ -1,5 +1,4 @@
 import {useState, useEffect} from 'react'
-import ErrorMessage from './error';
 import 'bootstrap/dist/css/bootstrap.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -17,7 +16,7 @@ const TodoForm = () => {
     const [token, setToken] = useState('')
 
     useEffect(() => {
-        const cleanUp = false
+        
         const fetchPlan = async () => {
           const token = sessionStorage.getItem('access-token')
           const tmp = jwt_decode(token)
@@ -28,7 +27,7 @@ const TodoForm = () => {
           const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/plan/'+json._id)
           const json2 = await response2.json()
           console.log("json: ",json2)
-          if(response.ok && !cleanUp && json2 !== null) {
+          if(response.ok && json2 !== null) {
             const planData = json2.map(plan => {
                 return {
                 id: plan._id,
@@ -38,12 +37,9 @@ const TodoForm = () => {
             setPlans(planData)
             console.log(plans)
           }
-          return () => {
-            cleanUp = true
-          }
         }
         fetchPlan()
-      },[])
+      })
 
     const planOption = plans.map((plan, index) => (
         <option key={index} value={plan.id}>

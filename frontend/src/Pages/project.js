@@ -4,7 +4,7 @@ import { useState } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { Button, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { MdOutlineCreateNewFolder } from 'react-icons/md'
 
 const Project = () => {

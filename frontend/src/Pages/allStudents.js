@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Container, Card, Row, Col, ProgressBar, Modal, CardGroup } from 'react-bootstrap';
+import { Container, Card, Row, Col, ProgressBar, Modal } from 'react-bootstrap';
 import MA from '../Components/Pics/MA.png'
 import BA from '../Components/Pics/BA.png'
 import Pcontainer from '../Components/plantContainer';
@@ -25,7 +25,7 @@ const All = () => {
         setVisiter(fname+' '+lname)
         setWorkName(workname)
         setWorkType(worktype)
-    }
+    } 
 
     useEffect ( () => {
         const getUserData = async() => {
@@ -79,7 +79,7 @@ const All = () => {
                 <Card style={{margin: '10px 10px 10px 10px',boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)', cursor: 'pointer', width: '200px', height: '100%'}}
                        onClick={()=>[handleClick(user._id, user.firstName, user.lastName, user.workName, user.workType),openModal()]}>
                     {
-                        user.workType == "Bachelor Thesis" ?
+                        user.workType === "Bachelor Thesis" ?
                         <Card.Img variant="top" src={BA} /> : 
                         <Card.Img variant="top" src={MA} />
                     }

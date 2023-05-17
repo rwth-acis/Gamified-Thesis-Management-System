@@ -48,38 +48,7 @@ const Overview = () => {
     const closeModal2 = () => {
         setModalOpen2(false)
     }
-    /*
-    const validateMember = async() => {
-        const username = token['preferred_username']
-        const password = token['sub']
-        const authData = username+':'+password
 
-        const response = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/games/validation', {
-                mode: 'cors',
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Basic ' + btoa(authData),
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-        })
-        const json = await response.json()
-        if(response.ok) {
-            console.log(json)
-            const response2 = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/games/data/thesis_system/'+username, {
-                mode: 'cors',
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Basic ' + btoa(authData),
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-        })
-        const json2 = await response2.json()
-        console.log(json2)
-        }
-    }
-    */
     const validateAdmin = async (e) => {
         e.preventDefault()
         const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/admin/'+uid,{
@@ -205,12 +174,12 @@ const Overview = () => {
             })
             const json = await response.json()
             if(response.ok) {
-                //setAchiev(json)
+                /*
                 const reader = new FileReader();
                 reader.onloadend = () => {
                     const base64data = reader.result;                
                     //console.log(base64data);
-                }
+                }*/
                 const badgeId = []
                 const badgeImg = []
                 for(const badge of json){
@@ -226,8 +195,6 @@ const Overview = () => {
                     badgeImg.push(URL.createObjectURL(imgBlob))
                 }
                 setBadges(badgeImg)
-                console.log(badges)
-                
                 //const url = reader.readAsDataURL(imgBlob);
                 if(response.ok) {
                     //console.log(imgBlob)
@@ -317,11 +284,11 @@ const Overview = () => {
                         
                     </Col>
                     <Col>
-                        {role == "Supervisors" ?
+                        {role === "Supervisors" ?
                         <Badge bg='success'>Admin</Badge> :
                         <Badge bg='primary' onClick={openModal}>Student</Badge>}
                         <br />
-                        {workType == "Bachelor Thesis" ?
+                        {workType === "Bachelor Thesis" ?
                         <Badge bg='info'>BA</Badge> : 
                         <Badge bg='info'>MA</Badge>
                         }

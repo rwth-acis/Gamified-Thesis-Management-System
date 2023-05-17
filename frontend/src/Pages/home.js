@@ -1,6 +1,5 @@
 import Pcontainer from "../Components/plantContainer";
-import { React, useState, useEffect, useContext } from "react";
-import Overview from "../Components/visFront";
+import { React, useState, useEffect } from "react";
 import jwt_decode from 'jwt-decode';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -12,20 +11,7 @@ import Col from 'react-bootstrap/Col';
 const Home = () => {
     const [tokens, setToken] = useState('')
     const [uid, setUid] = useState('')
-    // const [gameid, setId] = useState('thesis')
-    // const [url, setUrl] = useState('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification')
-    //const [userId, setUserId] = useState('')
-    //const [isLoading, setIsLoading] = useState(true);
 
-    /*useEffect(() => {
-      const token = sessionStorage.getItem('access-token');
-      if (!token) { 
-      } else {
-        setToken(token)
-      }
-      setIsLoading(false)
-  }, []);
-  */
   const findOrCreate = async(fName,lName,mail,sub) => {
     const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
     const json = await response.json()
@@ -94,51 +80,10 @@ const Home = () => {
       }
       getUser()
     },[]) 
-    /*useEffect(() => {
-        const newInterval = async() => {
-          const token = sessionStorage.getItem('access-token')
-          if (!token) {
-            console.error("Please Sign In to Use the App!")
-          } else {
-            setToken(token)
-            const tmp = jwt_decode(token)
-            setName(tmp['name'])
-            //const name = tmp(['name'])
-            setLname(tmp['family_name'])
-            const lName = tmp['family_name']
-            setFname(tmp['given_name'])
-            const fName = tmp['given_name']
-            const email = tmp['email']
-            const sub = tmp['sub'] 
-            const currUser = await findOrCreate(fName,lName,email,sub)
-            if(currUser) {
-              localStorage.setItem('userId',true)
-            }
-            console.log("user id:",currUser._id)
-            setUid(currUser._id)
-            console.log("uid:",uid)
-            console.log("working")
-          }
-        }
-        const checkToken = setTimeout(newInterval, 1000)
-    
-        return () => {
-          if(tokens) {
-            clearTimeout(checkToken); // Clean up the interval when the component unmounts
-            console.log("cleaning up")
-          }
-          }
-    }, [])*/
-    
-   
-
-    // conditionally rendering
+  
     return( 
         <Container >{/**fluid */}
             <Row>
-              {/*<Col sm={2} className="bg-light">
-                <Overview></Overview>
-    </Col>*/}
               <Col sm={12}>
                 <Row><br /></Row>
                 <Row><h1 className="text-center">Welcome to the thesis management system of the RWTH Informatik 5</h1></Row>

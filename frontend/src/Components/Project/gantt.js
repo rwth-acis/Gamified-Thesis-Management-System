@@ -1,4 +1,4 @@
-import { Gantt, Task, EventOption, StylingOption, ViewMode, DisplayOption } from 'gantt-task-react';
+import { Gantt } from 'gantt-task-react';
 import { useEffect, useState } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap'
 import jwt_decode from 'jwt-decode';
@@ -9,11 +9,9 @@ const Chart = () => {
   const [ModalOpen, setModalOpen] = useState(false)
   const [planId, setPlanId] = useState('')
   const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
   const [start, setStart] = useState(null)
   const [dueDate, setDue] = useState('')
   const [title2, setTitle2] = useState('')
-  const [content2, setContent2] = useState('')
   const [start2, setStart2] = useState('')
   const [dueDate2, setDue2] = useState('')
   const [tokens, setToken] = useState('')
@@ -67,7 +65,7 @@ const Chart = () => {
                     'Content-Type': 'application/json'
                 }
             })
-            const json5 = await response5.json()
+             const json5 = await response5.json()
             const response6 = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/actions/thesis_system/4/'+username, {
                 mode: 'cors',
                 method: 'POST',
@@ -214,7 +212,7 @@ const Chart = () => {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
       setToken(tmp)
-      const sub = tmp['sub']
+      // const sub = tmp['sub']
       const mail = tmp['email']
       const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
@@ -253,7 +251,7 @@ const Chart = () => {
             styles: { progressColor: '#6495ED', progressSelectedColor: '#6495ED' }
           })
           i++
-        setData(data1)
+        setData(data1) 
       } 
       return () => {
         cleanUp = true
@@ -269,7 +267,7 @@ const Chart = () => {
   
     return(
         <div>
-          <Gantt tasks={data} viewMode={"Week"} preStepsCount={1} onClick={handlePlanClick} ganttHeight={"300px"} />
+          <Gantt tasks={data} viewMode={"Week"} preStepsCount={1} onClick={handlePlanClick} ganttHeight={"400px"} />
 
           <Modal show={ModalOpen} onHide={CloseModal}>
               {/*cardId*/}

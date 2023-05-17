@@ -9,8 +9,8 @@ const Trello = () => {
   // The Package delievers possible error messages when drag card to an empty lane(Not 100% happening)! 
   const [ModalOpen, setModalOpen] = useState(false)
   const [showToast, setShowToast] = useState(false)
-  const [deleModalOpen, setDeleModalOpen] = useState(false)
-  const [token, setToken] = useState('')
+  // const [deleModalOpen, setDeleModalOpen] = useState(false)
+  // const [token, setToken] = useState('')
   const [cardId, setCardId] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -313,12 +313,10 @@ const Trello = () => {
   }
 
   useEffect(() => {
-    const cleanUp = false
-    
     const fetchT = async () => {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
-      const sub = tmp['sub']
+      // const sub = tmp['sub']
       const mail = tmp['email']
       const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
@@ -326,7 +324,7 @@ const Trello = () => {
       const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/todo/todo/'+uid)
       const json = await response.json()
       console.log("json: ",json.length)
-      if(response.ok && !cleanUp && json !== null) { // Is it necessary to change the while loop into a for each loop?
+      if(response.ok && json !== null) { // Is it necessary to change the while loop into a for each loop?
         const data1 = []
         let i = 0
 
@@ -338,19 +336,8 @@ const Trello = () => {
             id: json[i]._id,
             title: json[i].title,
             description: json[i].content,
-            label: "Plan:"+pjson.title,// --------------------
-            /*
-            tags: [{bgcolor: '#61BD4F',
-                    color: 'white',
-                    title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")}]
-                    */
-            tags : /*(json[i].status == "Finished") ?
-                    [{ // if due date is later than today
-                      bgcolor: '#E0E0E0',
-                      color: 'white',
-                      title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
-                    }]:*/
-                     ((new Date(json[i].dueDate).getFullYear() > today.getFullYear() || 
+            label: "Plan:"+pjson.title,
+            tags :  ((new Date(json[i].dueDate).getFullYear() > today.getFullYear() || 
                      (new Date(json[i].dueDate).getFullYear() === today.getFullYear() && 
                      (new Date(json[i].dueDate).getMonth() > today.getMonth() || 
                      (new Date(json[i].dueDate).getMonth() === today.getMonth() && 
@@ -380,21 +367,16 @@ const Trello = () => {
         }
         console.log(data1)
         setT(data1)
-        console.log("taskt:",taskt)
-      }
-      return () => {
-        cleanUp = true
       }
     }
     fetchT()
   },[ModalOpen, showToast])
 
   useEffect(() => {
-    const cleanUp = false
     const fetchD = async () => {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
-      const sub = tmp['sub']
+      // const sub = tmp['sub']
       const mail = tmp['email']
       const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
@@ -402,7 +384,7 @@ const Trello = () => {
       const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/todo/doing/'+uid)
       const json = await response.json()
       console.log("json: ",json.length)
-      if(response.ok && !cleanUp && json.length !== 0) {
+      if(response.ok && json.length !== 0) {
         const data2 = []
         let i = 0
 
@@ -443,25 +425,18 @@ const Trello = () => {
             i++
           }
         }
-        console.log(data2)
-        
+        console.log(data2) 
         setD(data2)
-        
-      }
-      console.log("taskd:",taskd)
-      return () => {
-        cleanUp = true
       }
     }
     fetchD()
   },[ModalOpen, showToast])
 
   useEffect(() => {
-    const cleanUp = false
     const fetchF = async () => {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
-      const sub = tmp['sub']
+      // const sub = tmp['sub']
       const mail = tmp['email']
       const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
@@ -469,14 +444,14 @@ const Trello = () => {
       const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/todo/finished/'+uid)
       const json = await response.json()
       console.log("jsonf: ",json)
-      if(response.ok && !cleanUp && (json !==null)) {
+      if(response.ok && (json !==null)) {
         const data3 = []
         let i = 0
 
         while(i < json.length) {
           const res = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+json[i].ofPlan)
           const pjson = await res.json()
-          const today = new Date()
+          // const today = new Date()
           data3.push({
             id: json[i]._id,
             title: json[i].title,
@@ -487,27 +462,7 @@ const Trello = () => {
               //bgcolor: '#4D4DFF',
               color: 'white',
               title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
-              }]
-            
-                    /*new Date(json[i].dueDate) > today ? 
-                    [{ // if due date is later than today
-                        bgcolor: '#61BD4F',
-                        color: 'white',
-                        title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
-                    }] : 
-                    (new Date(json[i].dueDate).getDate() === today.getDate() && 
-                     new Date(json[i].dueDate).getMonth() === today.getMonth() && 
-                     new Date(json[i].dueDate).getFullYear() === today.getFullYear()) ? 
-                        [{ // if due date is today
-                            //bgcolor: 'yellow',
-                            //color: 'white',
-                            title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
-                        }] : 
-                        [{ // otherwise (due date is earlier than today)
-                            bgcolor: '#EB5A46',
-                            color: 'white',
-                            title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
-                        }]*/  
+              }]                
           })
           if(res.ok) {
             i++
@@ -515,10 +470,7 @@ const Trello = () => {
         }
         console.log(data3)
         setF(data3)
-        console.log("taskf:",taskf)
-      }
-      return () => {
-        cleanUp = true
+        
       }
     }
     fetchF()
