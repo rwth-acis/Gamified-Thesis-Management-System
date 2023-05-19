@@ -6,6 +6,7 @@ import jwt_decode from 'jwt-decode';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+//require('dotenv').config()
 
 const PlanForm = () => {
     const [title, setTitle] = useState('')
@@ -14,24 +15,21 @@ const PlanForm = () => {
     const [startDate, setStart] = useState('')
     const [endDate, setEnd] = useState('')
     const [tokens, setToken] = useState(null)
+    const [plant, setPlant] = useState('')
 
 
     useEffect(() => {
-        const cleanUp = false
         const token = sessionStorage.getItem('access-token')
         const tmp = jwt_decode(token)
         setToken(tmp)
-        const sub = tmp['sub']
+        // const sub = tmp['sub']
         const mail = tmp['email']
         const fetchPlan = async () => {
-        const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
         const userJson = await userRes.json()
         const uid = userJson._id
-        console.log("user:",uid)
         setUser(uid)
-        return () => {
-        cleanUp = true
-        }
+        
         }
         fetchPlan()
       },[])
@@ -40,33 +38,18 @@ const PlanForm = () => {
         e.preventDefault()
         const sub = tokens['sub']
         const mail = tokens['email']
-        /*if(tokens) {
-            const sub = tokens['sub']
-            const mail = tokens['email']
-        } else {
-            const token = sessionStorage.getItem('access-token')
-            const tmp = jwt_decode(token)
-            const sub = tmp['sub']
-            const mail = tmp['email']
-        }*/
-        //
-        // why does a if{} makees the two lines unsichtbar for response2 
-        //
-        //setToken(tmp)
-        
-
         if(!mail) {
             console.error("No Valid User Info!")
         }
 /*
-        const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
         const userJson = await userRes.json()
         console.log("user:",userJson)
-        const uid = await userJson._id
+        const uid = await userJson._id 
 */
-        const plan = {"title":title, "content":content, "startDate":startDate, "endDate":endDate, "ofUser":ofUser} //how to implement ofUser here?
+        const plan = {"title":title, "content":content, "startDate":startDate, "endDate":endDate, "ofUser":ofUser, "plant": plant} //how to implement ofUser here?
         console.log(plan)
-        const response = await fetch('http://localhost:5000/api/plan/', {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/', {
             method: 'POST',
             body: JSON.stringify(plan),
             headers: {
@@ -78,7 +61,7 @@ const PlanForm = () => {
        
         console.log("res: ",json)
         // insert Plan
-        const response2 = await fetch('http://localhost:5000/api/user/plan/token/',{
+        const response2 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/plan/token/',{
             method: 'POST',
             body: JSON.stringify({"token": sub,"pid":pid}),
             headers: {
@@ -89,7 +72,7 @@ const PlanForm = () => {
         console.log(json2)
 
         //create History
-        const response3 = await fetch('http://localhost:5000/api/hist/',{
+        const response3 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
             method: 'POST',
             body: JSON.stringify({"types": "Create","ofUser":json2._id,"content":"Plan:"+title}),
             headers: {
@@ -101,7 +84,7 @@ const PlanForm = () => {
         console.log(json3)
 
         //pushHistToUser
-        const response4 = await fetch('http://localhost:5000/api/user/history/token/',{
+        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
             method: 'POST',
             body: JSON.stringify({"token": sub,"hid":hid}),
             headers: {
@@ -114,13 +97,13 @@ const PlanForm = () => {
             const password = tokens['sub']
             const authData = username+':'+password
             //window.location.reload()
-            const response5 = await fetch('http://localhost:8080/gamification/visualization/actions/gtms/2/silyu', {
+            const response5 = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/actions/thesis_system/2/'+username, {
                 mode: 'cors',
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Basic ' + btoa(authData),
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Authorization': 'Basic ' + btoa(authData)
+                    //'Content-Type': 'application/json',
+                    //'Accept': 'application/json'
                 }
             })
 
@@ -154,6 +137,18 @@ const PlanForm = () => {
                         <Form.Label>Content</Form.Label>
                         <Form.Control as={"textarea"} placeholder="Plan Content" required
                           value={content} onChange={(e) => setContent(e.target.value)} />
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <Form.Group className='mb-3' controlId='workType'>
+                        <Form.Label>Plant Type</Form.Label>
+                        <Form.Select type="text" required
+                            value={plant} onChange={(e) => setPlant(e.target.value)} >  
+                            <option value="Bushy">BushyPlantGenus</option>
+                            <option value="Dragon">DragonTreeGenus</option>
+                            <option value="Zamia">ZamiaGenus</option>
+                            <option value="Pilea">PileaGenus</option>  
+                        </Form.Select>
                         </Form.Group>
                     </Col>
                 </Row>

@@ -1,18 +1,17 @@
-import { Gantt, Task, EventOption, StylingOption, ViewMode, DisplayOption } from 'gantt-task-react';
+import { Gantt } from 'gantt-task-react';
 import { useEffect, useState } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap'
 import jwt_decode from 'jwt-decode';
 import "gantt-task-react/dist/index.css";
+//require('dotenv').config()
 
 const Chart = () => {
   const [ModalOpen, setModalOpen] = useState(false)
   const [planId, setPlanId] = useState('')
   const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
   const [start, setStart] = useState(null)
   const [dueDate, setDue] = useState('')
   const [title2, setTitle2] = useState('')
-  const [content2, setContent2] = useState('')
   const [start2, setStart2] = useState('')
   const [dueDate2, setDue2] = useState('')
   const [tokens, setToken] = useState('')
@@ -33,17 +32,17 @@ const Chart = () => {
       const username = tokens['preferred_username']
       const mail = tokens['email']
       const authData = username+':'+sub
-      const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
       const uid = userJson._id
-      const response = await fetch('http://localhost:5000/api/plan/finish/'+planId, {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/finish/'+planId, {
           method: 'PATCH'
         })
       const json = await response.json()
       const planTitle = json.title
 
       if(response.ok) {
-        const response4 = await fetch('http://localhost:5000/api/hist/',{
+        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({
                   "types": "Update",
@@ -59,21 +58,21 @@ const Chart = () => {
             console.log("json4:",json4)
 
             //pushHistToUser
-            const response5 = await fetch('http://localhost:5000/api/user/history/token/',{
+            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
                 method: 'POST',
                 body: JSON.stringify({"token": sub,"hid":hid}),
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-            const json5 = await response5.json()
-            const response6 = await fetch('http://localhost:8080/gamification/visualization/actions/gtms/4/silyu', {
+             const json5 = await response5.json()
+            const response6 = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/actions/thesis_system/4/'+username, {
                 mode: 'cors',
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Basic ' + btoa(authData),
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    'Authorization': 'Basic ' + btoa(authData)
+                    //'Content-Type': 'application/json',
+                    //'Accept': 'application/json'
                 }
             })
             const json6 = await response6.json()
@@ -90,19 +89,19 @@ const Chart = () => {
       const tmp = jwt_decode(token)
       const sub = tmp['sub']
       const mail = tmp['email']
-      const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
       const uid = userJson._id
       // Perform deletion logic here
       console.log('Item deleted',planId);
-      const response = await fetch('http://localhost:5000/api/plan/'+planId, {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/'+planId, {
       method: 'DELETE'
     })
       const json = await response.json()
       const planTitle = json.title
       
       if(response.ok) {
-        const response4 = await fetch('http://localhost:5000/api/hist/',{
+        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({
                   "types": "Delete",
@@ -118,7 +117,7 @@ const Chart = () => {
             console.log("json4:",json4)
 
             //pushHistToUser
-            const response5 = await fetch('http://localhost:5000/api/user/history/token/',{
+            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
                 method: 'POST',
                 body: JSON.stringify({"token": sub,"hid":hid}),
                 headers: {
@@ -139,7 +138,6 @@ const Chart = () => {
   }
   
   const handlePlanClick = async(task) => {
-    console.log("task clicked:",task)
     setPlanId(task.id)
     setModalOpen(true)
 
@@ -162,12 +160,12 @@ const Chart = () => {
     const tmp = jwt_decode(token)
     const sub = tmp['sub']
     const mail = tmp['email']
-    const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+    const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
     const userJson = await userRes.json()
     const uid = userJson._id
 
     const plan = {"title":title, "start":start, "dueDate":dueDate}
-    const response = await fetch('http://localhost:5000/api/plan/'+planId, {
+    const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/'+planId, {
         method: 'PATCH',
         body: JSON.stringify(plan),
         headers: {
@@ -178,7 +176,7 @@ const Chart = () => {
     console.log(json)
     if(response.ok) {
       //create History
-      const response4 = await fetch('http://localhost:5000/api/hist/',{
+      const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
           method: 'POST',
           body: JSON.stringify({
             "types": "Update",
@@ -194,7 +192,7 @@ const Chart = () => {
       console.log("json4:",json4)
 
       //pushHistToUser
-      const response5 = await fetch('http://localhost:5000/api/user/history/token/',{
+      const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
           method: 'POST',
           body: JSON.stringify({"token": sub,"hid":hid}),
           headers: {
@@ -213,27 +211,25 @@ const Chart = () => {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
       setToken(tmp)
-      const sub = tmp['sub']
+      // const sub = tmp['sub']
       const mail = tmp['email']
-      const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
       const uid = userJson._id
       
-      const response = await fetch('http://localhost:5000/api/user/plan/'+uid, {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/plan/'+uid, {
         method: 'GET'
       })
       const json = await response.json()
-      console.log("json: ",json)
       if(response.ok && !cleanUp) {
         const data1 = []
         const progress = []
         for (const plan of json) {
-          const p = await fetch(`http://localhost:5000/api/plan/progress/${plan._id}`, {
+          const p = await fetch(`${process.env.REACT_APP_BACKEND_URI}/api/plan/progress/${plan._id}`, {
             method: 'GET'
           });
           if(p.ok) {
             const pjson = await p.json()
-            console.log(pjson)
             progress.push(await pjson.progress);
           }
         }
@@ -252,7 +248,7 @@ const Chart = () => {
             styles: { progressColor: '#6495ED', progressSelectedColor: '#6495ED' }
           })
           i++
-        setData(data1)
+        setData(data1) 
       } 
       return () => {
         cleanUp = true
@@ -268,7 +264,7 @@ const Chart = () => {
   
     return(
         <div>
-          <Gantt tasks={data} viewMode={"Week"} preStepsCount={1} onClick={handlePlanClick} ganttHeight={"500px"} />
+          <Gantt tasks={data} viewMode={"Week"} preStepsCount={1} onClick={handlePlanClick} ganttHeight={"400px"} />
 
           <Modal show={ModalOpen} onHide={CloseModal}>
               {/*cardId*/}

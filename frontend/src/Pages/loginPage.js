@@ -1,9 +1,7 @@
 import Login from "./login"
 import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-//import Button from "react-bootstrap/esm/Button";
 
 const LoginPage = () => {
 
@@ -18,10 +16,14 @@ const LoginPage = () => {
                 <h3 className="text-center" >Welcome to the thesis management system of the RWTH Informatik 5, please sign in to continue</h3>
               </Row>
               <br />
-              <Row>
+              <br />
+              <Row className="text-center">
+                <Col>
                   <Login />
-                  <hr />
-                  <a href="" className="text-center" onClick={handleClick}>Already Signed In? Click Here To Refresh!</a>
+                </Col>
+                <Col>
+                  <a href="/" className="text-center" onClick={handleClick}>Already Signed In? Click Here To Refresh!</a>
+                </Col>
               </Row> 
             </Col>   
         </Container>

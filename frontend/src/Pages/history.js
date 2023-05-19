@@ -6,6 +6,8 @@ import Button from "react-bootstrap/Button";
 import Table from 'react-bootstrap/Table'
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import { Container } from "react-bootstrap";
+//require('dotenv').config()
 
 const History = () => {
 
@@ -22,11 +24,13 @@ const History = () => {
     const firstHist = lastHist - dataPerHistPage;
     // Get the current page of data to display
     let currentHistData = null
+    let totalHistPages = 0
     if(hist.length > 10) {
-      currentHistData = hist.slice(firstHist, lastHist);
+      currentHistData = hist.slice(firstHist, lastHist)
+      totalHistPages = Math.ceil(hist.length / dataPerHistPage)
     } else {
       currentHistData = hist
-    }
+    } 
 
     // Plans Pagination
     const [currentPlanPage, setCurrentPlanPage] = useState(1);
@@ -55,12 +59,10 @@ const History = () => {
     
 
     useEffect(() => {
-        const cleanUp = false
         const fetchStu = async () => {
-          const response = await fetch('http://localhost:5000/api/user/')
+          const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/')
           const json = await response.json()
-          console.log("json: ",json)
-          if(response.ok && !cleanUp && json !== null) {
+          if(response.ok && json !== null) {
             const userData = json.map(user => {
                 return {
                 id: user._id,
@@ -70,12 +72,9 @@ const History = () => {
                 role: user.role
                 }
               })
-            console.log(userData)
+            // console.log(userData)
             setStudents(userData)
-            console.log(Students)
-          }
-          return () => {
-            cleanUp = true
+            // console.log(Students)
           }
         }
         fetchStu()
@@ -84,23 +83,20 @@ const History = () => {
       
       useEffect (() => {
         const fetchHist = async() => {
-            const response2 = await fetch('http://localhost:5000/api/user/history/'+uid)
+            const response2 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/'+uid)
             const json2 = await response2.json()
-            console.log("history: ",json2)
             setHist(json2)
         }
         const fetchPlan = async() => {
-          const response3 = await fetch('http://localhost:5000/api/user/plan/'+uid)
+          const response3 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/plan/'+uid)
           const json3 = await response3.json()
-          console.log("plan: ",json3)
           if(response3.ok && json3) {
             for (const plan of json3) {
-              const progress = await fetch(`http://localhost:5000/api/plan/progress/${plan._id}`, {
+              const progress = await fetch(`${process.env.REACT_APP_BACKEND_URI}/api/plan/progress/${plan._id}`, {
                 method: 'GET'
               });
               if(progress.ok) {
                 const pjson = await progress.json()
-                console.log(pjson)
                 plan.progress = pjson
               }
             }
@@ -108,16 +104,15 @@ const History = () => {
           setPlan(json3)
         }
         const fetchTodo = async() => {
-          const response4 = await fetch('http://localhost:5000/api/user/todo/'+uid)
+          const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/todo/'+uid)
           const json4 = await response4.json()
           
 
           let i = 0
           while (i < json4.length) {
-            const response5 = await fetch('http://localhost:5000/api/plan/'+json4[i].ofPlan)
+            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/'+json4[i].ofPlan)
             const json5 = await response5.json()
             json4[i].ofPlanName = json5.title
-            console.log("todo: ",json4)
             i++
           }
           setTodo(json4)
@@ -134,7 +129,7 @@ const History = () => {
     ))
 
     return(
-      
+      <Container>
       <div>
         <Form>
           <Form.Group className='mb-3' controlId='ofPlan'>  
@@ -190,14 +185,26 @@ const History = () => {
                           <Row>
                             <Col>
                               {firstHist > 1 ?
-                              (<Button variant="outline-success" size="sm" onClick={() => setCurrentHistPage(currentHistPage - 1)}>
+                              (<Button variant="outline-success" size="sm" onClick={() => setCurrentHistPage(currentHistPage - 1)} style={{marginRight: '10px'}}>
                                 Last
                               </Button>)
                               :
-                              (<Button variant="outline-success" size="sm" disabled onClick={() => setCurrentHistPage(currentHistPage - 1)}>
+                              (<Button variant="outline-success" size="sm" disabled onClick={() => setCurrentHistPage(currentHistPage - 1)} style={{marginRight: '10px'}}>
                                 Last
                               </Button>)
                               }
+
+{Array.from({ length: totalHistPages }, (_, index) => (
+          <span
+            className="text-muted"
+            key={index}
+            onClick={() => setCurrentHistPage(index + 1)}
+            disabled={currentHistPage === index + 1}
+            style={{marginRight: '10px', cursor: 'pointer'}}
+          >
+            {index + 1}
+          </span>
+        ))}
                             
                               {lastHist < hist.length ?
                               (<Button variant="outline-success" size="sm" onClick={() => setCurrentHistPage(currentHistPage + 1)}>
@@ -345,6 +352,7 @@ const History = () => {
           </Tab>
         </Tabs>
       </div>
+      </Container>
     )
 }
 export default History

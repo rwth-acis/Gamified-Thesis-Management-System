@@ -3,13 +3,14 @@ import Board from 'react-trello'
 import jwt_decode from 'jwt-decode';
 import { Modal, Button, Form, ToastContainer } from 'react-bootstrap'
 import Toast from 'react-bootstrap/Toast'
+//require('dotenv').config()
 
 const Trello = () => {
   // The Package delievers possible error messages when drag card to an empty lane(Not 100% happening)! 
   const [ModalOpen, setModalOpen] = useState(false)
   const [showToast, setShowToast] = useState(false)
-  const [deleModalOpen, setDeleModalOpen] = useState(false)
-  const [token, setToken] = useState('')
+  // const [deleModalOpen, setDeleModalOpen] = useState(false)
+  // const [token, setToken] = useState('')
   const [cardId, setCardId] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -49,19 +50,19 @@ const Trello = () => {
       const tmp = jwt_decode(token)
       const sub = tmp['sub']
       const mail = tmp['email']
-      const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
       const uid = userJson._id
       // Perform deletion logic here
       //console.log('Item deleted',cardId);
-      const response = await fetch('http://localhost:5000/api/todo/'+cardId, {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/todo/'+cardId, {
       method: 'DELETE'
     })
       const json = await response.json()
       const todoTitle = json.title
       
       if(response.ok) {
-        const response4 = await fetch('http://localhost:5000/api/hist/',{
+        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({
                   "types": "Delete",
@@ -77,7 +78,7 @@ const Trello = () => {
             console.log("json4:",json4)
 
             //pushHistToUser
-            const response5 = await fetch('http://localhost:5000/api/user/history/token/',{
+            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
                 method: 'POST',
                 body: JSON.stringify({"token": sub,"hid":hid}),
                 headers: {
@@ -99,7 +100,7 @@ const Trello = () => {
     setCardId(cardId)
     setModalOpen(true)
 
-    const response = await fetch('http://localhost:5000/api/todo/'+cardId)
+    const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/todo/'+cardId)
     const json = await response.json()
     //console.log(json)
     setTitle(json['title'])
@@ -119,12 +120,12 @@ const Trello = () => {
     const tmp = jwt_decode(token)
     const sub = tmp['sub']
     const mail = tmp['email']
-    const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+    const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
     const userJson = await userRes.json()
     const uid = userJson._id
 
     const todo = {"title":title, "content":content, "dueDate":dueDate}
-    const response = await fetch('http://localhost:5000/api/todo/'+cardId, {
+    const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/todo/'+cardId, {
         method: 'PATCH',
         body: JSON.stringify(todo),
         headers: {
@@ -137,7 +138,7 @@ const Trello = () => {
     console.log("due2:",dueDate2)
     if(response.ok) {
             //create History
-            const response4 = await fetch('http://localhost:5000/api/hist/',{
+            const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({
                   "types": "Update",
@@ -153,7 +154,7 @@ const Trello = () => {
             console.log("json4:",json4)
 
             //pushHistToUser
-            const response5 = await fetch('http://localhost:5000/api/user/history/token/',{
+            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
                 method: 'POST',
                 body: JSON.stringify({"token": sub,"hid":hid}),
                 headers: {
@@ -179,7 +180,7 @@ const Trello = () => {
     if(sourceLaneId !== targetLaneId) {
     switch (targetLaneId) {
       case "lane1":
-        const response = await fetch('http://localhost:5000/api/todo/todo/' + cardId, {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/todo/todo/' + cardId, {
             method: 'PATCH',
             //body: JSON.stringify(todo),
             headers: {
@@ -190,7 +191,7 @@ const Trello = () => {
         const title = json.title
         console.log(json)
         //create History
-        const res = await fetch('http://localhost:5000/api/hist/',{
+        const res = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
             method: 'POST',
             body: JSON.stringify({"types": "Update","ofUser":json.ofUser,"content":"ToDo:"+title+" ->'to do'"}),
             headers: {
@@ -201,7 +202,7 @@ const Trello = () => {
         const hid = tjson._id
         console.log("json4:",tjson)
         //give history to User
-        const res2 = await fetch('http://localhost:5000/api/user/history/token/',{
+        const res2 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
             method: 'POST',
             body: JSON.stringify({"token": sub,"hid":hid}),
             headers: {
@@ -217,7 +218,7 @@ const Trello = () => {
         break;
 
       case "lane2":
-        const response2 = await fetch('http://localhost:5000/api/todo/doing/' + cardId, {
+        const response2 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/todo/doing/' + cardId, {
             method: 'PATCH',
             //body: JSON.stringify(todo),
             headers: {
@@ -228,7 +229,7 @@ const Trello = () => {
         const title2 = json2.title
         console.log(json2)
         //create History
-        const res3 = await fetch('http://localhost:5000/api/hist/',{
+        const res3 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
             method: 'POST',
             body: JSON.stringify({"types": "Update","ofUser":json2.ofUser,"content":"ToDo:"+title2+" ->'doing'"}),
             headers: {
@@ -239,7 +240,7 @@ const Trello = () => {
         const hid2 = tjson3._id
         console.log("json4:",tjson3)
         //give history to User
-        const res4 = await fetch('http://localhost:5000/api/user/history/token/',{
+        const res4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
             method: 'POST',
             body: JSON.stringify({"token": sub,"hid":hid2}),
             headers: {
@@ -254,7 +255,7 @@ const Trello = () => {
         break;
 
       case "lane3":
-        const response3 = await fetch('http://localhost:5000/api/todo/finish/'+ cardId, {
+        const response3 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/todo/finish/'+ cardId, {
             method: 'PATCH',
             //body: JSON.stringify(todo),
             headers: {
@@ -268,7 +269,7 @@ const Trello = () => {
         const title3 = json3.title
         console.log(json3)
         //create History
-        const res5 = await fetch('http://localhost:5000/api/hist/',{
+        const res5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
             method: 'POST',
             body: JSON.stringify({"types": "Update","ofUser":json3.ofUser,"content":"ToDo:"+title3+" ->'done'"}),
             headers: {
@@ -279,7 +280,7 @@ const Trello = () => {
         const hid3 = tjson5._id
         console.log("json4:",tjson5)
         //give history to User
-        const res6 = await fetch('http://localhost:5000/api/user/history/token/',{
+        const res6 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
             method: 'POST',
             body: JSON.stringify({"token": sub,"hid":hid3}),
             headers: {
@@ -288,13 +289,13 @@ const Trello = () => {
         })
         const tjson6 = await res6.json()
         console.log(tjson6)//window.location.reload()
-        const response6 = await fetch('http://localhost:8080/gamification/visualization/actions/gtms/3/silyu', {
+        const response6 = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/actions/thesis_system/3/'+username, {
             mode: 'cors',
             method: 'POST',
             headers: {
-                'Authorization': 'Basic ' + btoa(authData),
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Authorization': 'Basic ' + btoa(authData)
+                //'Content-Type': 'application/json',
+                //'Accept': 'application/json'
             }
         })
         const json6 = await response6.json()
@@ -312,44 +313,30 @@ const Trello = () => {
   }
 
   useEffect(() => {
-    const cleanUp = false
-    
     const fetchT = async () => {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
-      const sub = tmp['sub']
+      // const sub = tmp['sub']
       const mail = tmp['email']
-      const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
       const uid = userJson._id
-      const response = await fetch('http://localhost:5000/api/user/todo/todo/'+uid)
+      const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/todo/todo/'+uid)
       const json = await response.json()
-      console.log("json: ",json.length)
-      if(response.ok && !cleanUp && json !== null) { // Is it necessary to change the while loop into a for each loop?
+      if(response.ok && json !== null) { // Is it necessary to change the while loop into a for each loop?
         const data1 = []
         let i = 0
 
         while(i < json.length) {
-          const res = await fetch('http://localhost:5000/api/plan/'+json[i].ofPlan)
+          const res = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/'+json[i].ofPlan)
           const pjson = await res.json()
           const today = new Date()
           data1.push({
             id: json[i]._id,
             title: json[i].title,
             description: json[i].content,
-            label: "Plan:"+pjson.title,// --------------------
-            /*
-            tags: [{bgcolor: '#61BD4F',
-                    color: 'white',
-                    title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")}]
-                    */
-            tags : /*(json[i].status == "Finished") ?
-                    [{ // if due date is later than today
-                      bgcolor: '#E0E0E0',
-                      color: 'white',
-                      title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
-                    }]:*/
-                     ((new Date(json[i].dueDate).getFullYear() > today.getFullYear() || 
+            label: "Plan:"+pjson.title,
+            tags :  ((new Date(json[i].dueDate).getFullYear() > today.getFullYear() || 
                      (new Date(json[i].dueDate).getFullYear() === today.getFullYear() && 
                      (new Date(json[i].dueDate).getMonth() > today.getMonth() || 
                      (new Date(json[i].dueDate).getMonth() === today.getMonth() && 
@@ -377,36 +364,28 @@ const Trello = () => {
             i++
           }
         }
-        console.log(data1)
         setT(data1)
-        console.log("taskt:",taskt)
-      }
-      return () => {
-        cleanUp = true
       }
     }
     fetchT()
   },[ModalOpen, showToast])
 
   useEffect(() => {
-    const cleanUp = false
     const fetchD = async () => {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
-      const sub = tmp['sub']
       const mail = tmp['email']
-      const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
       const uid = userJson._id
-      const response = await fetch('http://localhost:5000/api/user/todo/doing/'+uid)
+      const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/todo/doing/'+uid)
       const json = await response.json()
-      console.log("json: ",json.length)
-      if(response.ok && !cleanUp && json.length !== 0) {
+      if(response.ok && json.length !== 0) {
         const data2 = []
         let i = 0
 
         while(i < json.length) {
-          const res = await fetch('http://localhost:5000/api/plan/'+json[i].ofPlan)
+          const res = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/'+json[i].ofPlan)
           const pjson = await res.json()
           const today = new Date()
           data2.push({
@@ -442,40 +421,30 @@ const Trello = () => {
             i++
           }
         }
-        console.log(data2)
-        
         setD(data2)
-        
-      }
-      console.log("taskd:",taskd)
-      return () => {
-        cleanUp = true
       }
     }
     fetchD()
   },[ModalOpen, showToast])
 
   useEffect(() => {
-    const cleanUp = false
     const fetchF = async () => {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
-      const sub = tmp['sub']
+      // const sub = tmp['sub']
       const mail = tmp['email']
-      const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
       const uid = userJson._id
-      const response = await fetch('http://localhost:5000/api/user/todo/finished/'+uid)
+      const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/todo/finished/'+uid)
       const json = await response.json()
-      console.log("jsonf: ",json)
-      if(response.ok && !cleanUp && (json !==null)) {
+      if(response.ok && (json !==null)) {
         const data3 = []
         let i = 0
 
         while(i < json.length) {
-          const res = await fetch('http://localhost:5000/api/plan/'+json[i].ofPlan)
+          const res = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/'+json[i].ofPlan)
           const pjson = await res.json()
-          const today = new Date()
           data3.push({
             id: json[i]._id,
             title: json[i].title,
@@ -486,38 +455,13 @@ const Trello = () => {
               //bgcolor: '#4D4DFF',
               color: 'white',
               title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
-              }]
-            
-                    /*new Date(json[i].dueDate) > today ? 
-                    [{ // if due date is later than today
-                        bgcolor: '#61BD4F',
-                        color: 'white',
-                        title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
-                    }] : 
-                    (new Date(json[i].dueDate).getDate() === today.getDate() && 
-                     new Date(json[i].dueDate).getMonth() === today.getMonth() && 
-                     new Date(json[i].dueDate).getFullYear() === today.getFullYear()) ? 
-                        [{ // if due date is today
-                            //bgcolor: 'yellow',
-                            //color: 'white',
-                            title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
-                        }] : 
-                        [{ // otherwise (due date is earlier than today)
-                            bgcolor: '#EB5A46',
-                            color: 'white',
-                            title: (new Date(json[i].dueDate)).toLocaleDateString("en-GB")
-                        }]*/  
+              }]                
           })
           if(res.ok) {
             i++
           }
         }
-        console.log(data3)
-        setF(data3)
-        console.log("taskf:",taskf)
-      }
-      return () => {
-        cleanUp = true
+        setF(data3)     
       }
     }
     fetchF()

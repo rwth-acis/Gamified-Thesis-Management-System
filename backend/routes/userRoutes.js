@@ -22,10 +22,15 @@ const {
     getAllTodoTodoOfUser,
     getAllTodoDoingOfUser,
     getAllTodoFinishedOfUser,
-    validateAdmin
+    validateAdmin,
+    getProgressOfUser,
+    updateWorkName,
+    getAllVisibleUser,
+    updateUser
 } = require('../controllers/userController')
 
 router.get("/",getAllUser)
+router.get("/visible/",getAllVisibleUser)
 router.get("/:id",getUserById)
 router.get("/mail/:mail",getUserByMail)
 router.get("/history/:id",getAllHistOfUser)
@@ -38,12 +43,14 @@ router.post("/",createUser)
 router.patch("/role/",updateRole)
 router.patch("/token/",updateToken)
 router.patch("/worktype/",updateWorkType)
-router.post("/history/",pushHistory)
 router.post("/history/token/",pushHistoryWithToken)
-router.post("/plan/",pushPlan)
 router.post("/plan/token/",pushPlanWitToken)
-router.post("/todo/",pushTodo)
+router.patch("/:id",updateUser)
 router.post("/todo/token/",pushTodoWithToken)
 router.post("/admin/:id",validateAdmin)
-
+router.get("/progress/:id",getProgressOfUser)
+router.post("/plan/",pushPlan) //Not used yet
+router.post("/history/",pushHistory) //Not used yet
+router.patch("/workname/:id",updateWorkName) //Not used yet
+router.post("/todo/",pushTodo) //Not used yet
 module.exports = router

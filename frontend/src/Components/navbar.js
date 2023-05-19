@@ -6,9 +6,9 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useState,useEffect } from 'react';
 import Logo from './Pics/acis.jpg'
-import DropdownMenu from 'react-bootstrap/esm/DropdownMenu';
 import Overview from './visFront';
 import { NavDropdown } from 'react-bootstrap';
+//require('dotenv').config()
 
 const Navibar = (token) => {
 
@@ -28,7 +28,7 @@ const Navibar = (token) => {
       //const password = tmp['sub']
       //const name = tmp['name']
       const mail = tmp['email']
-      const userRes = await fetch('http://localhost:5000/api/user/mail/'+mail)
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
       setRole(userJson.role) 
     }
@@ -53,19 +53,20 @@ const Navibar = (token) => {
   return (
     <Navbar bg="light" variant="light">
       <Container>
-        <Navbar.Brand href="/"><img src={Logo} alt='Logo' style={{width: "80px"}} /></Navbar.Brand>
+        <Navbar.Brand href="/thesis-system-client"><img src={Logo} alt='Logo' style={{width: "80px"}} /></Navbar.Brand>
         {tokens ?
         <Nav className="me-auto">
-          <NavDropdown title='Statistics' drop='left'><div style={{width: '300px'}}><Overview ></Overview></div></NavDropdown>
+          <NavDropdown title='Statistics' drop='down'><div style={{width: '500px'}}><Overview ></Overview></div></NavDropdown>
           {/*<Dropdown drop='left'>
               <Dropdown.Toggle variant='outline-primary'>Statistics</Dropdown.Toggle>
               <DropdownMenu style={{width: '300px'}}><Overview></Overview></DropdownMenu>
           </Dropdown>*/}
-          <Nav.Link href="/">Home</Nav.Link>
-          <Nav.Link href="/weekly">ToDos</Nav.Link>
-          <Nav.Link href="/project">Plans</Nav.Link>
+          <Nav.Link href="/thesis-system-client/">Home</Nav.Link>
+          <Nav.Link href="/thesis-system-client/weekly">ToDos</Nav.Link>
+          <Nav.Link href="/thesis-system-client/project">Plans</Nav.Link>
+          <Nav.Link href="/thesis-system-client/allstudents">Peers</Nav.Link>
           {role === 'Supervisors' && (
-            <Nav.Link href="/history">History</Nav.Link>)}
+            <Nav.Link href="/thesis-system-client/history">History</Nav.Link>)}
         </Nav> : null}
         {/*<Login />*/}
       </Container>

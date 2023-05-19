@@ -17,32 +17,16 @@ const Render = ({plant, seed, status, title, progress, start, due, content}) => 
     let c = content
     const renderRandomPlant = () => {
         switch(true) {
-            case (p === "Zamia" && t === "To Do"):
-                return <Zamia seedd={s} status={r} />
-            case (p === "Zamia" && t === "Doing"):
-                return <Zamia seedd={s} status={r} />
-            case (p === "Zamia" && t === "Finished"):
+            case (p === "Zamia"):
                 return <Zamia seedd={s} status={r} />
 
-            case (p === "Bushy" && t === "To Do"):
-                    return <Bushy seedd={s} status={r} />
-            case (p === "Bushy" && t === "Doing"):
-                    return <Bushy seedd={s} status={r} />
-            case (p === "Bushy" && t === "Finished"):
+            case (p === "Bushy"):
                     return <Bushy seedd={s} status={r} />
 
-            case (p === "Dragon" && t === "To Do"):
-                    return <Dragon seedd={s} status={r} />
-            case (p === "Dragon" && t === "Doing"):
-                    return <Dragon seedd={s} status={r} />
-            case (p === "Dragon" && t === "Finished"):
+            case (p === "Dragon"):
                     return <Dragon seedd={s} status={r} />
 
-            case (p === "Pilea" && t === "To Do"):
-                    return <Pilea seedd={s} status={r} />
-            case (p === "Pilea" && t === "Doing"):
-                    return <Pilea seedd={s} status={r} />
-            case (p === "Pilea" && t === "Finished"):
+            case (p === "Pilea"):
                     return <Pilea seedd={s} status={r} />
             default: 
                 return null   
@@ -57,11 +41,6 @@ const Render = ({plant, seed, status, title, progress, start, due, content}) => 
             <hr />    
             <Card.Body >
                 <Card.Title>{i}</Card.Title>
-                
-                {/*<div className="progress" style={{height: '5px'}}>
-                    <div className="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style={{width: r}} aria-valuenow={r} aria-valuemin="0" aria-valuemax="100">{r}</div>
-                    
-                </div>*/}
             </Card.Body>
             <ProgressBar style={{height: '3px'}} striped variant="#6495ED" now={r} />
             <br />

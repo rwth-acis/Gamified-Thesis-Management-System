@@ -1,12 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
-import { SvgPlant, ZamiaGenus, BushyPlantGenus, DragonTreeGenus, PileaGenus } from 'svg-plant';
+import { useEffect, useRef } from 'react';
+import { SvgPlant, DragonTreeGenus } from 'svg-plant';
 
 const Dragon = ({seedd, status}) => {
     const svg = useRef(null)
-    //const [s, setS] = useState(seedd)
 
     useEffect(() => {
-        //const seed = s
         const genus = new DragonTreeGenus(seedd)
         const cfg = {
             color: true,    // Boolean
@@ -19,8 +17,6 @@ const Dragon = ({seedd, status}) => {
         };
         const plant = new SvgPlant( genus,cfg )
         const dragon = plant.svgElement;
-        //plant.animate( 0, status )
-        console.log('status:',status)
         plant.animate( 0, status/100, 1000 );
 
         svg.current.append(dragon)
