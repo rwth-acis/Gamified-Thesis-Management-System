@@ -51,7 +51,7 @@ const Overview = () => {
 
     const validateAdmin = async (e) => {
         e.preventDefault()
-        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/admin/'+uid,{
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/admin/'+uid,{
             method: 'POST',
             body: JSON.stringify({"password":password}),
             headers: {
@@ -61,12 +61,12 @@ const Overview = () => {
         const json = await response.json()
         if (response.ok) {
             closeModal()
-            window.location.reload()
+           // window.location.reload()
         } 
     }
     const updateUser = async (e) => {
         e.preventDefault()
-        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/'+uid,{
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/'+uid,{
             method: 'PATCH',
             body: JSON.stringify({
                 "firstName": fName,
@@ -82,8 +82,8 @@ const Overview = () => {
         })
         const json = await response.json()
         if (response.ok) {
-            closeModal()
-            window.location.reload()
+            closeModal2()
+            //window.location.reload()
         } 
     }
 
@@ -96,7 +96,7 @@ const Overview = () => {
             const password = tmp['sub']
             const name = tmp['given_name']
             const mail = tmp['email']
-            const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
+            const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
             const userJson = await userRes.json()
             setRole(userJson.role) 
             setWorkType(userJson.workType)
@@ -203,7 +203,7 @@ const Overview = () => {
         fetchStatus()
         fetchAchiev()
         fetchBadges()
-    }, [modalOpen])
+    }, [modalOpen, modalOpen2])
 
 
     return(
@@ -249,7 +249,8 @@ const Overview = () => {
                     <Form.Select type="text" required
                     value={workType} onChange={(e) => setWorkType(e.target.value)} >  
                     <option value="Bachelor Thesis">Bachelor Thesis</option>
-                    <option value="Master Thesis">Master Thesis</option>  
+                    <option value="Master Thesis">Master Thesis</option>
+                    <option value="Doctor Thesis">Doctor Thesis</option>  
                     </Form.Select>
                   </Form.Group>
                   <Form.Group className='mb-3' controlId='workName'>
@@ -262,7 +263,15 @@ const Overview = () => {
                     <Form.Check type="switch"
                     checked={isVisible} onChange={(e) => setIsVisible(e.target.checked)} />    
                   </Form.Group>
-                  <Button variant='primary' type='submit' onClick={closeModal2}>Submit</Button>
+                  <hr />
+                  <Row>
+                    <Col className='d-grid gap-2'>
+                      <Button variant='primary' type='submit'>Submit</Button>
+                    </Col>
+                    <Col className='d-grid gap-2'>
+                    <Button variant='danger' onClick={closeModal2}>Cancel</Button>
+                    </Col>
+                  </Row>
                 </Form>
               </Modal.Body>
             </Modal>
@@ -288,7 +297,9 @@ const Overview = () => {
                         <br />
                         {workType === "Bachelor Thesis" ?
                         <Badge bg='info'>BA</Badge> : 
-                        <Badge bg='info'>MA</Badge>
+                          workType === "Master Thesis" ? 
+                          <Badge bg='info'>MA</Badge> :
+                          <Badge bg='info'>DA</Badge>
                         }
                         <br />
                         <AiOutlineSetting size={'1.5em'} color={'#BBBBBB'} onClick={openModal2} style={{ cursor: 'pointer' }}/>
@@ -296,8 +307,9 @@ const Overview = () => {
                 </Row>
                 <Row><br/></Row><hr />
                 
-                <div>
-                
+                {
+                    achiev !== null ?
+                <div>            
                 <Row><h6>Current Points:</h6> <p>{point}</p></Row><hr />
                 <Row><h6>Current Level:</h6> <p><span className='text-muted'>Level</span> {level} <span className='text-muted'>:</span> {levelName}</p></Row><hr />
                 <Row><h6>Next Level:</h6> <p>{nextLN} <span className='text-muted'>at</span> {nextLP} <span className='text-muted'>points!</span></p></Row><hr />
@@ -315,9 +327,11 @@ const Overview = () => {
                         <img src={badgeImage} alt="badge" key={badgeImage} width='40px' style={{marginRight:'10px'}}/>
                     )):
                     <p>No Badges Currently</p>}
-                    </div><hr />
+                    </div><hr /> 
                 </div>
-                
+                :
+                <p>Please <a href='https://mentoring.tech4comp.dbis.rwth-aachen.de/las2peer/webapp/welcome'>Sign In</a> To Get Gamification Information</p>
+                }
             </Col>
 
         </Container>

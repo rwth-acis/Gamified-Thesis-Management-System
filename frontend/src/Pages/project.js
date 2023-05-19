@@ -4,7 +4,7 @@ import { useState } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { Modal } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import { MdOutlineCreateNewFolder } from 'react-icons/md'
 
 const Project = () => {
@@ -30,7 +30,7 @@ const Project = () => {
             <Row ><br /></Row>
               <Row >
                 <Col><h2 className='text-muted' onClick={setModalOpen}>Plans</h2></Col>
-                <Col><MdOutlineCreateNewFolder size={'2.5em'}  onClick={openModal} style={{ cursor: 'pointer' }}/></Col>
+                <Col><Button variant="outline-primary" onClick={openModal}><MdOutlineCreateNewFolder size={'2em'} />New</Button></Col>
               </Row >
               <hr />
             <Row >
@@ -38,16 +38,6 @@ const Project = () => {
             </Row>           
           </Col>
         
-        {/**<br />
-          <Col>
-            <Row >
-              <Chart />
-            </Row>
-            <Row >
-              <PlanForm />
-            </Row>           
-          </Col> */}
-          
         </Container>
     )
 }

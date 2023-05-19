@@ -41,7 +41,7 @@ const userSchema = new Schema({
     },
     visible: {
         type: Boolean,
-        default: true
+        default: false
     },
     hasHistory: [{
         type: mongoose.Schema.Types.ObjectId, ref: 'History'

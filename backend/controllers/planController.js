@@ -20,6 +20,67 @@ const getAPlan = async (req,res) => {
         res.status(400).json({error: error.message})
     }
 }
+const getTodosOfPlan = async (req,res) => {
+    const {id} = req.params
+    if (!mongoose.Types.ObjectId.isValid(id)) { 
+        return res.status(404).json({error: "no such plan"}) 
+    }
+    try {
+        const plan = await Plan.findOne({_id:id}).populate('todos')
+        const todoArr = plan.todos
+        res.status(200).json({todoArr})
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
+const getTodoTodosOfPlan = async (req,res) => {
+    const {id} = req.params
+    if (!mongoose.Types.ObjectId.isValid(id)) { 
+        return res.status(404).json({error: "no such plan"}) 
+    }
+    try {
+        const plan = await Plan.findOne({_id:id}).populate({
+            path: 'todos',
+            match: { status: 'To Do' } // Filter todos with status: todo
+          })
+        const todoArr = plan.todos
+        res.status(200).json({todoArr})
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
+const getDoingTodosOfPlan = async (req,res) => {
+    const {id} = req.params
+    if (!mongoose.Types.ObjectId.isValid(id)) { 
+        return res.status(404).json({error: "no such plan"}) 
+    }
+    try {
+        const plan = await Plan.findOne({_id:id}).populate({
+            path: 'todos',
+            match: { status: 'Doing' } // Filter todos with status: todo
+          })
+        const todoArr = plan.todos
+        res.status(200).json({todoArr})
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
+const getFinishedTodosOfPlan = async (req,res) => {
+    const {id} = req.params
+    if (!mongoose.Types.ObjectId.isValid(id)) { 
+        return res.status(404).json({error: "no such plan"}) 
+    }
+    try {
+        const plan = await Plan.findOne({_id:id}).populate({
+            path: 'todos',
+            match: { status: 'Finished' } // Filter todos with status: todo
+          })
+        const todoArr = plan.todos
+        res.status(200).json({todoArr})
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
 const createPlan = async (req,res) => {
     const {title, content, status, startDate, endDate, ofUser, plant} = req.body // how to add ofUser here?
 
@@ -198,6 +259,10 @@ const updatePlan = async(req,res) => {
 module.exports = {
     getAllPlan,
     getAPlan,
+    getTodosOfPlan,
+    getTodoTodosOfPlan,
+    getDoingTodosOfPlan,
+    getFinishedTodosOfPlan,
     createPlan,
     changestatusDoing,
     changestatusFinished,

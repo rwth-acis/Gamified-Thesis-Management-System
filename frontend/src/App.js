@@ -27,7 +27,7 @@ function App() {
     }
     setLoading(false)
 }, [tokens]);
-  //console.log(process.env.REACT_APP_BACKEND_URI)
+  //console.log(process.env.REACT_APP_BACKEND_URI_TEST)
   return ( // login not really finished
 
     <div className="App" >
@@ -35,7 +35,7 @@ function App() {
       <BrowserRouter>
         <Navibar />
         <Routes>
-          <Route path="/thesis-system-client" element={tokens ? (
+          <Route path="/" element={tokens ? (
             loading ? (
             <Spinner animation="border" variant="primary" />
             ) : (
@@ -44,10 +44,10 @@ function App() {
         ) : (
           <LoginPage />
         )} />
-          <Route path="/thesis-system-client/project" element={<Project />} />
-          <Route path="/thesis-system-client/weekly" element={<Weekly />} />
-          <Route path="/thesis-system-client/history" element={<History />} />
-          <Route path="/thesis-system-client/allstudents" element={<All />} />
+          <Route path="/project" element={<Project />} />
+          <Route path="/weekly" element={<Weekly />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/allstudents" element={<All />} />
         </Routes>
       </BrowserRouter>
       </Container>

@@ -22,7 +22,7 @@ const LoginPage = () => {
                   <Login />
                 </Col>
                 <Col>
-                  <a href="/" className="text-center" onClick={handleClick}>Already Signed In? Click Here To Refresh!</a>
+                  <h5 className="text-center">Already Signed In? Click The Logo To Refresh!</h5>
                 </Col>
               </Row> 
             </Col>   

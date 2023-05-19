@@ -26,13 +26,15 @@ const {
     getProgressOfUser,
     updateWorkName,
     getAllVisibleUser,
-    updateUser
+    updateUser,
+    getUserByToken
 } = require('../controllers/userController')
 
 router.get("/",getAllUser)
 router.get("/visible/",getAllVisibleUser)
 router.get("/:id",getUserById)
 router.get("/mail/:mail",getUserByMail)
+router.get("/token/:token",getUserByToken)
 router.get("/history/:id",getAllHistOfUser)
 router.get("/plan/:id",getAllPlanOfUser)
 router.get("/todo/:id",getAllTodoOfUser)
