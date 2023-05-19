@@ -152,7 +152,7 @@ const Overview = () => {
             const json = await response.json()
             if(response.ok) {
                 setAchiev(json)
-                connect()
+                //connect()
             }
         }
         const fetchBadges = async() => {
@@ -295,7 +295,7 @@ const Overview = () => {
                     </Col>
                 </Row>
                 <Row><br/></Row><hr />
-                {connected === "true" ?
+                
                 <div>
                 
                 <Row><h6>Current Points:</h6> <p>{point}</p></Row><hr />
@@ -317,11 +317,7 @@ const Overview = () => {
                     <p>No Badges Currently</p>}
                     </div><hr />
                 </div>
-                :
-                <Col>
-                    <p>Connect to the Gamification Framework to view your gamification information!</p>
-                {/*<Button onClick={()=>[connect(),validateMember()] }>Connect</Button>*/} 
-                </Col>}            
+                
             </Col>
 
         </Container>

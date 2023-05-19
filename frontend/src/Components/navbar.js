@@ -53,7 +53,7 @@ const Navibar = (token) => {
   return (
     <Navbar bg="light" variant="light">
       <Container>
-        <Navbar.Brand href="/"><img src={Logo} alt='Logo' style={{width: "80px"}} /></Navbar.Brand>
+        <Navbar.Brand href="/thesis-system-client"><img src={Logo} alt='Logo' style={{width: "80px"}} /></Navbar.Brand>
         {tokens ?
         <Nav className="me-auto">
           <NavDropdown title='Statistics' drop='down'><div style={{width: '500px'}}><Overview ></Overview></div></NavDropdown>
@@ -61,12 +61,12 @@ const Navibar = (token) => {
               <Dropdown.Toggle variant='outline-primary'>Statistics</Dropdown.Toggle>
               <DropdownMenu style={{width: '300px'}}><Overview></Overview></DropdownMenu>
           </Dropdown>*/}
-          <Nav.Link href="/">Home</Nav.Link>
-          <Nav.Link href="/weekly">ToDos</Nav.Link>
-          <Nav.Link href="/project">Plans</Nav.Link>
-          <Nav.Link href="/allstudents">Peers</Nav.Link>
+          <Nav.Link href="/thesis-system-client/">Home</Nav.Link>
+          <Nav.Link href="/thesis-system-client/weekly">ToDos</Nav.Link>
+          <Nav.Link href="/thesis-system-client/project">Plans</Nav.Link>
+          <Nav.Link href="/thesis-system-client/allstudents">Peers</Nav.Link>
           {role === 'Supervisors' && (
-            <Nav.Link href="/history">History</Nav.Link>)}
+            <Nav.Link href="/thesis-system-client/history">History</Nav.Link>)}
         </Nav> : null}
         {/*<Login />*/}
       </Container>
