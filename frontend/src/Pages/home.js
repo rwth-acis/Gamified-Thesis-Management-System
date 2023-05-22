@@ -59,7 +59,7 @@ const Home = () => {
             }
         })
         const json2 = await response2.json()
-        console.log("GF says:",json2)
+        // console.log("GF says:",json2)
       }
   }
       

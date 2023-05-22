@@ -10,10 +10,11 @@ const Chart = () => {
   const [planId, setPlanId] = useState('')
   const [title, setTitle] = useState('')
   const [start, setStart] = useState(null)
-  const [dueDate, setDue] = useState('')
+  const [status, setStatus] = useState('')
+  const [endDate, setend] = useState('')
   const [title2, setTitle2] = useState('')
   const [start2, setStart2] = useState('')
-  const [dueDate2, setDue2] = useState('')
+  const [endDate2, setend2] = useState('')
   const [tokens, setToken] = useState('')
   const [data, setData] = useState(
     [{start: new Date(2020, 6, 1),
@@ -142,13 +143,14 @@ const Chart = () => {
     setModalOpen(true)
 
     setTitle(task.name)
+    setStatus(task.stat)
     setStart(formatDate(task.start))
     //setContent("")
-    setDue(formatDate(task.end))
+    setend(formatDate(task.end))
     setTitle2(task.name)
     setStart2(formatDate(task.start))
     //setContent2("")
-    setDue2(formatDate(task.end))
+    setend2(formatDate(task.end))
   }
   const CloseModal = () => {
     setModalOpen(false)
@@ -164,7 +166,7 @@ const Chart = () => {
     const userJson = await userRes.json()
     const uid = userJson._id
 
-    const plan = {"title":title, "start":start, "dueDate":dueDate}
+    const plan = {"title":title, "start":start, "dueDate":endDate}
     const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+planId, {
         method: 'PATCH',
         body: JSON.stringify(plan),
@@ -181,7 +183,7 @@ const Chart = () => {
           body: JSON.stringify({
             "types": "Update",
             "ofUser":uid,
-            "content": 'Plan:'+title+'->'+ (title !== title2 ? ' title,' : '')+(dueDate !== dueDate2 ? ' dueDate' : '')+(start !== start2 ? ' startDate' : '')  
+            "content": 'Plan:'+title+'->'+ (title !== title2 ? ' title,' : '')+(endDate !== endDate2 ? ' endDate' : '')+(start !== start2 ? ' startDate' : '')  
           }),
           headers: {
               'Content-Type': 'application/json'
@@ -206,7 +208,6 @@ const Chart = () => {
   }
   
   useEffect(() => {
-    let cleanUp = false
     const fetchData = async () => {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
@@ -221,7 +222,7 @@ const Chart = () => {
         method: 'GET'
       })
       const json = await response.json()
-      if(response.ok && !cleanUp) {
+      if(response.ok ) {
         const data1 = []
         const progress = []
         for (const plan of json) {
@@ -235,11 +236,19 @@ const Chart = () => {
         }
 
         let i = 0
+        const today = new Date()
 
         while(i < json.length) {
-          {
-            json[i].status === "Finished"?
-            data1.push({
+          
+          
+            ((new Date(json[i].endDate).getFullYear() > today.getFullYear() || 
+                       (new Date(json[i].endDate).getFullYear() === today.getFullYear() && 
+                       (new Date(json[i].endDate).getMonth() > today.getMonth() || 
+                       (new Date(json[i].endDate).getMonth() === today.getMonth() && 
+                       new Date(json[i].endDate).getDate() > today.getDate()))))) ?
+          
+            (data1.push( 
+              {
               start: new Date(json[i].startDate),
               end: new Date(json[i].endDate),
               name: json[i].title,
@@ -247,28 +256,49 @@ const Chart = () => {
               type:'task',
               progress: progress[i]*100,
               isDisabled: true,
-              styles: { progressColor: '#6495ED', progressSelectedColor: '#6495ED' }
-            }) 
-            :
-            data1.push({
-              start: new Date(json[i].startDate),
-              end: new Date(json[i].endDate),
-              name: json[i].title,
-              id: json[i]._id,
-              type:'task',
-              progress: progress[i]*100,
-              isDisabled: true,
-              styles: { progressColor: '#F0B809', progressSelectedColor: '#F0B809' }
-            }) 
+              stat: json[i].status,
+              styles: { progressColor: '#61BD4F', progressSelectedColor: '#61BD4F' }
+              }
+            ))
+            : 
+              (
+                (new Date(json[i].dueDate).getDate() === today.getDate() && 
+                         new Date(json[i].dueDate).getMonth() === today.getMonth() && 
+                         new Date(json[i].dueDate).getFullYear() === today.getFullYear()) ?
+                (data1.push( 
+                {
+                start: new Date(json[i].startDate),
+                end: new Date(json[i].endDate),
+                name: json[i].title,
+                id: json[i]._id,
+                type:'task',
+                progress: progress[i]*100,
+                isDisabled: true,
+                stat: json[i].status,
+                styles: { progressColor: '#F0B809', progressSelectedColor: '#F0B809' }
+                }
+              )) 
+              :
+                (data1.push( 
+                {
+                start: new Date(json[i].startDate),
+                end: new Date(json[i].endDate),
+                name: json[i].title,
+                id: json[i]._id,
+                type:'task',
+                progress: progress[i]*100,
+                isDisabled: true,
+                stat: json[i].status,
+                styles: { progressColor: '#EB5A46', progressSelectedColor: '#EB5A46' }
+                }
+                )) 
+              )
+          i++  
           }
           
-          i++
         setData(data1) 
       } 
-      return () => {
-        cleanUp = true
-      }
-    }
+    
   }
     fetchData()
   }, [ModalOpen])
@@ -298,15 +328,15 @@ const Chart = () => {
                     <Form.Control as={"textarea"} placeholder="ToDo Content" required
                     value={content} onChange={(e) => setContent(e.target.value)} />             
                   </Form.Group>*/}
-                  <Form.Group className='mb-3' controlId='dueDate'>
+                  <Form.Group className='mb-3' controlId='endDate'>
                     <Form.Label>Start Date</Form.Label>
                     <Form.Control type="date" required 
                     value={start} onChange={(e) => setStart(e.target.value)}/>
                   </Form.Group>
-                  <Form.Group className='mb-3' controlId='dueDate'>
-                    <Form.Label>Due Date</Form.Label>
+                  <Form.Group className='mb-3' controlId='endDate'>
+                    <Form.Label>end Date</Form.Label>
                     <Form.Control type="date" required 
-                    value={dueDate} onChange={(e) => setDue(e.target.value)}/>
+                    value={endDate} onChange={(e) => setend(e.target.value)}/>
                   </Form.Group>
                   {/*<Form.Group className='mb-3' controlId='ofPlan'>
                     <Form.Label>Part of Plan</Form.Label>
@@ -326,9 +356,14 @@ const Chart = () => {
                   <Col className='d-grid gap-2'>
                     <Button variant='danger' onClick={handlePlanDelete}>Delete</Button>
                   </Col>
-                  <Col>
-                    <Button variant="success" onClick={handlePlanComplete}>Plan Completed</Button>
-                  </Col>
+                  {
+                    status === "Finished" ?
+                    null :
+                    <Col className='d-grid gap-2'>
+                      <Button variant="success" onClick={handlePlanComplete}>End Plan</Button>
+                    </Col>
+                  }
+                  
                 </Row>
                 </Form>
               </Modal.Body>
