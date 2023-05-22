@@ -6,9 +6,13 @@ import jwt_decode from 'jwt-decode';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Bushy from '../Pics/Bushy.jpg'
+import Dragon from '../Pics/Dragon.jpg'
+import Zamia from '../Pics/Zamia.jpg'
+import Pilea from '../Pics/Pilea.jpg'
 //require('dotenv').config()
 
-const PlanForm = () => {
+const PlanForm = ({closeModal}) => {
     const [title, setTitle] = useState('')
     const [ofUser, setUser] = useState('')
     const [content, setContent] = useState('')
@@ -33,6 +37,10 @@ const PlanForm = () => {
         }
         fetchPlan()
       },[])
+    
+    const handleCancel = () => {
+        closeModal()
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -121,7 +129,14 @@ const PlanForm = () => {
     return(
         <Container fluid>
             <Form onSubmit={handleSubmit}>
-            <h4 className='text-muted'>Let's create a Plan for today!</h4>
+            <Row>
+                <Col sm={4}><h4 className='text-muted'>Let's create a Plan for today!</h4></Col>
+                <Col className='text-center' sm={2}><img src={Bushy} style={{width: '40px',height: '60px'}}></img><p>BushyPlantGenus</p></Col>
+                <Col className='text-center' sm={2}><img src={Dragon} style={{width: '40px',height: '60px'}}></img><p>DragonPlantGenus</p></Col>
+                <Col className='text-center' sm={2}><img src={Pilea} style={{width: '40px',height: '60px'}}></img><p>PileaPlantGenus</p></Col>
+                <Col className='text-center' sm={2}><img src={Zamia} style={{width: '40px',height: '60px'}}></img><p>ZamiaPlantGenus</p></Col>
+            </Row>
+            
             <br/>
             <hr/>
                 <Row>
@@ -170,9 +185,14 @@ const PlanForm = () => {
                     </Col>
                 </Row>
                 <hr />
-            <Button variant="primary" type="submit">
-                 Submit
-            </Button>
+            <Row>
+                <Col className='d-grid gap-2'>
+                    <Button variant='primary' type='submit'>Submit</Button>
+                </Col>
+                <Col className='d-grid gap-2'>
+                    <Button variant='danger' onClick={closeModal}>Cancel</Button>
+                </Col>
+            </Row>
             </Form>
         </Container>
     )

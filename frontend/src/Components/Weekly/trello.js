@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Board from 'react-trello'
 import jwt_decode from 'jwt-decode';
-import { Modal, Button, Form, ToastContainer } from 'react-bootstrap'
+import { Modal, Button, Form, ToastContainer, Row, Col } from 'react-bootstrap'
 import Toast from 'react-bootstrap/Toast'
 //require('dotenv').config()
 
@@ -416,7 +416,7 @@ const Trello = ({pid}) => {
     }
     }
     fetchT()
-  },[ModalOpen, showToast])
+  },[ModalOpen, showToast, pid])
 
   useEffect(() => {
     const fetchD = async () => {
@@ -522,7 +522,7 @@ const Trello = ({pid}) => {
       }
     }
     fetchD()
-  },[ModalOpen, showToast])
+  },[ModalOpen, showToast, pid])
 
   useEffect(() => {
     const fetchF = async () => {
@@ -550,30 +550,13 @@ const Trello = ({pid}) => {
             title: json.todoArr[i].title,
             description: json.todoArr[i].content,
             label: "Plan:"+pjson.title,
-            tags :  ((new Date(json.todoArr[i].dueDate).getFullYear() > today.getFullYear() || 
-                     (new Date(json.todoArr[i].dueDate).getFullYear() === today.getFullYear() && 
-                     (new Date(json.todoArr[i].dueDate).getMonth() > today.getMonth() || 
-                     (new Date(json.todoArr[i].dueDate).getMonth() === today.getMonth() && 
-                     new Date(json.todoArr[i].dueDate).getDate() > today.getDate()))))) ? 
-                    [{ // if due date is later than today
-                        bgcolor: '#61BD4F',
-                        color: 'white',
-                        title: (new Date(json.todoArr[i].dueDate)).toLocaleDateString("en-GB")
-                    }] : 
-                    (new Date(json.todoArr[i].dueDate).getDate() === today.getDate() && 
-                    new Date(json.todoArr[i].dueDate).getMonth() === today.getMonth() && 
-                    new Date(json.todoArr[i].dueDate).getFullYear() === today.getFullYear()) ? 
-                        [{ // if due date is today
-                            bgcolor: '#F0B809 ',
-                            color: 'white',
-                            title: (new Date(json.todoArr[i].dueDate)).toLocaleDateString("en-GB")
-                        }] : 
-                        [{ // otherwise (due date is earlier than today)
-                            bgcolor: '#EB5A46',
-                            color: 'white',
-                            title: (new Date(json.todoArr[i].dueDate)).toLocaleDateString("en-GB")
-                        }]
-          })
+            tags :  [{ // if due date is later than today
+              bgcolor: '#6495ED',
+              //bgcolor: '#4D4DFF',
+              color: 'white',
+              title: (new Date(json.todoArr[i].dueDate)).toLocaleDateString("en-GB")
+              }]
+            })
           if(res.ok) {
             i++
           }
@@ -611,7 +594,7 @@ const Trello = ({pid}) => {
     }
     }
     fetchF()
-  },[ModalOpen, showToast])
+  },[ModalOpen, showToast, pid])
 
   /*
     useEffect(()=>{
@@ -727,13 +710,21 @@ const Trello = ({pid}) => {
                     <option value="">-- Please select --</option>
                     {planOption}
                     </Form.Select>
-                  </Form.Group>*/}
-                <Button variant="primary" type="submit">Submit</Button>
+                  </Form.Group><Modal.Footer>
+              <Button variant="danger" onClick={handleCardDelete}>Delete ToDo</Button>
+              </Modal.Footer>*/}
+                  <hr/>
+                <Row>
+                  <Col className='d-grid gap-2'>
+                    <Button variant='primary' type='submit'>Submit</Button>
+                  </Col>
+                  <Col className='d-grid gap-2'>
+                    <Button variant='danger' onClick={CloseModal}>Cancel</Button>
+                  </Col>
+                </Row>
                 </Form>
               </Modal.Body>
-              <Modal.Footer>
-              <Button variant="danger" onClick={handleCardDelete}>Delete ToDo</Button>
-              </Modal.Footer>
+              
             </Modal>
 
 

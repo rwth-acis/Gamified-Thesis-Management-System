@@ -21,6 +21,7 @@ const Render = ({plant, seed, status, title, progress, start, due, content, pid}
 
     const [modalOpen, setModalOpen] = useState(false)
     const [pids, setPid] = useState(null)
+    const [planTitle, setPlanTitle] = useState(null)
     const openModal = () => {
         setModalOpen(true)
     }
@@ -28,8 +29,9 @@ const Render = ({plant, seed, status, title, progress, start, due, content, pid}
         setModalOpen(false)
     }
 
-    const handleClick = (pid) => {
+    const handleClick = (pid,title) => {
         setPid(pid)
+        setPlanTitle(title)
     }
 
     const renderRandomPlant = () => {
@@ -55,11 +57,10 @@ const Render = ({plant, seed, status, title, progress, start, due, content, pid}
           
             <Modal show={modalOpen} onHide={closeModal} size='xl'>
               <Modal.Header closeButton>
-                <Modal.Title>TEST</Modal.Title>
+                <Modal.Title><span className='text-muted'>Plan Detail: </span> <span>{planTitle}</span></Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <h5 className='text-center'>An Overview of The Selected Thesis</h5>
-                <br />
+                <h5 className='text-center'>All todos of the selected plan</h5>
                 <Trello pid={pids}/>
               </Modal.Body>
             </Modal>
@@ -67,7 +68,7 @@ const Render = ({plant, seed, status, title, progress, start, due, content, pid}
         <OverlayTrigger placement="top" overlay={<Tooltip><div>Start: {(new Date(st)).toLocaleDateString("en-GB")}</div> <div>Due: {(new Date(d)).toLocaleDateString("en-GB")}</div>"{c}"<div></div></Tooltip>}>
          
         <Card style={{width: '200px', margin: '10px 10px 10px 10px',boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)', cursor: 'pointer'}}
-              onClick={()=>[handleClick(pid),openModal()]}>
+              onClick={()=>[handleClick(pid,i),openModal()]}>
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{renderRandomPlant()}</div>
             <hr />    
             <Card.Body >

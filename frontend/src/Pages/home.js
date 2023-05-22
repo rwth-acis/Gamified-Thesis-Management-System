@@ -91,7 +91,7 @@ const Home = () => {
                 <Row><h1 className="text-center">Welcome to the thesis management system of the RWTH Informatik 5</h1></Row>
                 <Row><hr /></Row>
                 <Row>
-                  <h4 className="text-center">Here you can find all the plans you defined for your thesis project:</h4>
+                  <h5 className="text-center">Here you can find all the plans you defined for your thesis project, click them to view more information!</h5>
                 </Row>
                 <Row><br /></Row>
                 <Row>

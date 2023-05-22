@@ -2,11 +2,12 @@ import {useState, useEffect} from 'react'
 import 'bootstrap/dist/css/bootstrap.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { Row, Col } from 'react-bootstrap';
 import jwt_decode from 'jwt-decode';
 //require('dotenv').config()
 
 
-const TodoForm = () => {
+const TodoForm = ({closeModal}) => {
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
     const [ofPlan, setPlan] = useState('')
@@ -44,6 +45,10 @@ const TodoForm = () => {
             {plan.title}
         </option>
     ))
+
+    const handleCancel = () => {
+        closeModal()
+    }
 
     // not sure whether it makes code cleaner or complexer to firstly define all functions and then execute in order in handleSubmit?
     const handleSubmit = async (e) => {
@@ -157,34 +162,49 @@ const TodoForm = () => {
             <h4 className='text-muted'>Let's create a Todo for Today!</h4>
             <br/>
             <hr/>
-            <Form.Group className='mb-3' controlId='title'>
-                <Form.Label className=''>Title</Form.Label>
-                <Form.Control type="text" placeholder="ToDo Title" required
-                value={title} onChange={(e) => setTitle(e.target.value)} />
-                
+            <Row>
+                <Col>
+                  <Form.Group className='mb-3' controlId='title'>
+                  <Form.Label className=''>Title</Form.Label>
+                  <Form.Control type="text" placeholder="ToDo Title" required
+                    value={title} onChange={(e) => setTitle(e.target.value)} />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group className='mb-3' controlId='content'>
+                  <Form.Label>Content</Form.Label>
+                  <Form.Control as={"textarea"} placeholder="ToDo Content" required
+                    value={content} onChange={(e) => setContent(e.target.value)} />
+                  </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                  <Form.Group className='mb-3' controlId='dueDate'>
+                  <Form.Label>Due Date</Form.Label>
+                  <Form.Control type="date" required 
+                    value={dueDate} onChange={(e) => setDue(e.target.value)}/>
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group className='mb-3' controlId='ofPlan'>
+                  <Form.Label>Part of Plan</Form.Label>
+                  <Form.Select value={ofPlan} onChange={(e) => setPlan(e.target.value)}>
+                  <option value="">-- Please select --</option>
+                      {planOption}
+                  </Form.Select>
             </Form.Group>
-            <Form.Group className='mb-3' controlId='content'>
-                <Form.Label>Content</Form.Label>
-                <Form.Control as={"textarea"} placeholder="ToDo Content" required
-                value={content} onChange={(e) => setContent(e.target.value)} />
-                
-            </Form.Group>
-            <Form.Group className='mb-3' controlId='dueDate'>
-                <Form.Label>Due Date</Form.Label>
-                <Form.Control type="date" required 
-                value={dueDate} onChange={(e) => setDue(e.target.value)}/>
-            </Form.Group>
-            <Form.Group className='mb-3' controlId='ofPlan'>
-                <Form.Label>Part of Plan</Form.Label>
-                <Form.Select value={ofPlan} onChange={(e) => setPlan(e.target.value)}>
-                <option value="">-- Please select --</option>
-                    {planOption}
-                </Form.Select>
-            </Form.Group>
+                </Col>
+            </Row>
             <hr/>
-            <Button variant="primary" type="submit">
-                 Submit
-            </Button>
+            <Row>
+                <Col className='d-grid gap-2'>
+                    <Button variant='primary' type='submit'>Submit</Button>
+                </Col>
+                <Col className='d-grid gap-2'>
+                    <Button variant='danger' onClick={closeModal}>Cancel</Button>
+                </Col>
+            </Row>
         </Form>
     )
 

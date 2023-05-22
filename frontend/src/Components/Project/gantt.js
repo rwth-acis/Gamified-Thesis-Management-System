@@ -1,6 +1,6 @@
 import { Gantt } from 'gantt-task-react';
 import { useEffect, useState } from 'react'
-import { Modal, Button, Form } from 'react-bootstrap'
+import { Modal, Button, Form, Row, Col } from 'react-bootstrap'
 import jwt_decode from 'jwt-decode';
 import "gantt-task-react/dist/index.css";
 //require('dotenv').config()
@@ -315,14 +315,24 @@ const Chart = () => {
                     {planOption}
                     </Form.Select>
                   </Form.Group>
-                <Button variant="danger" onClick={handlePlanDelete}>Delete Plan</Button>*/}
-                <Button variant="primary" type="submit">Submit</Button>
+                <Button variant="danger" onClick={handlePlanDelete}>Delete Plan</Button><Modal.Footer>
+              <Button variant="danger" onClick={handlePlanDelete}>Delete Plan</Button>
+              
+              </Modal.Footer>*/}
+                <Row>
+                  <Col className='d-grid gap-2'>
+                    <Button variant='primary' type='submit'>Submit</Button>
+                  </Col>
+                  <Col className='d-grid gap-2'>
+                    <Button variant='danger' onClick={handlePlanDelete}>Delete</Button>
+                  </Col>
+                  <Col>
+                    <Button variant="success" onClick={handlePlanComplete}>Plan Completed</Button>
+                  </Col>
+                </Row>
                 </Form>
               </Modal.Body>
-              <Modal.Footer>
-              <Button variant="danger" onClick={handlePlanDelete}>Delete Plan</Button>
-              <Button variant="success" onClick={handlePlanComplete}>Plan Completed</Button>
-              </Modal.Footer>
+              
             </Modal>
         </div>
     )

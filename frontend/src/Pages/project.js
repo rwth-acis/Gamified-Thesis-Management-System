@@ -22,14 +22,15 @@ const Project = () => {
             <Modal.Title>New Plan</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <PlanForm />
+            <PlanForm closeModal={closeModal}/>
           </Modal.Body>
         </Modal>
 
         <Col>
             <Row ><br /></Row>
-              <Row >
-                <Col><h2 className='text-muted' onClick={setModalOpen}>Plans</h2></Col>
+              <Row className="text-center">
+                <Col><h2 className='text-muted' onClick={setModalOpen}>Plans</h2>
+                <h6 className="text-center">Here you can find all the plans you defined, click the progress bar to edit it</h6></Col>
                 <Col><Button variant="outline-primary" onClick={openModal}><MdOutlineCreateNewFolder size={'2em'} />New</Button></Col>
               </Row >
               <hr />

@@ -67,7 +67,10 @@ const All = () => {
             </Modal>
 
             <Row><br /></Row>
-            <Row><h3 className='text-center'>An Overview Of All Visible Thesis</h3></Row>
+            <Row>
+                <Col className='text-center'><h2 className='text-muted'>Peers' Projects</h2>
+                <h6>Here you can find all visible thesis projects of your peer students, go see their status and say hi!</h6></Col>
+                </Row>
             <Row><br /></Row>
             <hr />
             <Row>
