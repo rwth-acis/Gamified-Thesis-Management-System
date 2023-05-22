@@ -1,31 +1,45 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
-import Table from 'react-bootstrap/Table'
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
-import { Container } from "react-bootstrap";
+import Table from 'react-bootstrap/Table';
+import ReactPaginate from 'react-paginate';
 
 const Plans = ({history}) => {
 
     // Plans Pagination
     let plan = history
+    const [currentPlanPage, setCurrentPlanPage] = useState(0)
+    const dataPerPlanPage = 10 // Number of items to display per page
+    const pageCount = Math.ceil(plan.length / dataPerPlanPage)
+
+    const handlePageChange = ({ selected }) => {
+        setCurrentPlanPage(selected)
+    }
+
+    const displayedData = 
+    plan.length > 10 ?
+    plan.slice(
+        currentPlanPage * dataPerPlanPage,
+        (currentPlanPage + 1) * dataPerPlanPage
+    ):
+    plan
+    /*
     const [currentPlanPage, setCurrentPlanPage] = useState(1);
     const dataPerPlanPage = 10;  
     const lastPlan = currentPlanPage * dataPerPlanPage;
     const firstPlan = lastPlan - dataPerPlanPage;
     // Get the current page of data to display
-    let currentPlanData = null
+    let displayedData = null
     if(plan.length > 10) {
-      currentPlanData = plan.slice(firstPlan, lastPlan);
+      displayedData = plan.slice(firstPlan, lastPlan);
     } else {
-      currentPlanData = plan
-    }
+      displayedData = plan
+    }*/
 
     return(
-        <Table striped bordered hover size="sm">
+            <div>
+                <Table striped bordered hover size="sm">
                   <caption>Plans Overview</caption>
                   <thead>
                     <tr>
@@ -37,7 +51,7 @@ const Plans = ({history}) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {currentPlanData.length > 0 ? (currentPlanData.map((plan, index) => (
+                    {displayedData.length > 0 ? (displayedData.map((plan, index) => (
                       <tr key={index}>
                         <td >{plan.title}</td>
                         <td >{plan.content}</td>
@@ -54,8 +68,27 @@ const Plans = ({history}) => {
                       <td>Select Student</td>
                       </tr>)}
                   </tbody>
-                  
-                  <tfoot>
+                </Table>
+                <ReactPaginate
+                    previousLabel="< Previous"
+                    nextLabel="Next >"
+                    pageClassName="page-item"
+                    pageLinkClassName="page-link"
+                    previousClassName="page-item"
+                    previousLinkClassName="page-link"
+                    nextClassName="page-item"
+                    nextLinkClassName="page-link"
+                    breakLabel="..."
+                    breakClassName="page-item"
+                    breakLinkClassName="page-link"
+                    pageCount={pageCount}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={3}
+                    onPageChange={handlePageChange}
+                    containerClassName="pagination"
+                    activeClassName="active"
+                />
+                  {/** <tfoot>
                       <tr>
                         <td> 
                           <Row>
@@ -83,9 +116,10 @@ const Plans = ({history}) => {
                           </Row> 
                         </td>
                       </tr>
-                  </tfoot>
+                  </tfoot>*/}
                   
-              </Table>
+                  
+            </div>  
     )
 }
 export default Plans

@@ -1,16 +1,29 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
-import Table from 'react-bootstrap/Table'
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
-import { Container } from "react-bootstrap";
+import Table from 'react-bootstrap/Table';
+import ReactPaginate from 'react-paginate';
 
 const Todos = ({history}) => {
 
     let todo = history
+    const [currentTodoPage, setCurrentTodoPage] = useState(0)
+    const dataPerTodoPage = 10 // Number of items to display per page
+    const pageCount = Math.ceil(todo.length / dataPerTodoPage)
+
+    const handlePageChange = ({ selected }) => {
+        setCurrentTodoPage(selected)
+    }
+
+    const displayedData = 
+    todo.length > 10 ?
+    todo.slice(
+        currentTodoPage * dataPerTodoPage,
+        (currentTodoPage + 1) * dataPerTodoPage
+    ):
+    todo
+    /*
     // Todos Pagination
     const [currentTodoPage, setCurrentTodoPage] = useState(1);
     const dataPerTodoPage = 10;  
@@ -23,10 +36,12 @@ const Todos = ({history}) => {
     } else {
       currentTodoData = todo
     }
+    */
 
     return(
-        <Table striped bordered hover size="sm">
-                  <caption>ToDos Overview</caption>
+        <div>
+            <Table striped bordered hover size="sm">
+                <caption>ToDos Overview</caption>
                   <thead>
                     <tr>
                       <th>Title</th>
@@ -38,6 +53,46 @@ const Todos = ({history}) => {
                     </tr>
                   </thead>
                   <tbody>
+                  {displayedData.length > 0 ? (displayedData.map((todo, index) => (
+                      <tr key={index}>
+                        <td >{todo.title}</td>
+                        <td >{todo.content}</td>
+                        <td >{(new Date(todo.date)).toLocaleDateString("en-GB")}</td>
+                        <td >{todo.status}</td>
+                        <td >{(new Date(todo.dueDate)).toLocaleDateString("en-GB")}</td>
+                        <td>{todo.ofPlanName}</td>
+                      </tr>
+                      ))) 
+                    : (<tr>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
+                      <td>Select Student</td>
+                      </tr>)}
+                  </tbody>
+              </Table>
+              <ReactPaginate
+              previousLabel="< Previous"
+              nextLabel="Next >"
+              pageClassName="page-item"
+              pageLinkClassName="page-link"
+              previousClassName="page-item"
+              previousLinkClassName="page-link"
+              nextClassName="page-item"
+              nextLinkClassName="page-link"
+              breakLabel="..."
+              breakClassName="page-item"
+              breakLinkClassName="page-link"
+              pageCount={pageCount}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={3}
+              onPageChange={handlePageChange}
+              containerClassName="pagination"
+              activeClassName="active"
+            />
+            {/**<tbody>
                     {currentTodoData.length > 0 ? (currentTodoData.map((todo, index) => (
                       <tr key={index}>
                         <td >{todo.title}</td>
@@ -85,8 +140,8 @@ const Todos = ({history}) => {
                           </Row>
                         </td>
                       </tr>
-                  </tfoot>  
-              </Table>
+                  </tfoot> */}
+            </div>
     )
 }
 export default Todos

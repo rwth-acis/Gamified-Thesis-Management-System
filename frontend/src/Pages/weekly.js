@@ -81,7 +81,7 @@ const Weekly = () => {
               </Row >
               <hr />
             <Row > 
-                <Trello pid={pid}/>
+                <Trello pid={pid} uid={false}/>
             </Row>           
           </Col>
         </Container>

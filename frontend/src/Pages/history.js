@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import Button from "react-bootstrap/Button";
-import Table from 'react-bootstrap/Table'
+// import Button from "react-bootstrap/Button";
+// import Table from 'react-bootstrap/Table'
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { Container } from "react-bootstrap";

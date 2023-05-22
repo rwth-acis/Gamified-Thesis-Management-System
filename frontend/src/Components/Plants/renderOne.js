@@ -61,7 +61,7 @@ const Render = ({plant, seed, status, title, progress, start, due, content, pid}
               </Modal.Header>
               <Modal.Body>
                 <h5 className='text-center'>All todos of the selected plan</h5>
-                <Trello pid={pids}/>
+                <Trello pid={pids} uid={true}/>
               </Modal.Body>
             </Modal>
 

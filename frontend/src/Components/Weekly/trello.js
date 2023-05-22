@@ -5,7 +5,8 @@ import { Modal, Button, Form, ToastContainer, Row, Col } from 'react-bootstrap'
 import Toast from 'react-bootstrap/Toast'
 //require('dotenv').config()
 
-const Trello = ({pid}) => {
+const Trello = ({pid, uid}) => {
+  let isVisitor = uid
   // The Package delievers possible error messages when drag card to an empty lane(Not 100% happening)! 
   const [ModalOpen, setModalOpen] = useState(false)
   const [showToast, setShowToast] = useState(false)
@@ -665,6 +666,8 @@ const Trello = ({pid}) => {
       return(
         <div>
           <br />
+          {
+            isVisitor === false ?
             <Board data={data} cardDraggable={true} handleDragEnd={handleDragEnd}
               hideCardDeleteIcon={true}
               onCardDelete={handleCardDelete}
@@ -672,6 +675,16 @@ const Trello = ({pid}) => {
               style={{backgroundColor: '#FCFCFC',color:'#2C454B'}}
               laneStyle={{backgroundColor: '#DAEBF2'}}
               cardStyle={{backgroundColor: '#F0F5F9'}} />
+              :
+              <Board data={data} cardDraggable={false} handleDragEnd={handleDragEnd}
+              hideCardDeleteIcon={true}
+              onCardDelete={handleCardDelete}
+              onCardClick={handleCardClick}
+              style={{backgroundColor: '#FCFCFC',color:'#2C454B'}}
+              laneStyle={{backgroundColor: '#DAEBF2'}}
+              cardStyle={{backgroundColor: '#F0F5F9'}} />
+          }
+            
 
             <ToastContainer position='top-center'>
             <Toast show={showToast} onClose={toggleToast} bg='light'>
@@ -682,7 +695,9 @@ const Trello = ({pid}) => {
             </Toast>
             </ToastContainer>
 
-            <Modal show={ModalOpen} onHide={CloseModal}>
+            {
+              isVisitor === false?
+              <Modal show={ModalOpen} onHide={CloseModal}>
               {/*cardId*/}
               <Modal.Header closeButton>
                 <Modal.Title>Edit ToDo: {title}</Modal.Title>
@@ -704,15 +719,6 @@ const Trello = ({pid}) => {
                     <Form.Control type="date" required 
                     value={dueDate} onChange={(e) => setDue(e.target.value)}/>
                   </Form.Group>
-                  {/*<Form.Group className='mb-3' controlId='ofPlan'>
-                    <Form.Label>Part of Plan</Form.Label>
-                    <Form.Select value={ofPlan} onChange={(e) => setPlan(e.target.value)}>
-                    <option value="">-- Please select --</option>
-                    {planOption}
-                    </Form.Select>
-                  </Form.Group><Modal.Footer>
-              <Button variant="danger" onClick={handleCardDelete}>Delete ToDo</Button>
-              </Modal.Footer>*/}
                   <hr/>
                 <Row>
                   <Col className='d-grid gap-2'>
@@ -721,12 +727,18 @@ const Trello = ({pid}) => {
                   <Col className='d-grid gap-2'>
                     <Button variant='danger' onClick={CloseModal}>Cancel</Button>
                   </Col>
+                  <Col className='d-grid gap-2'>
+                    <Button variant='danger' onClick={handleCardDelete}>Delete Todo</Button>
+                  </Col>
                 </Row>
                 </Form>
               </Modal.Body>
-              
             </Modal>
+            :
+            null
 
+            }
+            
 
         </div>
       )

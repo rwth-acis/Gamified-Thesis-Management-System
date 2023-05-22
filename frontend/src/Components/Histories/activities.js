@@ -1,32 +1,46 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
-import Table from 'react-bootstrap/Table'
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
-import { Container } from "react-bootstrap";
+import Table from 'react-bootstrap/Table';
+import ReactPaginate from 'react-paginate';
 
 const Activity = ({history}) => {
 
     // const [hist, setHist] = useState([])
     let hist = history
+    const [currentActPage, setCurrentActPage] = useState(0)
+    const dataPerActPage = 10 // Number of items to display per page
+    const pageCount = Math.ceil(hist.length / dataPerActPage)
+
+    const handlePageChange = ({ selected }) => {
+        setCurrentActPage(selected)
+    }
+
+    const displayedData = 
+    hist.length > 10 ?
+    hist.slice(
+        currentActPage * dataPerActPage,
+        (currentActPage + 1) * dataPerActPage
+    ):
+    hist
+    /*
     const [currentHistPage, setCurrentHistPage] = useState(1);
     const dataPerHistPage = 10;  
     const lastHist = currentHistPage * dataPerHistPage;
     const firstHist = lastHist - dataPerHistPage;
     // Get the current page of data to display
-    let currentHistData = null
+    let displayedData = null
     let totalHistPages = 0
     if(hist.length > 10) {
-      currentHistData = hist.slice(firstHist, lastHist)
+      displayedData = hist.slice(firstHist, lastHist)
       totalHistPages = Math.ceil(hist.length / dataPerHistPage)
     } else {
-      currentHistData = hist
-    } 
+      displayedData = hist
+    } * */
 
     return(
+        <div>
         <Table striped bordered hover size="sm">
             <caption>Activities History</caption>
                 <thead>
@@ -37,7 +51,41 @@ const Activity = ({history}) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {currentHistData.length > 0 ? (currentHistData.map((his, index) => (
+                  {displayedData.length > 0 ? (displayedData.map((his, index) => (
+                    <tr key={index}>
+                      <td >{(new Date(his.time)).toLocaleDateString("en-GB")}</td>
+                      <td >{his.content}</td>
+                      <td >{his.types}</td>
+                    </tr>
+                    ))) 
+                  : (<tr>
+                    <td>Select Student</td>
+                    <td>Select Student</td>
+                    <td>Select Student</td>
+                    </tr>)}
+                </tbody>
+            </Table>
+            <ReactPaginate
+              previousLabel="< Previous"
+              nextLabel="Next >"
+              pageClassName="page-item"
+              pageLinkClassName="page-link"
+              previousClassName="page-item"
+              previousLinkClassName="page-link"
+              nextClassName="page-item"
+              nextLinkClassName="page-link"
+              breakLabel="..."
+              breakClassName="page-item"
+              breakLinkClassName="page-link"
+              pageCount={pageCount}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={3}
+              onPageChange={handlePageChange}
+              containerClassName="pagination"
+              activeClassName="active"
+            />
+            {/** <tbody>
+                  {displayedData.length > 0 ? (displayedData.map((his, index) => (
                     <tr key={index}>
                       <td >{(new Date(his.time)).toLocaleDateString("en-GB")}</td>
                       <td >{his.content}</td>
@@ -90,8 +138,7 @@ const Activity = ({history}) => {
                         </Row> 
                       </td>
                     </tr>
-                </tfoot>
-                
-            </Table>)
+                </tfoot>*/}
+            </div>)
 }
 export default Activity
