@@ -5,7 +5,6 @@ import { Container, Row, Col } from 'react-bootstrap';
 //require('dotenv').config()
 
 const Pcontainer = ({id}) => {
-    const [modalOpen, setModalOpen] = useState(false)
     const [seeds, setSeed] = useState(null)
     const [content, setContent] = useState(null)
     const [plants, setPlant] = useState(null)
@@ -17,20 +16,7 @@ const Pcontainer = ({id}) => {
     const [start, setStart] = useState([])
     const [uid, setUid] = useState('')
     const [pids, setPids] = useState(null)
-    const [pid, setPid] = useState(null)
     //const memo = useMemo(() => fetchData(),seeds)
-
-    
-    const openModal = () => {
-        setModalOpen(true)
-    }
-    const closeModal = () => {
-        setModalOpen(false)
-    }
-
-    const handleClick = (pid, title) => {
-        setPid(pid)
-    }
 
     useEffect(() => {
         const getId = async() => {
@@ -110,7 +96,7 @@ const Pcontainer = ({id}) => {
         let PT = []
         for(let i = 0; i < count; i++) {
             PT.push(
-              <Col key={i} >
+              <Col key={i} style={{maxWidth: '25%'}}>
                 <Render plant={plants[i]} seed={seeds[i]} status = {status[i]} title = {title[i]}
                         progress = {progress[i]*100}  start = {start[i]} due={due[i]} content={content[i]}
                         pid={pids[i]} />     
@@ -122,10 +108,11 @@ const Pcontainer = ({id}) => {
     }
 
     return(
-        <Container >
-            <Row >
+        <Container style={{ display: 'flex', flexWrap: 'wrap', maxWidth: '1000px'}} >
+            {/** {renderPlant()},*/}
+            
                 {renderPlant()}
-            </Row>
+            
               
         </Container>
     )

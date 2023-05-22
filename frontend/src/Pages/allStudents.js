@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Container, Card, Row, Col, ProgressBar, Modal } from 'react-bootstrap';
 import MA from '../Components/Pics/MA.png'
 import BA from '../Components/Pics/BA.png'
+import DA from '../Components/Pics/DA.jpg'
 import Pcontainer from '../Components/plantContainer';
 
 
@@ -73,16 +74,18 @@ const All = () => {
                 </Row>
             <Row><br /></Row>
             <hr />
-            <Row>
+            <Row >
             { users ?
             users.map(user => (
-                <Col key={user._id} sm={2} md={3} style={{ marginBottom: '10px' }}>
+                <Col key={user._id} sm={2} md={3} >
                 <Card style={{margin: '10px 10px 10px 10px',boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)', cursor: 'pointer', width: '200px', height: '100%'}}
                        onClick={()=>[handleClick(user._id, user.firstName, user.lastName, user.workName, user.workType),openModal()]}>
                     {
                         user.workType === "Bachelor Thesis" ?
-                        <Card.Img variant="top" src={BA} /> : 
-                        <Card.Img variant="top" src={MA} />
+                        <Card.Img variant="top" src={BA} /> :
+                          user.workType === "Master Thesis" ? 
+                          <Card.Img variant="top" src={MA} />  :
+                          <Card.Img variant='top' src={DA} />
                     }
                     
                     <Card.Body>

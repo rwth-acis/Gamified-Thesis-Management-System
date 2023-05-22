@@ -75,7 +75,7 @@ const Trello = ({pid}) => {
             })
             const json4 = await response4.json()
             const hid = json4._id
-            console.log("json4:",json4)
+            // console.log("json4:",json4)
 
             //pushHistToUser
             const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
@@ -86,7 +86,7 @@ const Trello = ({pid}) => {
                 }
             })
             const json5 = await response5.json()
-            console.log(json5)
+            // console.log(json5)
             if(response5.ok) {
               CloseModal()
               //window.location.reload()
@@ -133,9 +133,9 @@ const Trello = ({pid}) => {
         }
     })
     const json = await response.json()
-    console.log("Todo Updated:",json)
-    console.log("due1:",dueDate)
-    console.log("due2:",dueDate2)
+    // console.log("Todo Updated:",json)
+    // console.log("due1:",dueDate)
+    // console.log("due2:",dueDate2)
     if(response.ok) {
             //create History
             const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
@@ -151,7 +151,7 @@ const Trello = ({pid}) => {
             })
             const json4 = await response4.json()
             const hid = json4._id
-            console.log("json4:",json4)
+            // console.log("json4:",json4)
 
             //pushHistToUser
             const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
@@ -162,7 +162,7 @@ const Trello = ({pid}) => {
                 }
             })
             const json5 = await response5.json()
-            console.log(json5)  
+            // console.log(json5)  
     }
     CloseModal()  
   }
@@ -189,7 +189,7 @@ const Trello = ({pid}) => {
         })
         const json = await response.json()
         const title = json.title
-        console.log(json)
+        // console.log(json)
         //create History
         const res = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
             method: 'POST',
@@ -200,7 +200,7 @@ const Trello = ({pid}) => {
         })
         const tjson = await res.json()
         const hid = tjson._id
-        console.log("json4:",tjson)
+        // console.log("json4:",tjson)
         //give history to User
         const res2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
             method: 'POST',
@@ -227,7 +227,7 @@ const Trello = ({pid}) => {
         })
         const json2 = await response2.json()
         const title2 = json2.title
-        console.log(json2)
+        // console.log(json2)
         //create History
         const res3 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
             method: 'POST',
@@ -238,7 +238,7 @@ const Trello = ({pid}) => {
         })
         const tjson3 = await res3.json()
         const hid2 = tjson3._id
-        console.log("json4:",tjson3)
+        // console.log("json4:",tjson3)
         //give history to User
         const res4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
             method: 'POST',
@@ -248,7 +248,7 @@ const Trello = ({pid}) => {
             }
         })
         const tjson4 = await res4.json()
-        console.log(tjson4)
+        // console.log(tjson4)
         if(res4.ok){
           window.location.reload()
         }
@@ -267,7 +267,7 @@ const Trello = ({pid}) => {
           toggleToast()
         }
         const title3 = json3.title
-        console.log(json3)
+        // console.log(json3)
         //create History
         const res5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
             method: 'POST',
@@ -278,7 +278,7 @@ const Trello = ({pid}) => {
         })
         const tjson5 = await res5.json()
         const hid3 = tjson5._id
-        console.log("json4:",tjson5)
+        // console.log("json4:",tjson5)
         //give history to User
         const res6 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
             method: 'POST',
@@ -288,7 +288,7 @@ const Trello = ({pid}) => {
             }
         })
         const tjson6 = await res6.json()
-        console.log(tjson6)//window.location.reload()
+        // console.log(tjson6)//window.location.reload()
         const response6 = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/actions/thesis_system/3/'+username, {
             mode: 'cors',
             method: 'POST',
@@ -575,9 +575,9 @@ const Trello = ({pid}) => {
               const pjson = await res.json()
               data3.push({
                 id: json[i]._id,
-                title: json[i].title,
+                title:  json[i].title.length > 18 ? json[i].title.substring(0,18)+'...' : json[i].title,
                 description: json[i].content,
-                label: "Plan:"+pjson.title,
+                label:  pjson.title.length > 8 ? "Plan:"+pjson.title.substring(0,8)+'...' : "Plan:"+pjson.title,
                 tags : [{ // if due date is later than today
                   bgcolor: '#6495ED',
                   //bgcolor: '#4D4DFF',
@@ -636,23 +636,23 @@ const Trello = ({pid}) => {
           {
             id: 'lane1',
             title: 'To Do',
-            label: '',
+            label: ' ',
             cards: taskt 
           },
           {
             id: 'lane2',
             title: 'Doing',
-            label: '',
-            cards: taskd || [{
+            label: ' ',
+            cards: taskd /*|| [{
               id: "placeholder3",
               title: "placeholder",
               description: "Placeholders will disappear when new todo is added on the lane",
-              label: ":)"}]
+              label: ":)"}]*/
           },
           {
             id: 'lane3',
             title: 'Finished',
-            label: '',
+            label: ' ',
             cards: taskf 
           }
         ]

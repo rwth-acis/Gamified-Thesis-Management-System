@@ -56,7 +56,7 @@ const PlanForm = ({closeModal}) => {
         const uid = await userJson._id 
 */
         const plan = {"title":title, "content":content, "startDate":startDate, "endDate":endDate, "ofUser":ofUser, "plant": plant} //how to implement ofUser here?
-        console.log(plan)
+        // console.log(plan)
         const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/', {
             method: 'POST',
             body: JSON.stringify(plan),
@@ -67,7 +67,7 @@ const PlanForm = ({closeModal}) => {
         const json = await response.json()
         const pid = await json._id
        
-        console.log("res: ",json)
+        // console.log("res: ",json)
         // insert Plan
         const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/plan/token/',{
             method: 'POST',
@@ -77,7 +77,7 @@ const PlanForm = ({closeModal}) => {
             }
         })
         const json2 = await response2.json()
-        console.log(json2)
+        // console.log(json2)
 
         //create History
         const response3 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
@@ -89,7 +89,7 @@ const PlanForm = ({closeModal}) => {
         })
         const json3 = await response3.json()
         const hid = await json3._id
-        console.log(json3)
+        // console.log(json3)
 
         //pushHistToUser
         const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
@@ -100,7 +100,7 @@ const PlanForm = ({closeModal}) => {
             }
         })
         const json4 = await response4.json()
-        console.log(json4)
+        // console.log(json4)
             const username = tokens['preferred_username']
             const password = tokens['sub']
             const authData = username+':'+password
@@ -121,7 +121,7 @@ const PlanForm = ({closeModal}) => {
             setStart('')
             setEnd('')
             setContent('')
-            console.log("New Plan added: ",json)
+            // console.log("New Plan added: ",json)
             window.location.reload()
         }
     }
@@ -131,10 +131,10 @@ const PlanForm = ({closeModal}) => {
             <Form onSubmit={handleSubmit}>
             <Row>
                 <Col sm={4}><h4 className='text-muted'>Let's create a Plan for today!</h4></Col>
-                <Col className='text-center' sm={2}><img src={Bushy} style={{width: '40px',height: '60px'}}></img><p>BushyPlantGenus</p></Col>
-                <Col className='text-center' sm={2}><img src={Dragon} style={{width: '40px',height: '60px'}}></img><p>DragonPlantGenus</p></Col>
-                <Col className='text-center' sm={2}><img src={Pilea} style={{width: '40px',height: '60px'}}></img><p>PileaPlantGenus</p></Col>
-                <Col className='text-center' sm={2}><img src={Zamia} style={{width: '40px',height: '60px'}}></img><p>ZamiaPlantGenus</p></Col>
+                <Col className='text-center' sm={2}><img alt='Bushy' src={Bushy} style={{width: '40px',height: '60px'}}></img><p>BushyPlantGenus</p></Col>
+                <Col className='text-center' sm={2}><img alt='Dragon' src={Dragon} style={{width: '40px',height: '60px'}}></img><p>DragonPlantGenus</p></Col>
+                <Col className='text-center' sm={2}><img alt='Pilea' src={Pilea} style={{width: '40px',height: '60px'}}></img><p>PileaPlantGenus</p></Col>
+                <Col className='text-center' sm={2}><img alt='Zamia' src={Zamia} style={{width: '40px',height: '60px'}}></img><p>ZamiaPlantGenus</p></Col>
             </Row>
             
             <br/>

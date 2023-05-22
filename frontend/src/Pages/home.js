@@ -20,7 +20,7 @@ const Home = () => {
       //setUserId(json._id)
     } else if(response.ok && json === null) {
       const user = {'firstName': fName,'lastName': lName,'email':mail,'token': sub, 'workType': 'Bachelor Thesis'}
-      console.log('Creating new user')
+      // console.log('Creating new user')
       const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/', {
         method: 'POST',
         body: JSON.stringify(user),

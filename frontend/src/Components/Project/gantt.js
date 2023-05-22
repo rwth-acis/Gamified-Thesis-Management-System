@@ -56,7 +56,7 @@ const Chart = () => {
             })
             const json4 = await response4.json()
             const hid = json4._id
-            console.log("json4:",json4)
+            // console.log("json4:",json4)
 
             //pushHistToUser
             const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
@@ -77,7 +77,7 @@ const Chart = () => {
                 }
             })
             const json6 = await response6.json()
-            console.log("json6:",json6)
+            // console.log("json6:",json6)
             CloseModal()
       }
     }
@@ -94,7 +94,7 @@ const Chart = () => {
       const userJson = await userRes.json()
       const uid = userJson._id
       // Perform deletion logic here
-      console.log('Item deleted',planId);
+      // console.log('Item deleted',planId);
       const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+planId, {
       method: 'DELETE'
     })
@@ -115,7 +115,7 @@ const Chart = () => {
             })
             const json4 = await response4.json()
             const hid = json4._id
-            console.log("json4:",json4)
+            // console.log("json4:",json4)
 
             //pushHistToUser
             const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
@@ -126,7 +126,7 @@ const Chart = () => {
                 }
             })
             const json5 = await response5.json()
-            console.log(json5)
+            // console.log(json5)
             CloseModal()
       }
     }
@@ -175,7 +175,7 @@ const Chart = () => {
         }
     })
     const json = await response.json()
-    console.log(json)
+    // console.log(json)
     if(response.ok) {
       //create History
       const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
@@ -191,7 +191,7 @@ const Chart = () => {
       })
       const json4 = await response4.json()
       const hid = json4._id
-      console.log("json4:",json4)
+      // console.log("json4:",json4)
 
       //pushHistToUser
       const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
@@ -202,7 +202,7 @@ const Chart = () => {
           }
       })
       const json5 = await response5.json()
-      console.log(json5)  
+      // console.log(json5)  
     }
     CloseModal()
   }
@@ -239,9 +239,37 @@ const Chart = () => {
         const today = new Date()
 
         while(i < json.length) {
+          data1.push( 
+            {
+            start: new Date(json[i].startDate),
+            end: new Date(json[i].endDate),
+            name: json[i].title,
+            id: json[i]._id,
+            type:'task',
+            progress: progress[i]*100,
+            isDisabled: true,
+            stat: json[i].status,
+            styles: 
+                ((new Date(json[i].endDate).getFullYear() > today.getFullYear() || 
+                (new Date(json[i].endDate).getFullYear() === today.getFullYear() && 
+                (new Date(json[i].endDate).getMonth() > today.getMonth() || 
+                (new Date(json[i].endDate).getMonth() === today.getMonth() && 
+                new Date(json[i].endDate).getDate() > today.getDate()))))) 
+                ?
+                { progressColor: '#61BD4F', progressSelectedColor: '#61BD4F' }
+                :
+                    (new Date(json[i].endDate).getDate() === today.getDate() && 
+                    new Date(json[i].endDate).getMonth() === today.getMonth() && 
+                    new Date(json[i].endDate).getFullYear() === today.getFullYear()) 
+                    ?
+                    { progressColor: '#F0B809', progressSelectedColor: '#F0B809' }
+                    :
+                    { progressColor: '#EB5A46', progressSelectedColor: '#EB5A46' }
+            }
+          )
+
           
-          
-            ((new Date(json[i].endDate).getFullYear() > today.getFullYear() || 
+            /*((new Date(json[i].endDate).getFullYear() > today.getFullYear() || 
                        (new Date(json[i].endDate).getFullYear() === today.getFullYear() && 
                        (new Date(json[i].endDate).getMonth() > today.getMonth() || 
                        (new Date(json[i].endDate).getMonth() === today.getMonth() && 
@@ -292,7 +320,7 @@ const Chart = () => {
                 styles: { progressColor: '#EB5A46', progressSelectedColor: '#EB5A46' }
                 }
                 )) 
-              )
+              )*/
           i++  
           }
           

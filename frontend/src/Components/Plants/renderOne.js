@@ -72,22 +72,22 @@ const Render = ({plant, seed, status, title, progress, start, due, content, pid}
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{renderRandomPlant()}</div>
             <hr />    
             <Card.Body >
-                <Card.Title style={{ fontSize: '18px' }}>{i}</Card.Title>
+                <div className='text-center'><Card.Title>{i.length > 13 ? i.substring(0,13)+'...' : i}</Card.Title>
                 {
                     (new Date(d).getDate() === new Date().getDate() && 
                     new Date(d).getMonth() === new Date().getMonth() && 
                     new Date(d).getFullYear() === new Date().getFullYear()) &&
                     t !== 'Finished'?
-                    <Badge bg='warning'>Due Today</Badge> : 
+                    <Badge pill bg='warning' style={{fontSize: '10px'}}>Due Today</Badge> : 
                       ((new Date(d).getFullYear() < new Date().getFullYear() || 
                        (new Date(d).getFullYear() === new Date().getFullYear() && 
                        (new Date(d).getMonth() < new Date().getMonth() || 
                        (new Date(d).getFullYear() === new Date().getFullYear() &&
                        new Date(d).getMonth() === new Date().getMonth() && 
                        new Date(d).getDate() < new Date().getDate()))))) && t !== 'Finished' ?
-                       <Badge bg='danger'>Overdue</Badge> :
-                       null
-                }
+                       <Badge pill bg='danger' style={{fontSize: '10px'}}>Overdue</Badge> :
+                       <br/>
+                }</div>
             </Card.Body>
             {
                 (new Date(d).getDate() === new Date().getDate() && 

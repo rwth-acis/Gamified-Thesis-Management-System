@@ -88,7 +88,7 @@ const TodoForm = ({closeModal}) => {
                 }
             })
             const json2 = await response2.json()
-            console.log(json2)
+            // console.log(json2)
             
             
             const response3 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/todo/token', {
@@ -99,7 +99,7 @@ const TodoForm = ({closeModal}) => {
                 }
             })
             const json3 = await response3.json()
-            console.log(json3)
+            // console.log(json3)
             
 
             
@@ -113,7 +113,7 @@ const TodoForm = ({closeModal}) => {
             })
             const json4 = await response4.json()
             const hid = json4._id
-            console.log("json4:",json4)
+            // console.log("json4:",json4)
 
             //pushHistToUser
             const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
@@ -124,7 +124,7 @@ const TodoForm = ({closeModal}) => {
                 }
             })
             const json5 = await response5.json()
-            console.log(json5)
+            // console.log(json5)
             const response7 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/doing/'+ofPlan, {
                 method: 'PATCH',
                 headers: {
