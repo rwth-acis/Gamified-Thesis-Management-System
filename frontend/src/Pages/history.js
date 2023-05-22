@@ -7,6 +7,9 @@ import Table from 'react-bootstrap/Table'
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { Container } from "react-bootstrap";
+import Activity from "../Components/Histories/activities";
+import Todos from "../Components/Histories/todos";
+import Plans from "../Components/Histories/plans";
 //require('dotenv').config()
 
 const History = () => {
@@ -16,47 +19,6 @@ const History = () => {
     const [hist, setHist] = useState([])
     const [plan, setPlan] = useState([])
     const [todo, setTodo] = useState([])
-
-    // Activities Pagination
-    const [currentHistPage, setCurrentHistPage] = useState(1);
-    const dataPerHistPage = 10;  
-    const lastHist = currentHistPage * dataPerHistPage;
-    const firstHist = lastHist - dataPerHistPage;
-    // Get the current page of data to display
-    let currentHistData = null
-    let totalHistPages = 0
-    if(hist.length > 10) {
-      currentHistData = hist.slice(firstHist, lastHist)
-      totalHistPages = Math.ceil(hist.length / dataPerHistPage)
-    } else {
-      currentHistData = hist
-    } 
-
-    // Plans Pagination
-    const [currentPlanPage, setCurrentPlanPage] = useState(1);
-    const dataPerPlanPage = 10;  
-    const lastPlan = currentPlanPage * dataPerPlanPage;
-    const firstPlan = lastPlan - dataPerPlanPage;
-    // Get the current page of data to display
-    let currentPlanData = null
-    if(plan.length > 10) {
-      currentPlanData = plan.slice(firstPlan, lastPlan);
-    } else {
-      currentPlanData = plan
-    }
-    // Todos Pagination
-    const [currentTodoPage, setCurrentTodoPage] = useState(1);
-    const dataPerTodoPage = 10;  
-    const lastTodo = currentTodoPage * dataPerTodoPage;
-    const firstTodo = lastTodo - dataPerTodoPage;
-    // Get the current page of data to display
-    let currentTodoData = null
-    if(todo.length > 10) {
-      currentTodoData = todo.slice(firstTodo, lastTodo);
-    } else {
-      currentTodoData = todo
-    }
-    
 
     useEffect(() => {
         const fetchStu = async () => {
@@ -156,199 +118,13 @@ const History = () => {
           fill
         >
           <Tab eventKey="activity" title="Activities">
-              <Table striped bordered hover size="sm">
-                  <caption>Activities History</caption>
-                  <thead>
-                    <tr>
-                      <th>Time</th>
-                      <th>Object</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {currentHistData.length > 0 ? (currentHistData.map((his, index) => (
-                      <tr key={index}>
-                        <td >{(new Date(his.time)).toLocaleDateString("en-GB")}</td>
-                        <td >{his.content}</td>
-                        <td >{his.types}</td>
-                      </tr>
-                      ))) 
-                    : (<tr>
-                      <td>Select Student</td>
-                      <td>Select Student</td>
-                      <td>Select Student</td>
-                      </tr>)}
-                  </tbody>
-                  <tfoot>
-                      <tr>
-                        <td>    
-                          <Row>
-                            <Col>
-                              {firstHist > 1 ?
-                              (<Button variant="outline-success" size="sm" onClick={() => setCurrentHistPage(currentHistPage - 1)} style={{marginRight: '10px'}}>
-                                Last
-                              </Button>)
-                              :
-                              (<Button variant="outline-success" size="sm" disabled onClick={() => setCurrentHistPage(currentHistPage - 1)} style={{marginRight: '10px'}}>
-                                Last
-                              </Button>)
-                              }
-
-{Array.from({ length: totalHistPages }, (_, index) => (
-          <span
-            className="text-muted"
-            key={index}
-            onClick={() => setCurrentHistPage(index + 1)}
-            disabled={currentHistPage === index + 1}
-            style={{marginRight: '10px', cursor: 'pointer'}}
-          >
-            {index + 1}
-          </span>
-        ))}
-                            
-                              {lastHist < hist.length ?
-                              (<Button variant="outline-success" size="sm" onClick={() => setCurrentHistPage(currentHistPage + 1)}>
-                                Next
-                              </Button>)
-                              :
-                              (<Button variant="outline-success" size="sm" disabled onClick={() => setCurrentHistPage(currentHistPage + 1)}>
-                                Next
-                              </Button>)
-                              }
-                            </Col>
-                          </Row> 
-                        </td>
-                      </tr>
-                  </tfoot>
-                  
-              </Table>
+            <Activity history={hist} />
           </Tab>
           <Tab eventKey="plan" title="Plans">
-              <Table striped bordered hover size="sm">
-                  <caption>Plans Overview</caption>
-                  <thead>
-                    <tr>
-                      <th>Title</th>
-                      <th>Content</th>
-                      <th>StartDate</th>
-                      <th>Progress</th>
-                      <th>DueDate</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {currentPlanData.length > 0 ? (currentPlanData.map((plan, index) => (
-                      <tr key={index}>
-                        <td >{plan.title}</td>
-                        <td >{plan.content}</td>
-                        <td >{(new Date(plan.startDate)).toLocaleDateString("en-GB")}</td>
-                        <td >{plan.progress.progress*100}%</td>
-                        <td >{(new Date(plan.endDate)).toLocaleDateString("en-GB")}</td>
-                      </tr>
-                      ))) 
-                    : (<tr>
-                      <td>Select Student</td>
-                      <td>Select Student</td>
-                      <td>Select Student</td>
-                      <td>Select Student</td>
-                      <td>Select Student</td>
-                      </tr>)}
-                  </tbody>
-                  
-                  <tfoot>
-                      <tr>
-                        <td> 
-                          <Row>
-                            <Col>
-                              {firstPlan> 1 ?
-                              (<Button variant="outline-success" size="sm" onClick={() => setCurrentPlanPage(currentPlanPage - 1)}>
-                                Last
-                              </Button>)
-                              :
-                              (<Button variant="outline-success" size="sm" disabled onClick={() => setCurrentPlanPage(currentPlanPage - 1)}>
-                                Last
-                              </Button>)
-                              }
-                            
-                              {lastPlan < plan.length ?
-                              (<Button variant="outline-success" size="sm" onClick={() => setCurrentPlanPage(currentPlanPage + 1)}>
-                                Next
-                              </Button>)
-                              :
-                              (<Button variant="outline-success" size="sm" disabled onClick={() => setCurrentPlanPage(currentPlanPage + 1)}>
-                                Next
-                              </Button>)
-                              }
-                            </Col>
-                          </Row> 
-                        </td>
-                      </tr>
-                  </tfoot>
-                  
-              </Table>
+            <Plans history={plan} />
           </Tab>
           <Tab eventKey="todo" title="ToDos">
-              <Table striped bordered hover size="sm">
-                  <caption>ToDos Overview</caption>
-                  <thead>
-                    <tr>
-                      <th>Title</th>
-                      <th>Content</th>
-                      <th>CreateDate</th>
-                      <th>Status</th>
-                      <th>DueDate</th>
-                      <th>Part Of</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {currentTodoData.length > 0 ? (currentTodoData.map((todo, index) => (
-                      <tr key={index}>
-                        <td >{todo.title}</td>
-                        <td >{todo.content}</td>
-                        <td >{(new Date(todo.date)).toLocaleDateString("en-GB")}</td>
-                        <td >{todo.status}</td>
-                        <td >{(new Date(todo.dueDate)).toLocaleDateString("en-GB")}</td>
-                        <td>{todo.ofPlanName}</td>
-                      </tr>
-                      ))) 
-                    : (<tr>
-                      <td>Select Student</td>
-                      <td>Select Student</td>
-                      <td>Select Student</td>
-                      <td>Select Student</td>
-                      <td>Select Student</td>
-                      <td>Select Student</td>
-                      </tr>)}
-                  </tbody>
-                    <tfoot>
-                      <tr>
-                        <td>
-                          <Row>
-                            <Col>
-                              {firstTodo> 1 ?
-                              (<Button variant="outline-success" size="sm" onClick={() => setCurrentTodoPage(currentTodoPage - 1)}>
-                                Last
-                              </Button>)
-                              :
-                              (<Button variant="outline-success" size="sm" disabled onClick={() => setCurrentTodoPage(currentTodoPage - 1)}>
-                                Last
-                              </Button>)
-                              }
-                            
-                              {lastTodo < todo.length ?
-                              (<Button variant="outline-success" size="sm" onClick={() => setCurrentTodoPage(currentTodoPage + 1)}>
-                                Next
-                              </Button>)
-                              :
-                              (<Button variant="outline-success" size="sm" disabled onClick={() => setCurrentTodoPage(currentTodoPage + 1)}>
-                                Next
-                              </Button>)
-                              }
-                            </Col>
-                          </Row>
-                        </td>
-                      </tr>
-                  </tfoot>  
-              </Table>
+            <Todos history={todo} />
           </Tab>
         </Tabs>
       </div>

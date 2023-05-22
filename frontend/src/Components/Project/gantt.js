@@ -250,6 +250,10 @@ const Chart = () => {
             isDisabled: true,
             stat: json[i].status,
             styles: 
+              json[i].status === "Finished" ?
+              { progressColor: '#6495ED', progressSelectedColor: '#6495ED' }
+              :
+
                 ((new Date(json[i].endDate).getFullYear() > today.getFullYear() || 
                 (new Date(json[i].endDate).getFullYear() === today.getFullYear() && 
                 (new Date(json[i].endDate).getMonth() > today.getMonth() || 
