@@ -299,7 +299,7 @@ const Overview = () => {
                         <Badge bg='info'>BA</Badge> : 
                           workType === "Master Thesis" ? 
                           <Badge bg='info'>MA</Badge> :
-                          <Badge bg='info'>DA</Badge>
+                          <Badge bg='info'>PhD</Badge>
                         }
                         <br />
                         <AiOutlineSetting size={'1.5em'} color={'#BBBBBB'} onClick={openModal2} style={{ cursor: 'pointer' }}/>

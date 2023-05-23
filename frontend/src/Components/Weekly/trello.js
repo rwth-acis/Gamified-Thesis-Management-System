@@ -10,16 +10,13 @@ const Trello = ({pid, uid}) => {
   // The Package delievers possible error messages when drag card to an empty lane(Not 100% happening)! 
   const [ModalOpen, setModalOpen] = useState(false)
   const [showToast, setShowToast] = useState(false)
-  // const [deleModalOpen, setDeleModalOpen] = useState(false)
-  // const [token, setToken] = useState('')
+  const [status, setStatus] = useState('')
   const [cardId, setCardId] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  //const [ofPlan, setPlan] = useState('')
   const [dueDate, setDue] = useState('')
   const [title2, setTitle2] = useState('')
   const [content2, setContent2] = useState('')
-  //const [ofPlan2, setPlan2] = useState('')
   const [dueDate2, setDue2] = useState('')
   const [taskt, setT] = useState(null)
   const [taskd, setD] = useState(null)
@@ -100,10 +97,12 @@ const Trello = ({pid, uid}) => {
   const handleCardClick = async (cardId, laneId) => {
     setCardId(cardId)
     setModalOpen(true)
+    
 
     const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/todo/'+cardId)
     const json = await response.json()
     //console.log(json)
+    setStatus(json['status'])
     setTitle(json['title'])
     setContent(json['content'])
     setDue(formatDate(new Date(json['dueDate'])))
@@ -714,11 +713,16 @@ const Trello = ({pid, uid}) => {
                     <Form.Control as={"textarea"} placeholder="ToDo Content" required
                     value={content} onChange={(e) => setContent(e.target.value)} />             
                   </Form.Group>
-                  <Form.Group className='mb-3' controlId='dueDate'>
+                  {
+                    status !== "Finished" ?
+                    <Form.Group className='mb-3' controlId='dueDate'>
                     <Form.Label>Due Date</Form.Label>
                     <Form.Control type="date" required 
                     value={dueDate} onChange={(e) => setDue(e.target.value)}/>
                   </Form.Group>
+                    :
+                    <p>This Todo is finished, therefore you can not edit other attributes.</p>
+                  }
                   <hr/>
                 <Row>
                   <Col className='d-grid gap-2'>

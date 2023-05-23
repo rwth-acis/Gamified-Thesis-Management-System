@@ -2,14 +2,13 @@ import { useEffect, useState } from "react";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-// import Button from "react-bootstrap/Button";
-// import Table from 'react-bootstrap/Table'
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { Container } from "react-bootstrap";
 import Activity from "../Components/Histories/activities";
 import Todos from "../Components/Histories/todos";
 import Plans from "../Components/Histories/plans";
+import Users from "../Components/Histories/users";
 //require('dotenv').config()
 
 const History = () => {
@@ -19,6 +18,7 @@ const History = () => {
     const [hist, setHist] = useState([])
     const [plan, setPlan] = useState([])
     const [todo, setTodo] = useState([])
+    const [user, setUser] = useState([])
 
     useEffect(() => {
         const fetchStu = async () => {
@@ -79,9 +79,16 @@ const History = () => {
           }
           setTodo(json4)
         }
+        /*
+        const fetchUser = async() => {
+          const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/')
+          const json = await response.json()
+          setUser(json)
+        }*/
         fetchHist()
         fetchPlan()
         fetchTodo()
+        // fetchUser()
       },[uid])
       
       const stuOption = Students.map((stu, index) => (
@@ -125,6 +132,9 @@ const History = () => {
           </Tab>
           <Tab eventKey="todo" title="ToDos">
             <Todos history={todo} />
+          </Tab>
+          <Tab eventKey="user" title="Users">
+            <Users />
           </Tab>
         </Tabs>
       </div>

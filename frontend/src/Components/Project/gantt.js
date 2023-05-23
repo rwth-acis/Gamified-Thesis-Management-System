@@ -355,21 +355,28 @@ const Chart = () => {
                     <Form.Control type="text" placeholder="Plan Title" required
                     value={title} onChange={(e) => setTitle(e.target.value)} />    
                   </Form.Group>
-                  {/*<Form.Group className='mb-3' controlId='content'>
-                    <Form.Label>Content</Form.Label>
-                    <Form.Control as={"textarea"} placeholder="ToDo Content" required
-                    value={content} onChange={(e) => setContent(e.target.value)} />             
-                  </Form.Group>*/}
-                  <Form.Group className='mb-3' controlId='endDate'>
+                  {
+                    status !== "Finished" ?
+                    <Form.Group className='mb-3' controlId='endDate'>
                     <Form.Label>Start Date</Form.Label>
                     <Form.Control type="date" required 
                     value={start} onChange={(e) => setStart(e.target.value)}/>
-                  </Form.Group>
-                  <Form.Group className='mb-3' controlId='endDate'>
+                    </Form.Group>
+                    :
+                    <p>This Plan is finished, therefore you can not edit other attributes.</p>
+                  }
+                  {
+                    status !== "Finished" ?
+                    <Form.Group className='mb-3' controlId='endDate'>
                     <Form.Label>end Date</Form.Label>
                     <Form.Control type="date" required 
                     value={endDate} onChange={(e) => setend(e.target.value)}/>
-                  </Form.Group>
+                    </Form.Group>
+                    :
+                    <hr />
+                  }
+                  
+                  
                   {/*<Form.Group className='mb-3' controlId='ofPlan'>
                     <Form.Label>Part of Plan</Form.Label>
                     <Form.Select value={ofPlan} onChange={(e) => setPlan(e.target.value)}>
