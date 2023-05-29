@@ -51,7 +51,7 @@ const Overview = () => {
 
     const validateAdmin = async (e) => {
         e.preventDefault()
-        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/admin/'+uid,{
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/admin/'+uid,{
             method: 'POST',
             body: JSON.stringify({"password":password}),
             headers: {
@@ -66,7 +66,7 @@ const Overview = () => {
     }
     const updateUser = async (e) => {
         e.preventDefault()
-        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/'+uid,{
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/'+uid,{
             method: 'PATCH',
             body: JSON.stringify({
                 "firstName": fName,
@@ -96,7 +96,7 @@ const Overview = () => {
             const password = tmp['sub']
             const name = tmp['given_name']
             const mail = tmp['email']
-            const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
+            const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
             const userJson = await userRes.json()
             setRole(userJson.role) 
             setWorkType(userJson.workType)
@@ -109,7 +109,7 @@ const Overview = () => {
             setUid(uids)
             const authData = username+':'+password
             setName(name)
-            const response = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/status/thesis_system/'+username, {
+            const response = await fetch(process.env.REACT_APP_GAM_FRAM_URI+'/visualization/status/thesis_system/'+username, {
                 mode: 'cors',
                 method: 'GET',
                 headers: {
@@ -140,7 +140,7 @@ const Overview = () => {
             const username = tmp['preferred_username']
             const password = tmp['sub']
             const authData = username+':'+password
-            const response = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/achievements/thesis_system/'+username, {
+            const response = await fetch(process.env.REACT_APP_GAM_FRAM_URI+'/visualization/achievements/thesis_system/'+username, {
                 mode: 'cors',
                 method: 'GET',
                 headers: {
@@ -161,7 +161,7 @@ const Overview = () => {
             const username = tmp['preferred_username']
             const password = tmp['sub']
             const authData = username+':'+password
-            const response = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/badges/thesis_system/'+username, {
+            const response = await fetch(process.env.REACT_APP_GAM_FRAM_URI+'/visualization/badges/thesis_system/'+username, {
                 mode: 'cors',
                 method: 'GET',
                 headers: {
@@ -182,7 +182,7 @@ const Overview = () => {
                 const badgeImg = []
                 for(const badge of json){
                     badgeId.push(badge.id)
-                    const response = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/badges/thesis_system/'+badge.id+'/img', {
+                    const response = await fetch(process.env.REACT_APP_GAM_FRAM_URI+'/badges/thesis_system/'+badge.id+'/img', {
                         mode: 'cors',
                         method: 'GET',
                         headers: {

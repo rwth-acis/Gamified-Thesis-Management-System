@@ -29,7 +29,7 @@ const PlanForm = ({closeModal}) => {
         // const sub = tmp['sub']
         const mail = tmp['email']
         const fetchPlan = async () => {
-        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
+        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
         const userJson = await userRes.json()
         const uid = userJson._id
         setUser(uid)
@@ -50,14 +50,14 @@ const PlanForm = ({closeModal}) => {
             console.error("No Valid User Info!")
         }
 /*
-        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
+        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
         const userJson = await userRes.json()
         console.log("user:",userJson)
         const uid = await userJson._id 
 */
         const plan = {"title":title, "content":content, "startDate":startDate, "endDate":endDate, "ofUser":ofUser, "plant": plant} //how to implement ofUser here?
         // console.log(plan)
-        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/', {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/', {
             method: 'POST',
             body: JSON.stringify(plan),
             headers: {
@@ -69,7 +69,7 @@ const PlanForm = ({closeModal}) => {
        
         // console.log("res: ",json)
         // insert Plan
-        const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/plan/token/',{
+        const response2 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/plan/token/',{
             method: 'POST',
             body: JSON.stringify({"token": sub,"pid":pid}),
             headers: {
@@ -80,7 +80,7 @@ const PlanForm = ({closeModal}) => {
         // console.log(json2)
 
         //create History
-        const response3 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
+        const response3 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
             method: 'POST',
             body: JSON.stringify({"types": "Create","ofUser":json2._id,"content":"Plan:"+title}),
             headers: {
@@ -92,7 +92,7 @@ const PlanForm = ({closeModal}) => {
         // console.log(json3)
 
         //pushHistToUser
-        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
+        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
             method: 'POST',
             body: JSON.stringify({"token": sub,"hid":hid}),
             headers: {
@@ -105,7 +105,7 @@ const PlanForm = ({closeModal}) => {
             const password = tokens['sub']
             const authData = username+':'+password
             //window.location.reload()
-            const response5 = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/actions/thesis_system/2/'+username, {
+            const response5 = await fetch(process.env.REACT_APP_GAM_FRAM_URI+'/visualization/actions/thesis_system/2/'+username, {
                 mode: 'cors',
                 method: 'POST',
                 headers: {

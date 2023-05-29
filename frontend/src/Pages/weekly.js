@@ -33,9 +33,9 @@ const Weekly = () => {
         const token = sessionStorage.getItem('access-token')
         const tmp = jwt_decode(token) 
         const sub = tmp['sub'] 
-        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+sub)
+        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/token/'+sub)
         const userJson = await userRes.json()
-        const planRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/plan/'+userJson._id)
+        const planRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/plan/'+userJson._id)
         const planJson = await planRes.json()
         if(userRes.ok && planRes.ok) {
           const planData = planJson.map(plan => {

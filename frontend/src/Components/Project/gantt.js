@@ -33,17 +33,17 @@ const Chart = () => {
       const username = tokens['preferred_username']
       const mail = tokens['email']
       const authData = username+':'+sub
-      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
       const uid = userJson._id
-      const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/finish/'+planId, {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/finish/'+planId, {
           method: 'PATCH'
         })
       const json = await response.json()
       const planTitle = json.title
 
       if(response.ok) {
-        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
+        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({
                   "types": "Update",
@@ -59,7 +59,7 @@ const Chart = () => {
             // console.log("json4:",json4)
 
             //pushHistToUser
-            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
+            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
                 method: 'POST',
                 body: JSON.stringify({"token": sub,"hid":hid}),
                 headers: {
@@ -67,7 +67,7 @@ const Chart = () => {
                 }
             })
              const json5 = await response5.json()
-            const response6 = await fetch('https://mentoring.tech4comp.dbis.rwth-aachen.de/gamification/visualization/actions/thesis_system/4/'+username, {
+            const response6 = await fetch(process.env.REACT_APP_GAM_FRAM_URI+'/visualization/actions/thesis_system/4/'+username, {
                 mode: 'cors',
                 method: 'POST',
                 headers: {
@@ -90,19 +90,19 @@ const Chart = () => {
       const tmp = jwt_decode(token)
       const sub = tmp['sub']
       const mail = tmp['email']
-      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
       const uid = userJson._id
       // Perform deletion logic here
       // console.log('Item deleted',planId);
-      const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+planId, {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/'+planId, {
       method: 'DELETE'
     })
       const json = await response.json()
       const planTitle = json.title
       
       if(response.ok) {
-        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
+        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({
                   "types": "Delete",
@@ -118,7 +118,7 @@ const Chart = () => {
             // console.log("json4:",json4)
 
             //pushHistToUser
-            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
+            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
                 method: 'POST',
                 body: JSON.stringify({"token": sub,"hid":hid}),
                 headers: {
@@ -162,12 +162,12 @@ const Chart = () => {
     const tmp = jwt_decode(token)
     const sub = tmp['sub']
     const mail = tmp['email']
-    const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
+    const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
     const userJson = await userRes.json()
     const uid = userJson._id
 
     const plan = {"title":title, "start":start, "dueDate":endDate}
-    const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+planId, {
+    const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/'+planId, {
         method: 'PATCH',
         body: JSON.stringify(plan),
         headers: {
@@ -178,7 +178,7 @@ const Chart = () => {
     // console.log(json)
     if(response.ok) {
       //create History
-      const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
+      const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
           method: 'POST',
           body: JSON.stringify({
             "types": "Update",
@@ -194,7 +194,7 @@ const Chart = () => {
       // console.log("json4:",json4)
 
       //pushHistToUser
-      const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
+      const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
           method: 'POST',
           body: JSON.stringify({"token": sub,"hid":hid}),
           headers: {
@@ -214,11 +214,11 @@ const Chart = () => {
       setToken(tmp)
       // const sub = tmp['sub']
       const mail = tmp['email']
-      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
       const uid = userJson._id
       
-      const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/plan/'+uid, {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/plan/'+uid, {
         method: 'GET'
       })
       const json = await response.json()
@@ -226,7 +226,7 @@ const Chart = () => {
         const data1 = []
         const progress = []
         for (const plan of json) {
-          const p = await fetch(`${process.env.REACT_APP_BACKEND_URI_TEST}/api/plan/progress/${plan._id}`, {
+          const p = await fetch(`${process.env.REACT_APP_BACKEND_URI}/api/plan/progress/${plan._id}`, {
             method: 'GET'
           });
           if(p.ok) {
