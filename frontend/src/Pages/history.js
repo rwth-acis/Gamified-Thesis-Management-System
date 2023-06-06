@@ -9,6 +9,7 @@ import Activity from "../Components/Histories/activities";
 import Todos from "../Components/Histories/todos";
 import Plans from "../Components/Histories/plans";
 import Users from "../Components/Histories/users";
+import jwt_decode from 'jwt-decode';
 //require('dotenv').config()
 
 const History = () => {
@@ -19,76 +20,81 @@ const History = () => {
     const [plan, setPlan] = useState([])
     const [todo, setTodo] = useState([])
     const [user, setUser] = useState([])
+    const [role, setRole] = useState('')
 
     useEffect(() => {
-        const fetchStu = async () => {
-          const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/')
-          const json = await response.json()
-          if(response.ok && json !== null) {
-            const userData = json.map(user => {
-                return {
-                id: user._id,
-                firstname: user.firstName,
-                lastname: user.lastName,
-                workType: user.workType,
-                role: user.role
-                }
-              })
-            // console.log(userData)
-            setStudents(userData)
-            // console.log(Students)
-          }
+      const getCurrUser = async() => {
+        const token = sessionStorage.getItem('access-token')
+        const tmp = jwt_decode(token)
+        const sub = tmp['sub']
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+sub)
+        const json = await response.json()
+        if(response.ok) {
+          setRole(json.role)
         }
-        fetchStu()
+      }
+
+      const fetchStu = async () => {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/')
+        const json = await response.json()
+        if(response.ok && json !== null) {
+          const userData = json.map(user => {
+            return {
+              id: user._id,
+              firstname: user.firstName,
+              lastname: user.lastName,
+              workType: user.workType,
+              role: user.role
+            }
+          })
+          // console.log(userData)
+          setStudents(userData)
+          // console.log(Students)
+        }
+      }
+      getCurrUser()
+      fetchStu()
       },[])
 
       
-      useEffect (() => {
-        const fetchHist = async() => {
-            const response2 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/'+uid)
-            const json2 = await response2.json()
-            setHist(json2)
-        }
-        const fetchPlan = async() => {
-          const response3 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/plan/'+uid)
-          const json3 = await response3.json()
-          if(response3.ok && json3) {
-            for (const plan of json3) {
-              const progress = await fetch(`${process.env.REACT_APP_BACKEND_URI}/api/plan/progress/${plan._id}`, {
-                method: 'GET'
-              });
-              if(progress.ok) {
-                const pjson = await progress.json()
-                plan.progress = pjson
-              }
+    useEffect (() => {
+      const fetchHist = async() => {
+          const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/'+uid)
+          const json2 = await response2.json()
+          setHist(json2)
+      }
+      const fetchPlan = async() => {
+        const response3 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/plan/'+uid)
+        const json3 = await response3.json()
+        if(response3.ok && json3) {
+          for (const plan of json3) {
+            const progress = await fetch(`${process.env.REACT_APP_BACKEND_URI_TEST}/api/plan/progress/${plan._id}`, {
+              method: 'GET'
+            });
+            if(progress.ok) {
+              const pjson = await progress.json()
+              plan.progress = pjson
             }
           }
-          setPlan(json3)
         }
-        const fetchTodo = async() => {
-          const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/todo/'+uid)
-          const json4 = await response4.json()
-          
+        setPlan(json3)
+      }
+      const fetchTodo = async() => {
+        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/todo/'+uid)
+        const json4 = await response4.json()
+        let i = 0
+        while (i < json4.length) {
+          const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+json4[i].ofPlan)
+          const json5 = await response5.json()
+          json4[i].ofPlanName = json5.title
+          i++
+        }
+        setTodo(json4)
+      }
 
-          let i = 0
-          while (i < json4.length) {
-            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/'+json4[i].ofPlan)
-            const json5 = await response5.json()
-            json4[i].ofPlanName = json5.title
-            i++
-          }
-          setTodo(json4)
-        }
-        /*
-        const fetchUser = async() => {
-          const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/')
-          const json = await response.json()
-          setUser(json)
-        }*/
-        fetchHist()
-        fetchPlan()
-        fetchTodo()
-        // fetchUser()
+      fetchHist()
+      fetchPlan()
+      fetchTodo()
       },[uid])
       
       const stuOption = Students.map((stu, index) => (
@@ -99,6 +105,8 @@ const History = () => {
 
     return(
       <Container>
+        {
+          role === "Supervisors" ?
       <div>
         <Form>
           <Form.Group className='mb-3' controlId='ofPlan'>  
@@ -138,6 +146,9 @@ const History = () => {
           </Tab>
         </Tabs>
       </div>
+      :
+      <h1>You are not authorized to visit this page</h1>
+      }
       </Container>
     )
 }

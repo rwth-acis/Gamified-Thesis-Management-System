@@ -5,8 +5,8 @@ import jwt_decode from 'jwt-decode';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button'
-import { Modal, Form, Badge } from 'react-bootstrap';
-import {AiOutlineSetting} from 'react-icons/ai'
+import { Modal, Form, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import {AiOutlineSetting, AiOutlineInfoCircle} from 'react-icons/ai'
 
 const Overview = () => {
     const [name, setName] = useState('Sign In to Continue')
@@ -51,7 +51,7 @@ const Overview = () => {
 
     const validateAdmin = async (e) => {
         e.preventDefault()
-        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/admin/'+uid,{
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/admin/'+uid,{
             method: 'POST',
             body: JSON.stringify({"password":password}),
             headers: {
@@ -66,7 +66,7 @@ const Overview = () => {
     }
     const updateUser = async (e) => {
         e.preventDefault()
-        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/'+uid,{
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/'+uid,{
             method: 'PATCH',
             body: JSON.stringify({
                 "firstName": fName,
@@ -96,7 +96,7 @@ const Overview = () => {
             const password = tmp['sub']
             const name = tmp['given_name']
             const mail = tmp['email']
-            const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
+            const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
             const userJson = await userRes.json()
             setRole(userJson.role) 
             setWorkType(userJson.workType)
@@ -259,9 +259,9 @@ const Overview = () => {
                     value={workName} onChange={(e) => setWorkName(e.target.value)} />    
                   </Form.Group>
                   <Form.Group className='mb-3' controlId='visible'>
-                    <Form.Label>Visible To Others?</Form.Label>
-                    <Form.Check type="switch"
-                    checked={isVisible} onChange={(e) => setIsVisible(e.target.checked)} />    
+                    <OverlayTrigger placement="left" overlay={<Tooltip>
+                        <p>Other Users can view your thesis in the Peers page if it is set to be visible</p></Tooltip>}><Form.Label>Visible To Others? <AiOutlineInfoCircle></AiOutlineInfoCircle></Form.Label></OverlayTrigger>
+                    <Form.Check type="switch" checked={isVisible} onChange={(e) => setIsVisible(e.target.checked)} />    
                   </Form.Group>
                   <hr />
                   <Row>
@@ -327,7 +327,7 @@ const Overview = () => {
                         <img src={badgeImage} alt="badge" key={badgeImage} width='40px' style={{marginRight:'10px'}}/>
                     )):
                     <p>No Badges Currently</p>}
-                    </div><hr /> 
+                    </div>
                 </div>
                 :
                 <p>Please <a href='https://mentoring.tech4comp.dbis.rwth-aachen.de/las2peer/webapp/welcome'>Sign In</a> To Get Gamification Information</p>

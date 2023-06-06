@@ -31,7 +31,7 @@ const getAllFinished = async (req,res) => {
 }
 const getAllUnfinished = async (req,res) => {
     try {
-        const todo = await ToDo.find({status: "To Do"}).sort({dueDate: -1})
+        const todo = await ToDo.find({$or: [{ status: "To Do" }, { status: "Doing" }]}).sort({dueDate: -1})
         res.status(200).json(todo)
     } catch (error) {
         res.status(400).json({error:error.message})

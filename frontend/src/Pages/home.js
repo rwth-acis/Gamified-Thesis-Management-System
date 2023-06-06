@@ -1,9 +1,10 @@
-import Pcontainer from "../Components/plantContainer";
+import Pcontainer from "../Components/Home/plantContainer";
 import { React, useState, useEffect } from "react";
 import jwt_decode from 'jwt-decode';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Tutorial from "../Components/Home/tutorial";
 //require('dotenv').config()
 
 
@@ -11,17 +12,21 @@ import Col from 'react-bootstrap/Col';
 const Home = () => {
     const [tokens, setToken] = useState('')
     const [uid, setUid] = useState('')
+    const [hasPlan, setHasPlan] = useState(false)
 
   const findOrCreate = async(fName,lName,mail,sub) => {
-    const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
+    const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
     const json = await response.json()
     if(response.ok && json !== null) {
+      if(json.hasPlan.length > 0) {
+        setHasPlan(true)
+      }
       return json
       //setUserId(json._id)
     } else if(response.ok && json === null) {
       const user = {'firstName': fName,'lastName': lName,'email':mail,'token': sub, 'workType': 'Bachelor Thesis'}
       // console.log('Creating new user')
-      const response2 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/', {
+      const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/', {
         method: 'POST',
         body: JSON.stringify(user),
         headers: {
@@ -91,13 +96,25 @@ const Home = () => {
                 <Row><h1 className="text-center">Welcome to the thesis management system of the RWTH Informatik 5</h1></Row>
                 <Row><hr /></Row>
                 <Row>
-                  <h5 className="text-center">Here you can find all the plans you defined for your thesis project, click them to view more information or edit todos on ToDos page</h5>
+                  {
+                    hasPlan ?
+                    <h5 className="text-center">Here you can find all the plans you defined for your thesis project, click them to view more information or edit todos on ToDos page</h5>
+                    :
+                    <h5 className="text-center">Currently you don't have any plans, you can create your first plan at the <a href="/project">Plans</a> page. </h5>
+                  }
+                  
                 </Row>
                 <Row><br /></Row>
                 <Row>
-                  <div style={{ maxHeight: '550px', overflowY: 'auto', scrollbarWidth: 'thin' }}>
-                    <Pcontainer />
-                  </div>
+                  {
+                    hasPlan ?
+                    <div style={{ maxHeight: '550px', overflowY: 'auto', scrollbarWidth: 'thin' }}>
+                      <Pcontainer />
+                    </div>
+                    :
+                    <Tutorial />
+                  }
+                  
                 </Row>
               </Col>
             </Row>            

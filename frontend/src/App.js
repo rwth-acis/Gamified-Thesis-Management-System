@@ -34,8 +34,9 @@ function App() {
       <Container>
       <BrowserRouter>
         <Navibar />
-        <Routes>
-          <Route path="/thesis-system-client/" element={tokens ? (
+        <Routes>{/** <Route path="/thesis-system-client/" element={tokens ? (*/}
+          
+           <Route path="/" element={tokens ? (
             loading ? (
             <Spinner animation="border" variant="primary" />
             ) : (
@@ -44,10 +45,15 @@ function App() {
         ) : (
           <LoginPage />
         )} />
-          <Route path="/thesis-system-client/project" element={<Project />} />
+          <Route path="/project" element={<Project />} />
+          <Route path="/weekly" element={<Weekly />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/allstudents" element={<All />} />
+          {/**<Route path="/thesis-system-client/project" element={<Project />} />
           <Route path="/thesis-system-client/weekly" element={<Weekly />} />
           <Route path="/thesis-system-client/history" element={<History />} />
           <Route path="/thesis-system-client/allstudents" element={<All />} />
+           * */}
         </Routes>
       </BrowserRouter>
       </Container>

@@ -3,7 +3,7 @@ import { Container, Card, Row, Col, ProgressBar, Modal } from 'react-bootstrap';
 import MA from '../Components/Pics/MA.png'
 import BA from '../Components/Pics/BA.png'
 import DA from '../Components/Pics/DA.jpg'
-import Pcontainer from '../Components/plantContainer';
+import Pcontainer from '../Components/Home/plantContainer';
 
 
 const All = () => {
@@ -31,14 +31,14 @@ const All = () => {
     useEffect ( () => {
         const getUserData = async() => {
             try {
-                const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/visible')
+                const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/visible')
                 const json = await response.json()
                 setUsers(json)
 
                 const updatedUsers = []
                 for (const user of json) {
                     const response2 = await fetch(
-                      process.env.REACT_APP_BACKEND_URI+'/api/user/progress/'+user._id
+                      process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/progress/'+user._id
                     )
                     const json2 = await response2.json()
             
@@ -70,7 +70,7 @@ const All = () => {
             <Row><br /></Row>
             <Row>
                 <Col className='text-center'><h2 className='text-muted'>Peers' Projects</h2>
-                <h6>Here you can find all visible thesis projects of your peer students, go see their status and say hi!</h6></Col>
+                <h6>Here you can find all visible thesis projects of your peer students and view its status.</h6></Col>
                 </Row>
             <Row><br /></Row>
             <hr />

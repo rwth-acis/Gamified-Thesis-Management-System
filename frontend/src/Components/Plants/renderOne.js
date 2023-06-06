@@ -60,7 +60,7 @@ const Render = ({plant, seed, status, title, progress, start, due, content, pid}
                 <Modal.Title><span className='text-muted'>Plan Detail: </span> <span>{planTitle}</span></Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <h5 className='text-center'>All todos of the selected plan</h5>
+                <h5 className='text-center'>All todos of the selected plan, read only.</h5>
                 <Trello pid={pids} uid={true}/>
               </Modal.Body>
             </Modal>
@@ -86,7 +86,9 @@ const Render = ({plant, seed, status, title, progress, start, due, content, pid}
                        new Date(d).getMonth() === new Date().getMonth() && 
                        new Date(d).getDate() < new Date().getDate()))))) && t !== 'Finished' ?
                        <Badge pill bg='danger' style={{fontSize: '10px'}}>Overdue</Badge> :
-                       <br/>
+                         t === 'Finished' ?
+                         <Badge pill bg='success' style={{fontSize: '10px'}}>Finished</Badge> :
+                           <br/>
                 }</div>
             </Card.Body>
             {
@@ -102,7 +104,9 @@ const Render = ({plant, seed, status, title, progress, start, due, content, pid}
                    new Date(d).getMonth() === new Date().getMonth() && 
                    new Date(d).getDate() < new Date().getDate()))))) && t !== 'Finished' ?
                    <ProgressBar style={{height: '3px'}} striped variant="danger" now={r} /> :
-                   <ProgressBar style={{height: '3px'}} striped variant="primary" now={r} />
+                     t === 'Finished' ?
+                     <ProgressBar style={{height: '3px'}} striped variant="success" now={r} /> :
+                     <ProgressBar style={{height: '3px'}} striped variant="primary" now={r} />
             }
             <br />
             <br />

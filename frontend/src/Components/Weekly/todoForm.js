@@ -11,10 +11,13 @@ const TodoForm = ({closeModal}) => {
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
     const [ofPlan, setPlan] = useState('')
+    const [ofPlan2, setPlan2] = useState('')
     const [dueDate, setDue] = useState('')
     const [plans, setPlans] = useState([])
     const [error, setError] = useState(null)
     const [token, setToken] = useState('')
+    const [start, setStart] = useState(null)
+    const [end, setEnd] = useState(null)
 
     useEffect(() => {
         
@@ -23,15 +26,18 @@ const TodoForm = ({closeModal}) => {
           const tmp = jwt_decode(token)
           setToken(tmp)
           const email = tmp['email']
-          const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+email)
+          const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+email)
           const json = await response.json()
-          const response2 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/plan/'+json._id)
+          const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/plan/'+json._id)
           const json2 = await response2.json()
           if(response.ok && json2 !== null) {
             const planData = json2.map(plan => {
                 return {
                 id: plan._id,
-                title: plan.title
+                title: plan.title,
+                status: plan.status,
+                startDate: plan.startDate,
+                endDate: plan.endDate
                 }
               })
             setPlans(planData)
@@ -40,11 +46,28 @@ const TodoForm = ({closeModal}) => {
         fetchPlan()
       },[])
 
-    const planOption = plans.map((plan, index) => (
-        <option key={index} value={plan.id}>
-            {plan.title}
-        </option>
-    ))
+    const formatDate=(date)=> {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    const planOption = plans.map((plan, index) => {
+        if (plan.status === "Finished") {
+          return (
+            <option disabled key={index} value={`${plan.id}|${plan.startDate}|${plan.endDate}`}>
+              {plan.title} (finished)
+            </option>
+          )
+        } else {
+          return (
+            <option key={index} value={`${plan.id}|${plan.startDate}|${plan.endDate}`}>
+              {plan.title} ({formatDate(new Date(plan.startDate))} - {formatDate(new Date(plan.endDate))})
+            </option>
+          )
+        }
+      })
 
     const handleCancel = () => {
         closeModal()
@@ -53,19 +76,29 @@ const TodoForm = ({closeModal}) => {
     // not sure whether it makes code cleaner or complexer to firstly define all functions and then execute in order in handleSubmit?
     const handleSubmit = async (e) => {
         e.preventDefault()
+        console.log(start)
+        console.log(end)
+        console.log(dueDate)
+        console.log(ofPlan)
+        console.log(title)
+
+        if(new Date(dueDate) < new Date(start) || new Date(dueDate) > new Date(end)) {
+          window.alert("Due Date of Todo Must Lies Within the Duration of Its Plan")
+          return
+        }
 
         //const token = sessionStorage.getItem('access-token')
         //const tmp = jwt_decode(token)
         //setToken(tmp)
         const sub = token['sub']
         const mail = token['email']
-        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
+        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
         const userJson = await userRes.json()
         const uid = userJson._id
 
         //console.log("title:",title,"content:",content,"plan:",ofPlan,"due:",dueDate)
         const todo = {"title":title, "content":content, "dueDate":dueDate, "ofPlan":ofPlan, "ofUser":uid}
-        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/todo/', {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/todo/', {
             method: 'POST',
             body: JSON.stringify(todo),
             headers: {
@@ -80,7 +113,7 @@ const TodoForm = ({closeModal}) => {
             setTitle('')
             setPlan('')
             setContent('')
-            const response2 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/pushtodo/', {
+            const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/pushtodo/', {
                 method: 'POST',
                 body: JSON.stringify({"pid":ofPlan,"tid":tid}),
                 headers: {
@@ -91,7 +124,7 @@ const TodoForm = ({closeModal}) => {
             // console.log(json2)
             
             
-            const response3 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/todo/token', {
+            const response3 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/todo/token', {
                 method: 'POST',
                 body: JSON.stringify({"token": sub, "tid": tid}),
                 headers: {
@@ -104,7 +137,7 @@ const TodoForm = ({closeModal}) => {
 
             
             //create History
-            const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
+            const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({"types": "Create","ofUser":json3._id,"content":"ToDo:"+title}),
                 headers: {
@@ -116,7 +149,7 @@ const TodoForm = ({closeModal}) => {
             // console.log("json4:",json4)
 
             //pushHistToUser
-            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
+            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
                 method: 'POST',
                 body: JSON.stringify({"token": sub,"hid":hid}),
                 headers: {
@@ -125,14 +158,8 @@ const TodoForm = ({closeModal}) => {
             })
             const json5 = await response5.json()
             // console.log(json5)
-            const response7 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/doing/'+ofPlan, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            const json7 = await response7.json()
-            if(response5.ok && response7.ok) {
+            
+            if(response5.ok) {
                 const username = token['preferred_username']
                 const password = token['sub']
                 const authData = username+':'+password
@@ -173,28 +200,34 @@ const TodoForm = ({closeModal}) => {
                 <Col>
                   <Form.Group className='mb-3' controlId='content'>
                   <Form.Label>Content</Form.Label>
-                  <Form.Control as={"textarea"} placeholder="ToDo Content" required
+                  <Form.Control as={"textarea"} placeholder="ToDo Content (not mandatory)" 
                     value={content} onChange={(e) => setContent(e.target.value)} />
                   </Form.Group>
                 </Col>
             </Row>
             <Row>
+              <Col>
+                  <Form.Group className='mb-3' controlId='ofPlan'>
+                  <Form.Label>Part of Plan</Form.Label>
+                  <Form.Select value={ofPlan2} onChange={(e) => {
+                    const [selectedPlanId, selectedStartDate, selectedEndDate] = e.target.value.split('|')
+                    setPlan(selectedPlanId)
+                    setStart(selectedStartDate)
+                    setEnd(selectedEndDate)
+                    setPlan2(e.target.value)
+                  }}>
+                  <option value="">-- Please select --</option>
+                      {planOption}
+                  </Form.Select>
+                  </Form.Group>
+                </Col>
                 <Col>
                   <Form.Group className='mb-3' controlId='dueDate'>
                   <Form.Label>Due Date</Form.Label>
                   <Form.Control type="date" required 
                     value={dueDate} onChange={(e) => setDue(e.target.value)}/>
                   </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group className='mb-3' controlId='ofPlan'>
-                  <Form.Label>Part of Plan</Form.Label>
-                  <Form.Select value={ofPlan} onChange={(e) => setPlan(e.target.value)}>
-                  <option value="">-- Please select --</option>
-                      {planOption}
-                  </Form.Select>
-            </Form.Group>
-                </Col>
+                </Col> 
             </Row>
             <hr/>
             <Row>
@@ -207,43 +240,5 @@ const TodoForm = ({closeModal}) => {
             </Row>
         </Form>
     )
-
-    /*
-    return(
-        <div className='card'>
-        <div className='card-body'>
-        <form className='create_todo' onSubmit={handleSubmit}>
-            <h4>Add a todo here</h4>
-            <div className='form-group'>
-                <label>Title:</label>
-                <input type='text'
-                       className='form-control'
-                       onChange={(e) => setTitle(e.target.value)}
-                       value={title} 
-                       required />
-            </div>
-            <div className='form-group'>
-                <label>Content:</label>
-                <input type='text'
-                       className='form-control'
-                       onChange={(e) => setContent(e.target.value)}
-                       value={content} 
-                       required />
-            </div>
-            <div className='form-group'>
-                <label>Comment:</label>
-                <input type='text'
-                       className='form-control'
-                       onChange={(e) => setComment(e.target.value)}
-                       value={comment} 
-                       required />
-            </div><br/>
-            <button className='btn btn-primary' type='submit'>Add It!</button>
-            {error && <ErrorMessage e={error} />}
-        </form>
-        </div>
-        </div>
-    )
-    */
 }
 export default TodoForm
