@@ -1,10 +1,12 @@
 import Pcontainer from "../Components/Home/plantContainer";
 import { React, useState, useEffect } from "react";
+import { Modal } from "react-bootstrap";
 import jwt_decode from 'jwt-decode';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Tutorial from "../Components/Home/tutorial";
+import {FcApproval} from 'react-icons/fc'
 //require('dotenv').config()
 
 
@@ -12,7 +14,16 @@ import Tutorial from "../Components/Home/tutorial";
 const Home = () => {
     const [tokens, setToken] = useState('')
     const [uid, setUid] = useState('')
+    const [modalOpen, setModalOpen] = useState(false)
     const [hasPlan, setHasPlan] = useState(false)
+
+  const closeModal = () => {
+    setModalOpen(false)
+  }
+
+  const openModal = () => {
+    setModalOpen(true)
+  }
 
   const findOrCreate = async(fName,lName,mail,sub) => {
     const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
@@ -90,6 +101,17 @@ const Home = () => {
   
     return( 
         <Container >{/**fluid */}
+
+          <Modal show={modalOpen} onHide={closeModal} size='xl'>
+            <Modal.Header closeButton>
+              
+            </Modal.Header>
+            <Modal.Body>
+              <Tutorial />
+            </Modal.Body>
+            <Modal.Footer><h5>Thanks for reading, we wish you a lot success! <FcApproval/></h5></Modal.Footer>
+          </Modal>
+
             <Row>
               <Col sm={12}>
                 <Row><br /></Row>
@@ -98,9 +120,10 @@ const Home = () => {
                 <Row>
                   {
                     hasPlan ?
-                    <h5 className="text-center">Here you can find all the plans you defined for your thesis project, click them to view more information or edit todos on ToDos page</h5>
+                    <h6 className="text-center">Here you can find all the plans you defined for your thesis project, click them to view more information or edit todos on ToDos page. <span style={{cursor: 'pointer', color: "blue",
+                     textDecoration: 'underline'}} onClick={openModal}>Here</span> to the tutorial of this platform.</h6>
                     :
-                    <h5 className="text-center">Currently you don't have any plans, you can create your first plan at the <a href="/project">Plans</a> page. </h5>
+                    <h6 className="text-center">Currently you don't have any plans, you can create your first plan at the <a href="/project">Plans</a> page. </h6>
                   }
                   
                 </Row>

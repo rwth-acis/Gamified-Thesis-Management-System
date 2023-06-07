@@ -4,9 +4,11 @@ import Container from 'react-bootstrap/Container';
 import jwt_decode from 'jwt-decode';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button'
+import Button from 'react-bootstrap/Button';
+import AllAchievements from './allAchievements';
 import { Modal, Form, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import {AiOutlineSetting, AiOutlineInfoCircle} from 'react-icons/ai'
+import {AiOutlineSetting, AiOutlineInfoCircle} from 'react-icons/ai';
+import {GiAchievement} from 'react-icons/gi';
 
 const Overview = () => {
     const [name, setName] = useState('Sign In to Continue')
@@ -28,6 +30,7 @@ const Overview = () => {
     const [password,setPassword] = useState('')
     const [modalOpen, setModalOpen] = useState(false)
     const [modalOpen2, setModalOpen2] = useState(false)
+    const [modalOpen3, setModalOpen3] = useState(false)
     const [connected, setConnected] = useState(localStorage.getItem("connected") || "false")
     const [token, setToken] = useState("")
     const [badges, setBadges] = useState(null)
@@ -38,6 +41,9 @@ const Overview = () => {
     const openModal2 = () => {
         setModalOpen2(true)
     }
+    const openModal3 = () => {
+        setModalOpen3(true)
+    }
     const connect = () => {
         setConnected("true")    
         localStorage.setItem("connected",true)
@@ -47,6 +53,9 @@ const Overview = () => {
     }
     const closeModal2 = () => {
         setModalOpen2(false)
+    }
+    const closeModal3 = () => {
+        setModalOpen3(false)
     }
 
     const validateAdmin = async (e) => {
@@ -226,8 +235,17 @@ const Overview = () => {
               </Modal.Body>
             </Modal>
 
+            <Modal show={modalOpen3} onHide={closeModal3} size='lg'>
+              <Modal.Header closeButton>
+                <Modal.Title></Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <h3 className='text-center'>An overview of all collectable gamification elements</h3><br/>
+                <AllAchievements />
+              </Modal.Body>
+            </Modal>
+           
             <Modal show={modalOpen2} onHide={closeModal2}>
-              {/*cardId*/}
               <Modal.Header closeButton>
                 <Modal.Title>Edit Information</Modal.Title>
               </Modal.Header>
@@ -309,7 +327,9 @@ const Overview = () => {
                 
                 {
                     achiev !== null ?
-                <div>            
+                <div>
+                <Row><h6><GiAchievement/> <span style={{cursor: 'pointer', color: "blue",
+                     textDecoration: 'underline'}} onClick={openModal3}>Here</span> to all collectable gamification elements</h6></Row><hr/>            
                 <Row><h6>Current Points:</h6> <p>{point}</p></Row><hr />
                 <Row><h6>Current Level:</h6> <p><span className='text-muted'>Level</span> {level} <span className='text-muted'>:</span> {levelName}</p></Row><hr />
                 <Row><h6>Next Level:</h6> <p>{nextLN} <span className='text-muted'>at</span> {nextLP} <span className='text-muted'>points!</span></p></Row><hr />
