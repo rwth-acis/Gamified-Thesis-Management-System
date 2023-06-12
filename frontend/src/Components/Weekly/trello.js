@@ -8,7 +8,8 @@ import {AiOutlineInfoCircle} from 'react-icons/ai'
 
 const Trello = ({pid, uid}) => {
   let isVisitor = uid
-  // The Package delievers possible error messages when drag card to an empty lane(Not 100% happening)! 
+  const [sub, setSub] = useState(null)
+  const [userid, setUid] = useState(null)
   const [ModalOpen, setModalOpen] = useState(false)
   const [showToast, setShowToast] = useState(false)
   const [showToast2, setShowToast2] = useState(false)
@@ -33,35 +34,24 @@ const Trello = ({pid, uid}) => {
   }
 
   const toggleToast = () => {
-    setShowToast(!showToast)
-  }
-  const toggleToast2 = () => {
-    setShowToast(!showToast2)
-  }
-  const toggleToast3 = () => {
-    setShowToast(!showToast3)
-  }
-  /*
-  const openToast = () => {
     setShowToast(true)
   }
-  const closeToast = () => {
-    setShowToast(false)
+  const toggleToast2 = () => {
+    setShowToast2(true)
   }
-  */
+  const toggleToast3 = () => {
+    setShowToast3(true)
+  }
+
 
   const handleCardDelete = async() => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this item?');
+    const confirmDelete = window.confirm('Are you sure you want to delete this item? You will lose the 5 points for it.')
     if (confirmDelete) {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
-      const sub = tmp['sub']
-      const mail = tmp['email']
-      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
-      const userJson = await userRes.json()
-      const uid = userJson._id
+      const username = tmp['preferred_username']
+      const authData = username+':'+sub
       // Perform deletion logic here
-      //console.log('Item deleted',cardId);
       const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/todo/'+cardId, {
       method: 'DELETE'
     })
@@ -69,11 +59,12 @@ const Trello = ({pid, uid}) => {
       const todoTitle = json.title
       
       if(response.ok) {
+        toggleToast2()
         const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({
                   "types": "Delete",
-                  "ofUser":uid,
+                  "ofUser": userid,
                   "content": 'ToDo:'+ todoTitle
                 }),
                 headers: {
@@ -93,8 +84,18 @@ const Trello = ({pid, uid}) => {
                 }
             })
             const json5 = await response5.json()
+            const response6 = await fetch(process.env.REACT_APP_GAM_FRAM_URI+'/visualization/actions/thesis_system/8/'+username, {
+                mode: 'cors',
+                method: 'POST',
+                headers: {
+                  'Authorization': 'Basic ' + btoa(authData)
+                //'Content-Type': 'application/json',
+                //'Accept': 'application/json'
+                }
+            })
+            const json6 = await response6.json()
             // console.log(json5)
-            if(response5.ok) {
+            if(response5.ok && response6.ok) {
               CloseModal()
               //window.location.reload()
             }
@@ -125,14 +126,6 @@ const Trello = ({pid, uid}) => {
   const handleSubmit = async(e) => {
     e.preventDefault()
 
-    const token = sessionStorage.getItem('access-token')
-    const tmp = jwt_decode(token)
-    const sub = tmp['sub']
-    const mail = tmp['email']
-    const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
-    const userJson = await userRes.json()
-    const uid = userJson._id
-
     const todo = {"title":title, "content":content, "dueDate":dueDate}
     const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/todo/'+cardId, {
         method: 'PATCH',
@@ -142,16 +135,13 @@ const Trello = ({pid, uid}) => {
         }
     })
     const json = await response.json()
-    // console.log("Todo Updated:",json)
-    // console.log("due1:",dueDate)
-    // console.log("due2:",dueDate2)
     if(response.ok) {
             //create History
             const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({
                   "types": "Update",
-                  "ofUser":uid,
+                  "ofUser": userid,
                   "content": 'ToDo:'+title+'->'+ (title !== title2 ? ' title,' : '')+(content !== content2 ? ' content,' : '')+(dueDate !== dueDate2 ? ' dueDate' : '')  
                 }),
                 headers: {
@@ -193,9 +183,6 @@ const Trello = ({pid, uid}) => {
             }
         })
         const json = await response.json()
-        if(response.ok) {
-          toggleToast()
-        }
         const title = json.title
         // console.log(json)
         //create History
@@ -218,13 +205,17 @@ const Trello = ({pid, uid}) => {
             }
         })
         const tjson2 = await res2.json()
-        /*
-        if(res2.ok) {
-          if(sourceLaneId === "lane2") {
-            window.location.reload()
-          }
+        if(res.ok && res2.ok && sourceLaneId === "lane3") {
+          toggleToast()
+          const gam_res = await fetch(process.env.REACT_APP_GAM_FRAM_URI+'/visualization/actions/thesis_system/6/'+username, {
+              mode: 'cors',
+              method: 'POST',
+              headers: {
+                'Authorization': 'Basic ' + btoa(authData)
+              }
+          })
+          const gam_json = await gam_res.json()
         }
-        */
         break;
 
       case "lane2":
@@ -236,11 +227,8 @@ const Trello = ({pid, uid}) => {
             }
         })
         const json2 = await response2.json()
-        if(response2.ok) {
-          toggleToast2()
-        }
         const title2 = json2.title
-        // console.log(json2)
+
         //create History
         const res3 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
             method: 'POST',
@@ -251,7 +239,6 @@ const Trello = ({pid, uid}) => {
         })
         const tjson3 = await res3.json()
         const hid2 = tjson3._id
-        // console.log("json4:",tjson3)
         //give history to User
         const res4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
             method: 'POST',
@@ -262,8 +249,16 @@ const Trello = ({pid, uid}) => {
         })
         const tjson4 = await res4.json()
         // console.log(tjson4)
-        if(res4.ok){
-          // window.location.reload()
+        if(res4.ok && res3.ok && sourceLaneId==="lane3"){
+          toggleToast()
+          const gam_res = await fetch(process.env.REACT_APP_GAM_FRAM_URI+'/visualization/actions/thesis_system/6/'+username, {
+              mode: 'cors',
+              method: 'POST',
+              headers: {
+                'Authorization': 'Basic ' + btoa(authData)
+              }
+          })
+          const gam_json = await gam_res.json()
         }
         break;
 
@@ -312,13 +307,7 @@ const Trello = ({pid, uid}) => {
             }
         })
         const json6 = await response6.json()
-        /*
-        if(response6.ok) {
-          if(sourceLaneId === "lane2") {
-            window.location.reload()
-          }
-        }
-        */
+
         break;
 
       default:
@@ -331,11 +320,12 @@ const Trello = ({pid, uid}) => {
     const fetchT = async () => {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
-      // const sub = tmp['sub']
-      const mail = tmp['email']
-      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
+      const password = tmp['sub']
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+password)
       const userJson = await userRes.json()
       const uid = userJson._id
+      setUid(uid)
+      setSub(password)
       if(pid) {
         const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/todos/todo/'+pid)
         const json = await response.json()
@@ -437,11 +427,12 @@ const Trello = ({pid, uid}) => {
     const fetchD = async () => {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
-      const mail = tmp['email']
-      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
+      const password = tmp['sub']
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+password)
       const userJson = await userRes.json()
       const uid = userJson._id
-      
+      setUid(uid)
+      setSub(password)
       if(pid) {
         const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/todos/doing/'+pid)
         const json = await response.json()
@@ -543,12 +534,12 @@ const Trello = ({pid, uid}) => {
     const fetchF = async () => {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
-      // const sub = tmp['sub']
-      const mail = tmp['email']
-      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
+      const password = tmp['sub']
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+password)
       const userJson = await userRes.json()
       const uid = userJson._id
-
+      setUid(uid)
+      setSub(password)
       if (pid) {
         const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/todos/finished/'+pid)
         const json = await response.json()
@@ -663,11 +654,25 @@ const Trello = ({pid, uid}) => {
             
 
             <ToastContainer position='top-end'>
-            <Toast show={showToast3} onClose={toggleToast3} bg='light' delay={3000} autohide>
+            <Toast show={showToast3} onClose={()=>setShowToast3(false)} bg='success' delay={3000} autohide>
                 <Toast.Header >
                    <h5>Congrats!</h5>
                 </Toast.Header>
-                <Toast.Body><h6>Woohoo, you're one step closer to success!</h6></Toast.Body>
+                <Toast.Body><h6>You just finished a todo and earned yourself 4 points! Check them out in your profile.</h6></Toast.Body>
+            </Toast>
+
+            <Toast show={showToast2} onClose={()=>setShowToast2(false)} bg='warning' delay={3000} autohide>
+                <Toast.Header >
+                   <h5>Todo Deleted!</h5>
+                </Toast.Header>
+                <Toast.Body><h6>Todo is deleted.</h6></Toast.Body>
+            </Toast>
+
+            <Toast show={showToast} onClose={()=>setShowToast(false)} bg='warning' delay={3000} autohide>
+                <Toast.Header >
+                   <h5>Todo Set to Undone!</h5>
+                </Toast.Header>
+                <Toast.Body><h6>Todo is set to be undone. You lost 4 points for it.</h6></Toast.Body>
             </Toast>
             </ToastContainer>
 

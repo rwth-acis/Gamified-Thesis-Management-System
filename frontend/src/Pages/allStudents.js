@@ -98,6 +98,7 @@ const All = () => {
                     <ProgressBar style={{height: '3px'}} striped variant="#6495ED" now={user.progress*100} />
                     <br />
                 </Card>
+                <Row><br /></Row>
                 </Col>
             )) : <div>No Content Yet</div>}
             </Row>

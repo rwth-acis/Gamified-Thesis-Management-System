@@ -136,7 +136,7 @@ const deletePlan = async (req,res) => {
           users.map(async (user) => {
             user.hasPlan.pull(id);
             todos.forEach((todo) => {
-              user.hasToDo.pull(todo.id);
+              user.hasToDo.pull(todo._id);
             });
     
             await user.save();

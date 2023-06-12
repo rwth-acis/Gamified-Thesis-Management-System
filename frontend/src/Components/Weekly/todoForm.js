@@ -25,8 +25,8 @@ const TodoForm = ({closeModal}) => {
           const token = sessionStorage.getItem('access-token')
           const tmp = jwt_decode(token)
           setToken(tmp)
-          const email = tmp['email']
-          const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+email)
+          const sub = tmp['sub']
+          const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+sub)
           const json = await response.json()
           const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/plan/'+json._id)
           const json2 = await response2.json()
@@ -87,12 +87,8 @@ const TodoForm = ({closeModal}) => {
           return
         }
 
-        //const token = sessionStorage.getItem('access-token')
-        //const tmp = jwt_decode(token)
-        //setToken(tmp)
         const sub = token['sub']
-        const mail = token['email']
-        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
+        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+sub)
         const userJson = await userRes.json()
         const uid = userJson._id
 

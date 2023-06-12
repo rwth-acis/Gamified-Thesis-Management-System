@@ -25,58 +25,31 @@ const Navibar = (token) => {
         setToken(token)
       }
       const tmp = jwt_decode(token)
-      const mail = tmp['email']
-      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
+      const sub = tmp['sub']
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+sub)
       const userJson = await userRes.json()
       setRole(userJson.role) 
     }
     fetchStatus()
   }, []);
-  /*
-  const hideLogin = () => {
-    if(token) {
-      return(
-        <div className="col">
-          <Login />
-        </div>
-      ) 
-    } else {
-      return(<div></div>)
-    } 
-  }
-  */
 
-    
 
   return (
     <Navbar bg="light" variant="light">
       <Container>
-        {/**<Navbar.Brand href="/thesis-system-client/"><img src={Logo} alt='Logo' style={{width: "80px"}} /></Navbar.Brand> */}
-        <Navbar.Brand href="/"><img src={Logo} alt='Logo' style={{width: "80px"}} /></Navbar.Brand>
+        <Navbar.Brand href={process.env.REACT_APP_PATH_TEST}><img src={Logo} alt='Logo' style={{width: "80px"}} /></Navbar.Brand>
         
         {tokens ?
         <Nav className="me-auto">
           <NavDropdown title='Profile' drop='down'><div style={{width: '500px'}}><Overview ></Overview></div></NavDropdown>
-          {/*<Dropdown drop='left'>
-              <Dropdown.Toggle variant='outline-primary'>Statistics</Dropdown.Toggle>
-              <DropdownMenu style={{width: '300px'}}><Overview></Overview></DropdownMenu>
-          </Dropdown>*/}
-           
-          <Nav.Link href="/">Home</Nav.Link>
-          <Nav.Link href="/project">Plans</Nav.Link>
-          <Nav.Link href="/weekly">ToDos</Nav.Link>
-          <Nav.Link href="/allstudents">Peers</Nav.Link>
+
+          <Nav.Link href={process.env.REACT_APP_PATH_TEST}>Home</Nav.Link>
+          <Nav.Link href={process.env.REACT_APP_PATH_TEST+"project"}>Plans</Nav.Link>
+          <Nav.Link href={process.env.REACT_APP_PATH_TEST+"weekly"}>ToDos</Nav.Link>
+          <Nav.Link href={process.env.REACT_APP_PATH_TEST+"allStudents"}>Peers</Nav.Link>
           {role === 'Supervisors' && (
-            <Nav.Link href="/history">History</Nav.Link>)}
+            <Nav.Link href={process.env.REACT_APP_PATH_TEST+"history"}>History</Nav.Link>)}
         </Nav> : null}
-          {/**<Nav.Link href="/thesis-system-client/">Home</Nav.Link>
-          <Nav.Link href="/thesis-system-client/project">Plans</Nav.Link>
-          <Nav.Link href="/thesis-system-client/weekly">ToDos</Nav.Link>
-          <Nav.Link href="/thesis-system-client/allstudents">Peers</Nav.Link>
-          {role === 'Supervisors' && (
-            <Nav.Link href="/thesis-system-client/history">History</Nav.Link>)}
-        </Nav> : null}*/}
-        {/*<Login />*/}
       </Container>
     </Navbar>
   )

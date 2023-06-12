@@ -26,8 +26,8 @@ const Pcontainer = ({id}) => {
             } else {
                 const token = sessionStorage.getItem('access-token')
                 const tmp = jwt_decode(token)
-                const email = tmp['email']
-                const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+email)
+                const password = tmp['sub']
+                const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+password)
                 const json = await response.json()
                 if(response.ok) {
                   setUid(json._id)

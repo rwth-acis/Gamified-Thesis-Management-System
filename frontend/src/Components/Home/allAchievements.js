@@ -83,6 +83,9 @@ const AllAchievements = () => {
                 <ListGroupItem>
                     Finish a Plan <Badge pill bg="primary">25 point</Badge>
                 </ListGroupItem>
+                <ListGroupItem>
+                    Undo a Plan <Badge pill bg="warning">-25 point</Badge>
+                </ListGroupItem>
             </ListGroup>
 
         </Container>

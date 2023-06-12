@@ -5,10 +5,6 @@ import Col from 'react-bootstrap/Col';
 
 const LoginPage = () => {
 
-    const handleClick = () => {
-        window.location.reload()
-    }
-
     return (
         <Container fluid style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh"}}>
             <Col>

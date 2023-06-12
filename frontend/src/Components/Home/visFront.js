@@ -104,8 +104,7 @@ const Overview = () => {
             const username = tmp['preferred_username']
             const password = tmp['sub']
             const name = tmp['given_name']
-            const mail = tmp['email']
-            const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
+            const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+password)
             const userJson = await userRes.json()
             setRole(userJson.role) 
             setWorkType(userJson.workType)

@@ -26,7 +26,7 @@ const Home = () => {
   }
 
   const findOrCreate = async(fName,lName,mail,sub) => {
-    const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
+    const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+sub)
     const json = await response.json()
     if(response.ok && json !== null) {
       if(json.hasPlan.length > 0) {
@@ -123,7 +123,7 @@ const Home = () => {
                     <h6 className="text-center">Here you can find all the plans you defined for your thesis project, click them to view more information or edit todos on ToDos page. <span style={{cursor: 'pointer', color: "blue",
                      textDecoration: 'underline'}} onClick={openModal}>Here</span> to the tutorial of this platform.</h6>
                     :
-                    <h6 className="text-center">Currently you don't have any plans, you can create your first plan at the <a href="/project">Plans</a> page. </h6>
+                    <h6 className="text-center">Currently you don't have any plans, you can create your first plan at the <a href={process.env.REACT_APP_PATH_TEST+"project"}>Plans</a> page. </h6>
                   }
                   
                 </Row>

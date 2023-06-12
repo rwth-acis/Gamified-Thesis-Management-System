@@ -1,12 +1,18 @@
 import { Gantt } from 'gantt-task-react';
 import { useEffect, useState } from 'react'
-import { Modal, Button, Form, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Modal, Button, Form, Row, Col, OverlayTrigger, Tooltip, Toast, ToastContainer } from 'react-bootstrap'
 import jwt_decode from 'jwt-decode';
 import "gantt-task-react/dist/index.css";
 import {AiOutlineInfoCircle} from 'react-icons/ai'
 //require('dotenv').config()
 
 const Chart = () => {
+
+  const [showToast, setShowToast] = useState(false)
+  const [showToast2, setShowToast2] = useState(false)
+  const [showToast3, setShowToast3] = useState(false)
+  const [sub, setSub] = useState(null)
+  const [userid, setUid] = useState(null)
   const [ModalOpen, setModalOpen] = useState(false)
   const [planId, setPlanId] = useState('')
   const [title, setTitle] = useState('')
@@ -19,8 +25,6 @@ const Chart = () => {
   const [tokens, setToken] = useState('')
   const [content, setContent] = useState('')
   const [content2, setContent2] = useState('')
-  // const [todoTodo, setTodo] = useState([])
-  // const [doingTodo, setDoing] = useState([])
   const [isFinished, setIsFinished] = useState(false)
   const [data, setData] = useState(
     [{start: new Date(2020, 6, 1),
@@ -32,16 +36,22 @@ const Chart = () => {
     isDisabled: true,
     styles:{progressColor: '#6495ED', progressSelectedColor: '#ff9e0d'}}])
 
+  const toggleToast = () => {
+    setShowToast(true)
+  }
+  const toggleToast2 = () => {
+    setShowToast2(true)
+  }
+  const toggleToast3 = () => {
+    setShowToast3(true)
+  }
+
   const handlePlanComplete = async() => {
     const confirmComplete = window.confirm('Please confirm that the plan is finished?')
     if(confirmComplete) {
-      const sub = tokens['sub']
+      // const sub = tokens['sub']
       const username = tokens['preferred_username']
-      const mail = tokens['email']
       const authData = username+':'+sub
-      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
-      const userJson = await userRes.json()
-      const uid = userJson._id
       const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/finish/'+planId, {
           method: 'PATCH'
         })
@@ -49,11 +59,12 @@ const Chart = () => {
       const planTitle = json.title
 
       if(response.ok) {
+        toggleToast3()
         const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({
                   "types": "Update",
-                  "ofUser":uid,
+                  "ofUser": userid,
                   "content": 'Plan:'+ planTitle + "->'Finished'"
                 }),
                 headers: {
@@ -92,13 +103,10 @@ const Chart = () => {
   const handlePlanUndo = async() => {
     const confirmComplete = window.confirm('Please confirm that you want to undo this plan? You will lose the 25 points for it.')
     if(confirmComplete) {
-      const sub = tokens['sub']
+      // const sub = tokens['sub']
       const username = tokens['preferred_username']
-      const mail = tokens['email']
       const authData = username+':'+sub
-      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
-      const userJson = await userRes.json()
-      const uid = userJson._id
+      
       const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/doing/'+planId, {
           method: 'PATCH'
         })
@@ -106,11 +114,12 @@ const Chart = () => {
       const planTitle = json.title
 
       if(response.ok) {
+        toggleToast()
         const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({
                   "types": "Update",
-                  "ofUser":uid,
+                  "ofUser": userid,
                   "content": 'Plan:'+ planTitle + "->'Doing'"
                 }),
                 headers: {
@@ -147,15 +156,10 @@ const Chart = () => {
   }
   
   const handlePlanDelete = async() => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this item?');
+    const confirmDelete = window.confirm('Are you sure you want to delete this item? You will lose the 30 points for it.');
     if (confirmDelete) {
-      const token = sessionStorage.getItem('access-token')
-      const tmp = jwt_decode(token)
-      const sub = tmp['sub']
-      const mail = tmp['email']
-      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
-      const userJson = await userRes.json()
-      const uid = userJson._id
+      const username = tokens['preferred_username']
+      const authData = username+':'+sub
       // Perform deletion logic here
       // console.log('Item deleted',planId);
       const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+planId, {
@@ -165,11 +169,12 @@ const Chart = () => {
       const planTitle = json.title
       
       if(response.ok) {
+        toggleToast2()
         const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({
                   "types": "Delete",
-                  "ofUser":uid,
+                  "ofUser": userid,
                   "content": 'Plan:'+ planTitle
                 }),
                 headers: {
@@ -189,6 +194,16 @@ const Chart = () => {
                 }
             })
             const json5 = await response5.json()
+            const response6 = await fetch(process.env.REACT_APP_GAM_FRAM_URI+'/visualization/actions/thesis_system/7/'+username, {
+                mode: 'cors',
+                method: 'POST',
+                headers: {
+                  'Authorization': 'Basic ' + btoa(authData)
+                  //'Content-Type': 'application/json',
+                  //'Accept': 'application/json'
+                }
+            })
+            const json6 = await response6.json()
             // console.log(json5)
             CloseModal()
       }
@@ -237,11 +252,7 @@ const Chart = () => {
 
     const token = sessionStorage.getItem('access-token')
     const tmp = jwt_decode(token)
-    const sub = tmp['sub']
-    const mail = tmp['email']
-    const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
-    const userJson = await userRes.json()
-    const uid = userJson._id
+    // const sub = tmp['sub']
 
     const plan = {"title":title, "content": content, "start":start, "dueDate":endDate}
     const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+planId, {
@@ -259,7 +270,7 @@ const Chart = () => {
           method: 'POST',
           body: JSON.stringify({
             "types": "Update",
-            "ofUser":uid,
+            "ofUser": userid,
             "content": 'Plan:'+title+'->'+ (title !== title2 ? ' title' : '')+(content !== content2 ? ' ,content' : '')
                                          +(endDate !== endDate2 ? ' ,endDate' : '')+(start !== start2 ? ' ,startDate' : '')  
           }),
@@ -290,11 +301,12 @@ const Chart = () => {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
       setToken(tmp)
-      // const sub = tmp['sub']
-      const mail = tmp['email']
-      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
+      const password = tmp['sub']
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+password)
       const userJson = await userRes.json()
       const uid = userJson._id
+      setUid(uid)
+      setSub(password)
       
       const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/plan/'+uid, {
         method: 'GET'
@@ -358,7 +370,7 @@ const Chart = () => {
     
   }
     fetchData()
-  }, [ModalOpen])
+  }, [ModalOpen, showToast, showToast2, showToast3])
 
     if(!data) {
       return <div>Loading...</div>
@@ -368,6 +380,29 @@ const Chart = () => {
         <div>
           
           <Gantt tasks={data} viewMode={"Week"} preStepsCount={1} onClick={handlePlanClick} ganttHeight={"400px"} />
+
+          <ToastContainer position='top-end'>
+            <Toast show={showToast3} onClose={()=>setShowToast3(false)} bg='success' delay={3000} autohide>
+                <Toast.Header >
+                   <h5>Congrats!</h5>
+                </Toast.Header>
+                <Toast.Body><h6>You just finished a plan and earned yourself 25 points! Check them out in your profile.</h6></Toast.Body>
+            </Toast>
+
+            <Toast show={showToast2} onClose={()=>setShowToast2(false)} bg='warning' delay={3000} autohide>
+                <Toast.Header >
+                   <h5>Plan Deleted!</h5>
+                </Toast.Header>
+                <Toast.Body><h6>Plan is deleted.</h6></Toast.Body>
+            </Toast>
+
+            <Toast show={showToast} onClose={()=>setShowToast(false)} bg='warning' delay={3000} autohide>
+                <Toast.Header >
+                   <h5>Plan Set to Undone!</h5>
+                </Toast.Header>
+                <Toast.Body><h6>Plan is set to be undone. You lost 25 points for it.</h6></Toast.Body>
+            </Toast>
+            </ToastContainer>
 
           <Modal show={ModalOpen} onHide={CloseModal}>
               {/*cardId*/}

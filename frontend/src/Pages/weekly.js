@@ -51,7 +51,7 @@ const Weekly = () => {
         }
       }
       getUser()
-    })
+    },[])
 
     const handlePidChange = (e) => {
       setPid(e.target.value);

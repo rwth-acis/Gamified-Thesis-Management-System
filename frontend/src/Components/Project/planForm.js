@@ -27,9 +27,9 @@ const PlanForm = ({closeModal}) => {
         const tmp = jwt_decode(token)
         setToken(tmp)
         // const sub = tmp['sub']
-        const mail = tmp['email']
+        const sub = tmp['sub']
         const fetchPlan = async () => {
-        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/mail/'+mail)
+        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+sub)
         const userJson = await userRes.json()
         const uid = userJson._id
         setUser(uid)
