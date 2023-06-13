@@ -108,7 +108,7 @@ const Pcontainer = ({id}) => {
     }
 
     return(
-        <Container style={{ display: 'flex', flexWrap: 'wrap', maxWidth: '1000px'}} >
+        <Container style={{ display: 'flex', flexWrap: 'wrap', maxWidth: '100%'}} >
             {/** {renderPlant()},*/}
             
                 {renderPlant()}

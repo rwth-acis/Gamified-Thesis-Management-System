@@ -550,6 +550,7 @@ const Trello = ({pid, uid}) => {
         while(i < json.todoArr.length) {
           const res = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+json.todoArr[i].ofPlan)
           const pjson = await res.json()
+          // eslint-disable-next-line
           const today = new Date()
           data3.push({
             id: json.todoArr[i]._id,

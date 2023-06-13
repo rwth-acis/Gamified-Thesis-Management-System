@@ -14,7 +14,7 @@ const AllAchievements = () => {
 
     return (
         <Container>
-            <Row><h5><FcBullish/> Levels And Their Points Threshold</h5></Row>
+            <Row><h5><FcBullish/> Levels And Their Points Thresholds</h5></Row>
             <ListGroup>
                 <ListGroupItem>
                     START <Badge bg="primary" pill>0</Badge>
@@ -40,7 +40,7 @@ const AllAchievements = () => {
             </ListGroup>
             <br />
 
-            <Row><h5><FcApproval/> Achievements and their bedges</h5></Row>
+            <Row><h5><FcApproval/> Achievements and Their Badges</h5></Row>
             <ListGroup>
                 <ListGroupItem>
                     First ToDo : <img src={B1} alt='first ToDo badge' style={{width: "20px"}} />
@@ -69,7 +69,7 @@ const AllAchievements = () => {
             </ListGroup>
             <br />
 
-            <Row><h5><FcTodoList/> Actions and their incentives</h5></Row>
+            <Row><h5><FcTodoList/> Actions and Their Incentives</h5></Row>
             <ListGroup>
                 <ListGroupItem>
                     Add a new ToDo <Badge pill bg="primary">1 point</Badge>

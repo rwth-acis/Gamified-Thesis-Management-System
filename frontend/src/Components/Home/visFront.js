@@ -328,7 +328,7 @@ const Overview = () => {
                     achiev !== null ?
                 <div>
                 <Row><h6><GiAchievement/> <span style={{cursor: 'pointer', color: "blue",
-                     textDecoration: 'underline'}} onClick={openModal3}>Here</span> to all collectable gamification elements</h6></Row><hr/>            
+                     textDecoration: 'underline'}} onClick={openModal3}>Here</span> to all collectible gamification elements</h6></Row><hr/>            
                 <Row><h6>Current Points:</h6> <p>{point}</p></Row><hr />
                 <Row><h6>Current Level:</h6> <p><span className='text-muted'>Level</span> {level} <span className='text-muted'>:</span> {levelName}</p></Row><hr />
                 <Row><h6>Next Level:</h6> <p>{nextLN} <span className='text-muted'>at</span> {nextLP} <span className='text-muted'>points!</span></p></Row><hr />

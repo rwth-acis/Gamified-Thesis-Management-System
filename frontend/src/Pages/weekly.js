@@ -91,7 +91,7 @@ const Weekly = () => {
                     </Row></Col>
                   </Row>
                   
-                <h6 className="text-center">Here you can find all the todos you defined and the colors represent its status, click a todo to edit it</h6>
+                <h6 className="text-center">Here you can find all the todos you defined and the colors represent their status, click a todo to edit it</h6>
                   
                 </Col>
                 <Col sm={2}>

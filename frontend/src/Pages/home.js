@@ -44,7 +44,7 @@ const Home = () => {
             'Content-Type': 'application/json'
         }
       })
-      const json2 = response2.json()
+      const json2 = await response2.json()
       //setUserId(json2._id)
       if(response.ok && json2 !== null) {
         return json2
@@ -109,7 +109,7 @@ const Home = () => {
             <Modal.Body>
               <Tutorial />
             </Modal.Body>
-            <Modal.Footer><h5>Thanks for reading, we wish you a lot success! <FcApproval/></h5></Modal.Footer>
+            <Modal.Footer><h5>Thanks for reading, we wish you a lot of success! <FcApproval/></h5></Modal.Footer>
           </Modal>
 
             <Row>
@@ -121,9 +121,9 @@ const Home = () => {
                   {
                     hasPlan ?
                     <h6 className="text-center">Here you can find all the plans you defined for your thesis project, click them to view more information or edit todos on ToDos page. <span style={{cursor: 'pointer', color: "blue",
-                     textDecoration: 'underline'}} onClick={openModal}>Here</span> to the tutorial of this platform.</h6>
+                     textDecoration: 'underline'}} onClick={openModal}>Here</span> to the tutorial on this platform.</h6>
                     :
-                    <h6 className="text-center">Currently you don't have any plans, you can create your first plan at the <a href={process.env.REACT_APP_PATH_TEST+"project"}>Plans</a> page. </h6>
+                    <h6 className="text-center">Currently you don't have any plans, you can create your first plan on the <a href={process.env.REACT_APP_PATH_TEST+"project"}>Plans</a> page. </h6>
                   }
                   
                 </Row>
@@ -135,7 +135,10 @@ const Home = () => {
                       <Pcontainer />
                     </div>
                     :
-                    <Tutorial />
+                    <div>
+                    <Tutorial /><br />
+                    <h5>Thanks for reading, we wish you a lot of success! <FcApproval/></h5>
+                    </div>
                   }
                   
                 </Row>

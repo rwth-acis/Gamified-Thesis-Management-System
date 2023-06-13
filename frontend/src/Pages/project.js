@@ -49,7 +49,7 @@ const Project = () => {
                       ))}
                     </Row></Col>
                   </Row>
-                <h6 className="text-center">Here you can find all the plans you defined and the colors represent its status, click the progress bar to edit it</h6>
+                <h6 className="text-center">Here you can find all the plans you defined and the colors represent their status, click the progress bar to edit it</h6>
                 </Col>
           {/*colors.map((color, index) => (
         <OverlayTrigger key={index} placement="top" overlay={<Tooltip><div>{color.meaning}</div></Tooltip>}>
