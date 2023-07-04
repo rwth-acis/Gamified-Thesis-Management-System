@@ -35,4 +35,8 @@ This application integrates part of its components into Storybook for convenient
 
 ## APIs
 
-I have created a collection of API routes for this app during my implementation, it can be visited via this API call: https://api.postman.com/collections/21906435-5d19ec59-3217-4fe7-8b57-c9113b894bce?access_key=PMAT-01H4HEMG1J5W029T19KB8J4FT8. Please make sure you only use API routes starting with http://localhost:5000/api/ for testing. Please do not use those routes starting with https://milki-psy.dbis.rwth-aachen.de/api/! If you need to test them, make sure to change them into localhost first. Thank you!
+I have created a collection of API routes for this app during my implementation, it can be visited via this API call: https://api.postman.com/collections/21906435-5d19ec59-3217-4fe7-8b57-c9113b894bce?access_key=PMAT-01H4HEMG1J5W029T19KB8J4FT8. 
+
+Please make sure you only use API routes starting with http://localhost:5000/api/ for testing. 
+
+Please do not use those routes starting with https://milki-psy.dbis.rwth-aachen.de/api/! If you need to test them, make sure to change them into localhost first. Thank you!
