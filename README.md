@@ -35,7 +35,7 @@ This application integrates part of its components into Storybook for convenient
 
 ## APIs
 
-I have created a collection of API routes for this app during my implementation, it can be visited via this API call: https://api.postman.com/collections/21906435-5d19ec59-3217-4fe7-8b57-c9113b894bce?access_key=PMAT-01H4HEMG1J5W029T19KB8J4FT8. 
+I have created a collection of API routes for this app during my implementation, it can be visited via this API call: https://api.postman.com/collections/21906435-f263586f-eae8-428e-930f-f5e0d5e03fc0?access_key=PMAT-01H4HFM07TAYB1NF4AKNRQQGGN. 
 
 Please make sure you only use API routes starting with http://localhost:5000/api/ for testing. 
 
