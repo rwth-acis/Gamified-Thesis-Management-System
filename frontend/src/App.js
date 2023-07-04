@@ -35,7 +35,7 @@ function App() {
       <BrowserRouter>
         <Navibar />
         <Routes>
-           <Route path={process.env.REACT_APP_PATH_TEST} element={tokens ? (
+           <Route path={process.env.REACT_APP_PATH} element={tokens ? (
             loading ? (
             <Spinner animation="border" variant="primary" />
             ) : (
@@ -44,10 +44,10 @@ function App() {
         ) : (
           <LoginPage />
         )} />
-          <Route path={process.env.REACT_APP_PATH_TEST+"project"} element={<Project />} />
-          <Route path={process.env.REACT_APP_PATH_TEST+"weekly"} element={<Weekly />} />
-          <Route path={process.env.REACT_APP_PATH_TEST+"history"} element={<History />} />
-          <Route path={process.env.REACT_APP_PATH_TEST+"allStudents"} element={<All />} />
+          <Route path={process.env.REACT_APP_PATH+"project"} element={<Project />} />
+          <Route path={process.env.REACT_APP_PATH+"weekly"} element={<Weekly />} />
+          <Route path={process.env.REACT_APP_PATH+"history"} element={<History />} />
+          <Route path={process.env.REACT_APP_PATH+"allStudents"} element={<All />} />
         </Routes>
       </BrowserRouter>
       </Container>

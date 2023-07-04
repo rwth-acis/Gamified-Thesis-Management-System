@@ -26,9 +26,10 @@ const TodoForm = ({closeModal}) => {
           const tmp = jwt_decode(token)
           setToken(tmp)
           const sub = tmp['sub']
-          const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+sub)
+          const mail = tmp['email']
+          const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
           const json = await response.json()
-          const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/plan/'+json._id)
+          const response2 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/plan/'+json._id)
           const json2 = await response2.json()
           if(response.ok && json2 !== null) {
             const planData = json2.map(plan => {
@@ -76,25 +77,20 @@ const TodoForm = ({closeModal}) => {
     // not sure whether it makes code cleaner or complexer to firstly define all functions and then execute in order in handleSubmit?
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(start)
-        console.log(end)
-        console.log(dueDate)
-        console.log(ofPlan)
-        console.log(title)
-
         if(new Date(dueDate) < new Date(start) || new Date(dueDate) > new Date(end)) {
           window.alert("Due Date of Todo Must Lies Within the Duration of Its Plan")
           return
         }
 
         const sub = token['sub']
-        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+sub)
+        const mail = token['email']
+        const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
         const userJson = await userRes.json()
         const uid = userJson._id
 
         //console.log("title:",title,"content:",content,"plan:",ofPlan,"due:",dueDate)
         const todo = {"title":title, "content":content, "dueDate":dueDate, "ofPlan":ofPlan, "ofUser":uid}
-        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/todo/', {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/todo/', {
             method: 'POST',
             body: JSON.stringify(todo),
             headers: {
@@ -109,7 +105,7 @@ const TodoForm = ({closeModal}) => {
             setTitle('')
             setPlan('')
             setContent('')
-            const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/pushtodo/', {
+            const response2 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/pushtodo/', {
                 method: 'POST',
                 body: JSON.stringify({"pid":ofPlan,"tid":tid}),
                 headers: {
@@ -120,7 +116,7 @@ const TodoForm = ({closeModal}) => {
             // console.log(json2)
             
             
-            const response3 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/todo/token', {
+            const response3 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/todo/token', {
                 method: 'POST',
                 body: JSON.stringify({"token": sub, "tid": tid}),
                 headers: {
@@ -133,7 +129,7 @@ const TodoForm = ({closeModal}) => {
 
             
             //create History
-            const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
+            const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({"types": "Create","ofUser":json3._id,"content":"ToDo:"+title}),
                 headers: {
@@ -145,7 +141,7 @@ const TodoForm = ({closeModal}) => {
             // console.log("json4:",json4)
 
             //pushHistToUser
-            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
+            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
                 method: 'POST',
                 body: JSON.stringify({"token": sub,"hid":hid}),
                 headers: {

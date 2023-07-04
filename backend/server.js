@@ -20,20 +20,15 @@ app.get('/thesis-system/', (req,res)=>{
         message: "welcome to the app!"
     })
 })
-/*
-app.use('/thesis-system/api/todo',todoRoutes)
-app.use('/thesis-system/api/plan',planRoutes)
-app.use('/thesis-system/api/user',userRoutes)
-app.use('/thesis-system/api/hist',histRoutes)
-*/
-app.use('/api/todo',todoRoutes)
-app.use('/api/plan',planRoutes)
-app.use('/api/user',userRoutes)
-app.use('/api/hist',histRoutes)
 
-mongoose.connect(process.env.REACT_APP_MONGO_URI_TEST)
+app.use(process.env.REACT_APP_PATH+'api/todo',todoRoutes)
+app.use(process.env.REACT_APP_PATH+'api/plan',planRoutes)
+app.use(process.env.REACT_APP_PATH+'api/user',userRoutes)
+app.use(process.env.REACT_APP_PATH+'api/hist',histRoutes)
+
+mongoose.connect(process.env.REACT_APP_MONGO_URI)
     .then(()=>{
-        //listen for requests, 'https://milki-psy.dbis.rwth-aachen.de/thesis-system'
+        //listen for requests, 'https://milki-psy.dbis.rwth-aachen.de/thesis-system' HOST=https://milki-psy.dbis.rwth-aachen.de
         app.listen(process.env.REACT_APP_BACKEND_PORT , ()=>{
         console.log("connected to db and listening on port 5000")
         })

@@ -48,14 +48,14 @@ const All = () => {
     useEffect ( () => {
         const getUserData = async() => {
             try {
-                const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/visible')
+                const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/visible')
                 const json = await response.json()
                 // setUsers(json)
 
                 const updatedUsers = []
                 for (const user of json) {
                     const response2 = await fetch(
-                      process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/progress/'+user._id
+                      process.env.REACT_APP_BACKEND_URI+'/api/user/progress/'+user._id
                     )
                     const json2 = await response2.json()
             

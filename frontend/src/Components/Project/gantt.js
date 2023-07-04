@@ -52,7 +52,7 @@ const Chart = () => {
       // const sub = tokens['sub']
       const username = tokens['preferred_username']
       const authData = username+':'+sub
-      const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/finish/'+planId, {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/finish/'+planId, {
           method: 'PATCH'
         })
       const json = await response.json()
@@ -60,7 +60,7 @@ const Chart = () => {
 
       if(response.ok) {
         toggleToast3()
-        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
+        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({
                   "types": "Update",
@@ -76,7 +76,7 @@ const Chart = () => {
             // console.log("json4:",json4)
 
             //pushHistToUser
-            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
+            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
                 method: 'POST',
                 body: JSON.stringify({"token": sub,"hid":hid}),
                 headers: {
@@ -107,7 +107,7 @@ const Chart = () => {
       const username = tokens['preferred_username']
       const authData = username+':'+sub
       
-      const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/doing/'+planId, {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/doing/'+planId, {
           method: 'PATCH'
         })
       const json = await response.json()
@@ -115,7 +115,7 @@ const Chart = () => {
 
       if(response.ok) {
         toggleToast()
-        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
+        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({
                   "types": "Update",
@@ -131,7 +131,7 @@ const Chart = () => {
             // console.log("json4:",json4)
 
             //pushHistToUser
-            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
+            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
                 method: 'POST',
                 body: JSON.stringify({"token": sub,"hid":hid}),
                 headers: {
@@ -162,7 +162,7 @@ const Chart = () => {
       const authData = username+':'+sub
       // Perform deletion logic here
       // console.log('Item deleted',planId);
-      const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+planId, {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/'+planId, {
       method: 'DELETE'
     })
       const json = await response.json()
@@ -170,7 +170,7 @@ const Chart = () => {
       
       if(response.ok) {
         toggleToast2()
-        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
+        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({
                   "types": "Delete",
@@ -186,7 +186,7 @@ const Chart = () => {
             // console.log("json4:",json4)
 
             //pushHistToUser
-            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
+            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
                 method: 'POST',
                 body: JSON.stringify({"token": sub,"hid":hid}),
                 headers: {
@@ -218,10 +218,10 @@ const Chart = () => {
   
   const handlePlanClick = async(task) => {
     setPlanId(task.id)
-    const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/todos/todo/'+task.id)
+    const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/todos/todo/'+task.id)
     const json = await response.json()
     
-    const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/todos/doing/'+task.id)
+    const response2 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/todos/doing/'+task.id)
     const json2 = await response2.json()
 
     setModalOpen(true)
@@ -255,7 +255,7 @@ const Chart = () => {
     // const sub = tmp['sub']
 
     const plan = {"title":title, "content": content, "start":start, "dueDate":endDate}
-    const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+planId, {
+    const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/'+planId, {
         method: 'PATCH',
         body: JSON.stringify(plan),
         headers: {
@@ -266,7 +266,7 @@ const Chart = () => {
     // console.log(json)
     if(response.ok) {
       //create History
-      const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
+      const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
           method: 'POST',
           body: JSON.stringify({
             "types": "Update",
@@ -283,7 +283,7 @@ const Chart = () => {
       // console.log("json4:",json4)
 
       //pushHistToUser
-      const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
+      const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
           method: 'POST',
           body: JSON.stringify({"token": sub,"hid":hid}),
           headers: {
@@ -302,13 +302,14 @@ const Chart = () => {
       const tmp = jwt_decode(token)
       setToken(tmp)
       const password = tmp['sub']
-      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+password)
+      const mail = tmp['email']
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
       const uid = userJson._id
       setUid(uid)
       setSub(password)
       
-      const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/plan/'+uid, {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/plan/'+uid, {
         method: 'GET'
       })
       const json = await response.json()
@@ -316,7 +317,7 @@ const Chart = () => {
         const data1 = []
         const progress = []
         for (const plan of json) {
-          const p = await fetch(`${process.env.REACT_APP_BACKEND_URI_TEST}/api/plan/progress/${plan._id}`, {
+          const p = await fetch(`${process.env.REACT_APP_BACKEND_URI}/api/plan/progress/${plan._id}`, {
             method: 'GET'
           });
           if(p.ok) {

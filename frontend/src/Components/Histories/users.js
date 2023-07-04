@@ -13,7 +13,7 @@ const Users = ( ) => {
 
     useEffect(() => {
         const fetchUser = async() => {
-            const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/')
+            const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/')
             const json = await response.json()
             setUser(json)
           }
@@ -40,7 +40,7 @@ const Users = ( ) => {
         try {
             const confirm = window.confirm('Are you sure you want to set this user as admin?')
             if(confirm) {
-                const response  = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/role/'+uid+'/Supervisors',{
+                const response  = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/role/'+uid+'/Supervisors',{
                     method: 'PATCH'
                 })
                 const json = await response.json()
@@ -58,7 +58,7 @@ const Users = ( ) => {
         try {
             const confirm = window.confirm('Are you sure you want to cancel the admin role of this user?')
             if(confirm) {
-                const response  = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/role/'+uid+'/Students',{
+                const response  = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/role/'+uid+'/Students',{
                     method: 'PATCH'
                 })
                 const json = await response.json()

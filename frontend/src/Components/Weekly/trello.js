@@ -52,7 +52,7 @@ const Trello = ({pid, uid}) => {
       const username = tmp['preferred_username']
       const authData = username+':'+sub
       // Perform deletion logic here
-      const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/todo/'+cardId, {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/todo/'+cardId, {
       method: 'DELETE'
     })
       const json = await response.json()
@@ -60,7 +60,7 @@ const Trello = ({pid, uid}) => {
       
       if(response.ok) {
         toggleToast2()
-        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
+        const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({
                   "types": "Delete",
@@ -76,7 +76,7 @@ const Trello = ({pid, uid}) => {
             // console.log("json4:",json4)
 
             //pushHistToUser
-            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
+            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
                 method: 'POST',
                 body: JSON.stringify({"token": sub,"hid":hid}),
                 headers: {
@@ -109,7 +109,7 @@ const Trello = ({pid, uid}) => {
     setModalOpen(true)
     
 
-    const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/todo/'+cardId)
+    const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/todo/'+cardId)
     const json = await response.json()
     //console.log(json)
     setStatus(json['status'])
@@ -127,7 +127,7 @@ const Trello = ({pid, uid}) => {
     e.preventDefault()
 
     const todo = {"title":title, "content":content, "dueDate":dueDate}
-    const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/todo/'+cardId, {
+    const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/todo/'+cardId, {
         method: 'PATCH',
         body: JSON.stringify(todo),
         headers: {
@@ -137,7 +137,7 @@ const Trello = ({pid, uid}) => {
     const json = await response.json()
     if(response.ok) {
             //create History
-            const response4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
+            const response4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
                 method: 'POST',
                 body: JSON.stringify({
                   "types": "Update",
@@ -153,7 +153,7 @@ const Trello = ({pid, uid}) => {
             // console.log("json4:",json4)
 
             //pushHistToUser
-            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
+            const response5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
                 method: 'POST',
                 body: JSON.stringify({"token": sub,"hid":hid}),
                 headers: {
@@ -175,7 +175,7 @@ const Trello = ({pid, uid}) => {
     if(sourceLaneId !== targetLaneId) {
     switch (targetLaneId) {
       case "lane1":
-        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/todo/todo/' + cardId, {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/todo/todo/' + cardId, {
             method: 'PATCH',
             //body: JSON.stringify(todo),
             headers: {
@@ -186,7 +186,7 @@ const Trello = ({pid, uid}) => {
         const title = json.title
         // console.log(json)
         //create History
-        const res = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
+        const res = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
             method: 'POST',
             body: JSON.stringify({"types": "Update","ofUser":json.ofUser,"content":"ToDo:"+title+" ->'to do'"}),
             headers: {
@@ -197,7 +197,7 @@ const Trello = ({pid, uid}) => {
         const hid = tjson._id
         // console.log("json4:",tjson)
         //give history to User
-        const res2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
+        const res2 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
             method: 'POST',
             body: JSON.stringify({"token": sub,"hid":hid}),
             headers: {
@@ -219,7 +219,7 @@ const Trello = ({pid, uid}) => {
         break;
 
       case "lane2":
-        const response2 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/todo/doing/' + cardId, {
+        const response2 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/todo/doing/' + cardId, {
             method: 'PATCH',
             //body: JSON.stringify(todo),
             headers: {
@@ -230,7 +230,7 @@ const Trello = ({pid, uid}) => {
         const title2 = json2.title
 
         //create History
-        const res3 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
+        const res3 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
             method: 'POST',
             body: JSON.stringify({"types": "Update","ofUser":json2.ofUser,"content":"ToDo:"+title2+" ->'doing'"}),
             headers: {
@@ -240,7 +240,7 @@ const Trello = ({pid, uid}) => {
         const tjson3 = await res3.json()
         const hid2 = tjson3._id
         //give history to User
-        const res4 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
+        const res4 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
             method: 'POST',
             body: JSON.stringify({"token": sub,"hid":hid2}),
             headers: {
@@ -263,7 +263,7 @@ const Trello = ({pid, uid}) => {
         break;
 
       case "lane3":
-        const response3 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/todo/finish/'+ cardId, {
+        const response3 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/todo/finish/'+ cardId, {
             method: 'PATCH',
             //body: JSON.stringify(todo),
             headers: {
@@ -277,7 +277,7 @@ const Trello = ({pid, uid}) => {
         const title3 = json3.title
         // console.log(json3)
         //create History
-        const res5 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/hist/',{
+        const res5 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/hist/',{
             method: 'POST',
             body: JSON.stringify({"types": "Update","ofUser":json3.ofUser,"content":"ToDo:"+title3+" ->'done'"}),
             headers: {
@@ -288,7 +288,7 @@ const Trello = ({pid, uid}) => {
         const hid3 = tjson5._id
         // console.log("json4:",tjson5)
         //give history to User
-        const res6 = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/history/token/',{
+        const res6 = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/history/token/',{
             method: 'POST',
             body: JSON.stringify({"token": sub,"hid":hid3}),
             headers: {
@@ -321,20 +321,21 @@ const Trello = ({pid, uid}) => {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
       const password = tmp['sub']
-      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+password)
+      const mail = tmp['email']
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
       const uid = userJson._id
       setUid(uid)
       setSub(password)
       if(pid) {
-        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/todos/todo/'+pid)
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/todos/todo/'+pid)
         const json = await response.json()
         if(response.ok && json!==null){
           const data1 = []
         let i = 0
 
         while(i < json.todoArr.length) {
-          const res = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+json.todoArr[i].ofPlan)
+          const res = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/'+json.todoArr[i].ofPlan)
           const pjson = await res.json()
           const today = new Date()
           data1.push({
@@ -373,14 +374,14 @@ const Trello = ({pid, uid}) => {
         setT(data1)
         }
       } else {
-      const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/todo/todo/'+uid)
+      const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/todo/todo/'+uid)
       const json = await response.json()
       if(response.ok && json !== null) { // Is it necessary to change the while loop into a for each loop?
         const data1 = []
         let i = 0
 
         while(i < json.length) {
-          const res = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+json[i].ofPlan)
+          const res = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/'+json[i].ofPlan)
           const pjson = await res.json()
           const today = new Date()
           data1.push({
@@ -428,20 +429,21 @@ const Trello = ({pid, uid}) => {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
       const password = tmp['sub']
-      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+password)
+      const mail = tmp['email']
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
       const uid = userJson._id
       setUid(uid)
       setSub(password)
       if(pid) {
-        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/todos/doing/'+pid)
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/todos/doing/'+pid)
         const json = await response.json()
         if(response.ok && json!==null){
           const data2 = []
         let i = 0
 
         while(i < json.todoArr.length) {
-          const res = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+json.todoArr[i].ofPlan)
+          const res = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/'+json.todoArr[i].ofPlan)
           const pjson = await res.json()
           const today = new Date()
           data2.push({
@@ -480,14 +482,14 @@ const Trello = ({pid, uid}) => {
         setD(data2)
         }
       } else {     
-          const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/todo/doing/'+uid)
+          const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/todo/doing/'+uid)
           const json = await response.json()
           if(response.ok && json.length !== 0) {
             const data2 = []
             let i = 0
 
             while(i < json.length) {
-              const res = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+json[i].ofPlan)
+              const res = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/'+json[i].ofPlan)
               const pjson = await res.json()
               const today = new Date()
               data2.push({
@@ -535,20 +537,21 @@ const Trello = ({pid, uid}) => {
       const token = sessionStorage.getItem('access-token')
       const tmp = jwt_decode(token)
       const password = tmp['sub']
-      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/token/'+password)
+      const mail = tmp['email']
+      const userRes = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/mail/'+mail)
       const userJson = await userRes.json()
       const uid = userJson._id
       setUid(uid)
       setSub(password)
       if (pid) {
-        const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/todos/finished/'+pid)
+        const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/todos/finished/'+pid)
         const json = await response.json()
         if(response.ok && json!==null){
           const data3 = []
         let i = 0
 
         while(i < json.todoArr.length) {
-          const res = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+json.todoArr[i].ofPlan)
+          const res = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/'+json.todoArr[i].ofPlan)
           const pjson = await res.json()
           // eslint-disable-next-line
           const today = new Date()
@@ -571,14 +574,14 @@ const Trello = ({pid, uid}) => {
         setF(data3)
         }
       } else {
-          const response = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/user/todo/finished/'+uid)
+          const response = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/user/todo/finished/'+uid)
           const json = await response.json()
           if(response.ok && (json !==null)) {
             const data3 = []
             let i = 0
 
             while(i < json.length) {
-              const res = await fetch(process.env.REACT_APP_BACKEND_URI_TEST+'/api/plan/'+json[i].ofPlan)
+              const res = await fetch(process.env.REACT_APP_BACKEND_URI+'/api/plan/'+json[i].ofPlan)
               const pjson = await res.json()
               data3.push({
                 id: json[i]._id,
