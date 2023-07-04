@@ -11,11 +11,11 @@ We hope this platform could give you some support while you writing your thesis,
 
 This application uses React as its frontend, Express as its backend and MongoDB as its database, to run this app locally, please:
 
-run `cd Backend` and `npm install`,
+run `cd backend` and `npm install`,
 
 then start the server by running `nodemon server.js`.
 
-Now redirect to the frontend folder by running `cd ..`, `cd Frontend` and `npm install`,
+Now redirect to the frontend folder by running `cd ..`, `cd frontend` and `npm install`,
 
 then start the frontend application by running `npm start`.
 
@@ -27,4 +27,4 @@ Build this app first using docker by running `docker compose build` at its root 
 
 ## Storybook Integration
 
-This application integrates part of its components into Storybook for convenient future development. To run Storybook
+This application integrates part of its components into Storybook for convenient future development. To run Storybook, go to the frontend directory and run `npm run storybook`. For more information on Storybook, please visit https://storybook.js.org/
