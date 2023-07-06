@@ -17,10 +17,10 @@ Primary.args = {
 export const plantcard = (args) => <Render {...args}/>
 plantcard.args = {
     plant: "Zamia",
-    seed: "1",
-    status: 50,
-    title: "Title",
-    start: "2022-03-1",
-    due: "2022-03-31",
-    content: "Content" 
+    seed: 1,
+    status: 80,
+    title: "Hello World",
+    start: "2022-04-01",
+    due: "2023-07-07",
+    content: "Happy Graduation!" 
   };
