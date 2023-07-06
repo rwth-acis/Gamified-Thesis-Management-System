@@ -1,13 +1,13 @@
 import { Container, Row, Col, ListGroup, ListGroupItem, Badge } from "react-bootstrap";
 import { FcBullish, FcApproval, FcTodoList} from 'react-icons/fc';
-import B1 from '../Components/Pics/Badges/badge1.jpg';
-import B2 from '../Components/Pics/Badges/badge2.jpg';
-import B3 from '../Components/Pics/Badges/badge3.jpg';
-import B4 from '../Components/Pics/Badges/badge4.jpg';
-import B5 from '../Components/Pics/Badges/badge5.jpg';
-import B6 from '../Components/Pics/Badges/badge6.jpg';
-import B7 from '../Components/Pics/Badges/badge7.jpg';
-import B8 from '../Components/Pics/Badges/badge8.jpg';
+import B1 from './assets/Pics/Badges/badge1.jpg';
+import B2 from './assets/Pics/Badges/badge2.jpg';
+import B3 from './assets/Pics/Badges/badge3.jpg';
+import B4 from './assets/Pics/Badges/badge4.jpg';
+import B5 from './assets/Pics/Badges/badge5.jpg';
+import B6 from './assets/Pics/Badges/badge6.jpg';
+import B7 from './assets/Pics/Badges/badge7.jpg';
+import B8 from './assets/Pics/Badges/badge8.jpg';
 
 const AllAchievements = () => {
 

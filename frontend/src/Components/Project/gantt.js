@@ -156,7 +156,7 @@ const Chart = () => {
   }
   
   const handlePlanDelete = async() => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this item? You will lose the 30 points for it.');
+    const confirmDelete = window.confirm('Are you sure you want to delete this item? You will lose the 30 points for it if the plan is finished or 5 points if not.');
     if (confirmDelete) {
       const username = tokens['preferred_username']
       const authData = username+':'+sub
@@ -194,7 +194,8 @@ const Chart = () => {
                 }
             })
             const json5 = await response5.json()
-            const response6 = await fetch(process.env.REACT_APP_GAM_FRAM_URI+'/visualization/actions/thesis_system/7/'+username, {
+            if(status === "Finished") {
+              const response6 = await fetch(process.env.REACT_APP_GAM_FRAM_URI+'/visualization/actions/thesis_system/7/'+username, {
                 mode: 'cors',
                 method: 'POST',
                 headers: {
@@ -202,8 +203,21 @@ const Chart = () => {
                   //'Content-Type': 'application/json',
                   //'Accept': 'application/json'
                 }
-            })
-            const json6 = await response6.json()
+              })
+              const json6 = await response6.json()
+            } else {
+              const response6 = await fetch(process.env.REACT_APP_GAM_FRAM_URI+'/visualization/actions/thesis_system/9/'+username, {
+                mode: 'cors',
+                method: 'POST',
+                headers: {
+                  'Authorization': 'Basic ' + btoa(authData)
+                  //'Content-Type': 'application/json',
+                  //'Accept': 'application/json'
+                }
+              })
+              const json6 = await response6.json()
+            }
+            
             // console.log(json5)
             CloseModal()
       }

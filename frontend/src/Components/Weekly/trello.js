@@ -297,7 +297,7 @@ const Trello = ({pid, uid}) => {
         })
         const tjson6 = await res6.json()
         // console.log(tjson6)//window.location.reload()
-        const response6 = await fetch(process.env.REACT_APP_GAM_FRAM_URI+'/visualization/actions/thesis_system/3/'+username, {
+        const response6 = await fetch(process.env.REACT_APP_GAM_FRAM_URI+'/visualization/actions/thesis_system/2/'+username, {
             mode: 'cors',
             method: 'POST',
             headers: {

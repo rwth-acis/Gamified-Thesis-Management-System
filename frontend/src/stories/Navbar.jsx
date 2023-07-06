@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import Logo from '../Components/Pics/acis.jpg'
+import Logo from './assets/Pics/acis.jpg'
 import { NavDropdown } from 'react-bootstrap';
 
 const Navibar = () => {
