@@ -5,7 +5,8 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useState,useEffect } from 'react';
-import Logo from './Pics/acis.jpg'
+// import Logo from './Pics/acis.jpg'
+import Logo from './Pics/new acis.jpg'
 import Overview from './Home/visFront';
 import { NavDropdown } from 'react-bootstrap';
 //require('dotenv').config()
@@ -38,7 +39,7 @@ const Navibar = (token) => {
   return (
     <Navbar bg="light" variant="light">
       <Container>
-        <Navbar.Brand href={process.env.REACT_APP_PATH}><img src={Logo} alt='Logo' style={{width: "80px"}} /></Navbar.Brand>
+        <Navbar.Brand href={process.env.REACT_APP_PATH}><img src={Logo} alt='Logo' style={{width: "320px"}} /></Navbar.Brand>
         
         {tokens ?
         <Nav className="me-auto">
